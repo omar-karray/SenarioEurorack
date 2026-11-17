@@ -1,0 +1,3 @@
+[submodule "KicadLibs"]
+	path = KicadLibs
+	url = https://github.com/omar-karray/KicadLibs.git

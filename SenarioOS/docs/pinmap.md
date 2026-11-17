@@ -1,0 +1,69 @@
+# Seed2 DFM pin map (generated from SenarioHW/Kicad/scripts/design.py)
+
+Daisy pin | STM32 | Function | Net
+--- | --- | --- | ---
+D0 | PB12 | GPIO | OLED_RES
+D1 | PC11 | GPIO | GATE_IN_1
+D2 | PC10 | GPIO | GATE_IN_2
+D3 | PC9 | GPIO | GATE_OUT_1
+D4 | PC8 | GPIO | GATE_OUT_2
+D5 | PD2 | GPIO | I2C_INT
+D6 | PC12 | GPIO | LED_OE
+D7 | PG10 | SPI1_NSS | OLED_CS
+D8 | PG11 | SPI1_SCK | OLED_SCK
+D9 | PB4 | SPI1_MISO (used as a GPIO: OLED D/C) | OLED_DC
+D10 | PB5 | SPI1_MOSI | OLED_MOSI
+D11 | PB8 | I2C1_SCL | I2C_SCL
+D12 | PB9 | I2C1_SDA | I2C_SDA
+D13 | PB6 | USART1_TX | MIDI_TX
+D14 | PB7 | USART1_RX | MIDI_RX
+D15 | PC0 | ADC (A0) | POT_MUX
+D16 | PA3 | GPIO | (free)
+D17 | PB1 | ADC (A2) | CV_IN_1_ADC
+D18 | PA7 | ADC (A3) | CV_IN_2_ADC
+D19 | PA6 | ADC (A4) | CV_IN_3_ADC
+D20 | PC1 | ADC (A5) | CV_IN_4_ADC
+D21 | PC4 | GPIO | MUX_A
+D22 | PA5 | DAC2 | CV_OUT_2_DAC
+D23 | PA4 | DAC1 | CV_OUT_1_DAC
+D24 | PA1 | SAI2_MCLK_B | SAI2_MCLK
+D25 | PA0 | SAI2_SD_B | SAI2_SD_B
+D26 | PD11 | SAI2_SD_A | SAI2_SD_A
+D27 | PG9 | SAI2_FS_B | SAI2_FS
+D28 | PA2 | SAI2_SCK_B | SAI2_SCK
+D29 | PB14 | GPIO | (free)
+D30 | PB15 | GPIO | (free)
+D31 | PC2 | GPIO | MUX_B
+D32 | PC3 | GPIO | MUX_C
+
+Audio pads: AUDIO_IN_1/2 = `SEED_IN_L/R`, OUT 1 = left (+/-), OUT 2 = right (+/-), VCOM = `VCOM_SEED`.
+
+Not wired: D16 (PA3, spare), D29 / D30 (USB, left for the module's own micro-USB).
+
+## I2C devices (I2C1, 4.7K pull-ups, 400 kHz to 1 MHz)
+
+Address | Device | Job
+--- | --- | ---
+0x20 | MCP23017 `U_IO1` | GPA0..7 / GPB0..7 = ENC1_A, ENC1_B, ENC1_SW, ENC2_A ... ENC4_SW (12), BTN1..BTN4 (pull-ups: enable the chip's internal GPPU)
+0x21 | MCP23017 `U_IO2` | BTN5, BTN6, MX1..MX8, six pins spare. Both INT pins are open-drain wired to `I2C_INT` (D5)
+0x40 | PCA9685 `U_LED1` | LED0..7 = MX1..8 LEDs, LED8..13 = BTN1..6 LEDs, LED14/15 = PTL1/PTL2 LEDs
+0x41 | PCA9685 `U_LED2` | LED0 = 4ms slider LED, the rest free
+
+PCA9685: set OUTDRV = 0 (open drain; the LED anodes are on +5 V), clear ALLCALL, `LED_OE` (D6) high = LEDs off (10K pull-up keeps them off until the firmware drives it low).
+
+## Panel analog (74HC4051 `U_MUX1`, ADC on D15, select lines `MUX_A/B/C` on D21/D31/D32)
+
+Channel | Control
+--- | ---
+0 | PTL1 wiper (Bourns PTL30, left)
+1 | PTL2 wiper (Bourns PTL30, right)
+2 | 4ms LED slider (between the two keys)
+3 | POT1
+4 | POT2
+5..7 | free
+
+## Notes for the firmware
+
+- External codec PCM3060 on SAI2 in H/W mode: slave, 24-bit left-justified, single-ended, de-emphasis off. The Seed drives MCLK/SCK/FS (SAI2 block B master), SD_A = DAC data to the codec, SD_B = ADC data from it. Check against libDaisy's Daisy Patch SAI2 setup.
+- CV in: inverting stage, +-5 V maps to 3.3 .. 0 V (invert in firmware). Gate in: inverted (high gate reads 0). CV out: 0 .. 5 V. Gate out: 0 / 5 V.
+- MIDI TX should be open drain if the HAL allows it (a mono TS cable in the TRS jack shorts the ring to the sleeve).

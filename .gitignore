@@ -1,0 +1,11 @@
+# KiCad
+*-backups/
+*.kicad_prl
+~*.lck
+_autosave-*
+fp-info-cache
+\#auto_saved_files\#
+*.bak
+# Python
+__pycache__/
+.DS_Store

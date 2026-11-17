@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "filename": "Senario.kicad_pro",
+    "version": 3
+  },
+  "board": {
+    "design_settings": {
+      "rules": {
+        "min_clearance": 0.2,
+        "min_copper_edge_clearance": 0.3
+      }
+    }
+  },
+  "sheets": [],
+  "text_variables": {}
+}
