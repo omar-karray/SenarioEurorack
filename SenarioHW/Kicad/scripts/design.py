@@ -453,7 +453,7 @@ with blk("Power", "holes"):
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
 # Parts left out of the PCB placement for now (the schematic keeps them). Set to () to bring them back.
-PCB_HIDE_REFS = ("VR",)                                                  # the two pots (buttons 1, 2 flank the slider, 3-6 are under it)
+PCB_HIDE_REFS = ()                                                       # nothing hidden: pots are above the PTL sliders, buttons around the slider
 PCB_HIDE_NETS = ()                                                       # (nothing else hidden)
 
 
@@ -495,12 +495,12 @@ FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of 
 FLOOR["PTL2"] = (111.0, 66.0, 90)
 for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
     FLOOR[f"SW_BTN{i + 3}"] = (x, 102.5, 0)                # row of 4 under the slider
-FLOOR["VR1"] = (21.0, 91.5, 0)
-FLOOR["VR2"] = (99.0, 91.5, 0)
+FLOOR["VR1"] = (9.0, 39.0, 0)                          # above the PTL sliders, on their axes
+FLOOR["VR2"] = (111.0, 39.0, 0)
 FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (15.0, 92.15, 0)
 FLOOR["SW_BTN2"] = (105.0, 92.15, 0)
-FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 38.0), (118.0, 38.0), (2.3, 106.2), (117.7, 106.2))]
+FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 92.0), (118.0, 92.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
 ANCHOR = {
