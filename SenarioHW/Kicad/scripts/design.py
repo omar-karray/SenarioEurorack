@@ -521,6 +521,7 @@ MODEL_OVERRIDE = {
     "Bourns_PTL:Bourns_PTL20_Slide_LED": ("${KIPRJMOD}/models/PTL20_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel": ("${KIPRJMOD}/models/Alps_RS6011_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03": ("${KIPRJMOD}/models/OLED_HS96L01_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "4ms_Potentiometer:Pot_9mm_DShaft": ("${KICADLIBS}/3dmodels/Potentiometer.3dshapes/RK09L12-L20V.step", (0, 0, 6.3), (0, 0, 180), (1, 1, 1)),   # the library's own VRML does not render in KiCad; this is the 9 mm RK09 STEP, shape approximate
     "4ms_Jack:EighthInch_PJ398SM": ("${KICADLIBS}/3dmodels/Jack.3dshapes/WQP-PJ398SM.step", (0, 0, 0), (0, 0, -90), (1, 1, 1)),   # the Thonkiconn model, as the 4ms stereo footprint
     "Daisy_Seed_Misc:ENC_RGB_TopUp_EC12PLRGB": ("${KIPRJMOD}/models/Encoder_RGB_TopUp_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
 }
