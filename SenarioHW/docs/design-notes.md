@@ -55,6 +55,7 @@ The module's **micro-USB, BOOT and RESET** are on its top, facing the back of th
 |---|---|
 | Seed2 DFM | Electrosmith STEP (KicadLibs) on its five sockets |
 | Jacks (all 16) | `WQP-PJ398SM.step` (Thonkiconn), KicadLibs |
+| K6-6140A-02 buttons | `Hroparts_K6-6140A.wrl` (KicadLibs, generated from the datasheet drawing) |
 | Cherry MX + red LED | `SW_Cherry_MX_PCB.wrl` (keyswitch library), KicadLibs; the LED model is KiCad's |
 | Illuminated encoders | **placeholder** (body 12.4 x 13.2 x 7.8, M9 bushing to 14.8 mm, dia 6 shaft to 25.3 mm, from the maker drawing). No public STEP found |
 | RGB LEDs, SMD parts, power header, sockets | KiCad stock models |
