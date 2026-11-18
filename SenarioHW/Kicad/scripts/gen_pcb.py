@@ -234,6 +234,9 @@ def build(out):
                 if r != p["ref"] and r in pos:
                     cand.append(r)
         if cand:
+            front = [r for r in cand if r in D.FLOOR and not r.startswith("H")]
+            if front and p["ref"][0] in "RCDQ":              # a passive of a front control: behind that control (the LED resistors, the encoder dividers, the jack input parts)
+                return pos[front[0]]
             ic = [r for r in cand if r.startswith("U")]
             return pos[(ic or cand)[0]]
         # power-only part: nearest IC of the same block on a shared rail

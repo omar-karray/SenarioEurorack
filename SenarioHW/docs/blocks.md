@@ -59,3 +59,10 @@ Not a front block, but fixed on the board: H1..H4 (corner / side holes), H5, H6 
 * The **microSD slot** (36.8, 90.4 - 55.2, 107.7) is behind the **Alps slider** and the lower MX row.
 * Free back areas: behind the **encoders, button row, OLED, the left half of the MX matrix** and the **top strip** (Jack I/O): the top strip is already where the Jack I/O chain sits.
 * Front through-hole pads (pots, sliders, encoders, jacks, MX switches, LEDs) go through to the back: the SMD parts must avoid them (the placer does).
+
+## Back placement rules now used (gen_pcb.py)
+
+* A passive part (resistor, capacitor, diode, transistor) that is wired to a front control is placed **behind that control** (the key LED resistors, the encoder LED resistors and switch dividers, the button and slider LED resistors, the jack input parts). The ring search moves it to the nearest free spot where the Seed, a through-hole pad or another part is in the way: the blocks are a guide, not a strict area.
+* The five shared chips (U_IO1, U_IO2, U_LED1, U_LED2, U_MUX1) stay in the middle of the board.
+* The Seed module, the microSD slot, the power header and the USB ESD chip are fixed or anchored first; everything else is placed around them.
+* The map `docs/previews/back_block_map.png` (SVG next to it, `scripts/block_map.py` regenerates it) shows the result: dashed = front blocks, filled = back SMD parts coloured by block.
