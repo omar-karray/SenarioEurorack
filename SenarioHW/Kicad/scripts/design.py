@@ -25,6 +25,7 @@ FP_SOIC14 = "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm"
 FP_SOIC16 = "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm"
 FP_SOT23 = "Package_TO_SOT_SMD:SOT-23"
 FP_SOT23_5 = "Package_TO_SOT_SMD:SOT-23-5"
+FP_SOT23_6 = "Package_TO_SOT_SMD:SOT-23-6"
 FP_SMDIP6 = "Package_DIP:SMDIP-6_W9.53mm"
 FP_LED3 = "LED_THT:LED_D3.0mm"
 
@@ -33,13 +34,13 @@ LCSC = {
     ("R", "0R"): "C21189", ("R", "10R"): "C22859", ("R", "33R"): "C23140", ("R", "100R"): "C22775",
     ("R", "220R"): "C22962", ("R", "330R"): "C23138", ("R", "470R"): "C23179", ("R", "1K"): "C21190",
     ("R", "4.7K"): "C23162", ("R", "10K"): "C25804", ("R", "15K"): "C22809", ("R", "33K"): "C4216",
-    ("R", "47K"): "C25819", ("R", "62K"): "C23221", ("R", "100K"): "C25803", ("R", "120K"): "C25808",
+    ("R", "47K"): "C25819", ("R", "5K1"): "C23186", ("R", "62K"): "C23221", ("R", "100K"): "C25803", ("R", "120K"): "C25808",
     ("R", "1M"): "C22935", ("R", "3R3"): "C17945", ("R", "820R"): "C23253", ("R", "22K"): "C31850",
     ("C", "100nF"): "C14663", ("C", "10nF"): "C57112", ("C", "1nF"): "C1588", ("C", "330pF"): "C1664",
     ("C", "47pF"): "?", ("C", "1uF"): "C15849", ("C", "10uF"): "C15850",
     ("C", "100uF"): "C48971042",
     ("U", "MCP6004"): "?", ("U", "TL074"): "?", ("U", "PCM3060"): "?",
-    ("U", "PCA9685"): "C92206", ("U", "74HC4051"): "?", ("U", "MCP23017"): "?",
+    ("U", "PCA9685"): "C92206", ("U", "USBLC6"): "C7519", ("U", "74HC4051"): "?", ("U", "MCP23017"): "?",
     ("U", "LD1117S50"): "C71124", ("U", "74AHCT1G125"): "C7484", ("U", "H11L1"): "C274632",
     ("U", "MMBT3904"): "C20526", ("U", "LM4040-10"): "?",
 }
@@ -155,10 +156,10 @@ SEED_PINS = {
     "D0": "OLED_RES", "D1": "SDMMC_D3", "D2": "SDMMC_D2", "D3": "SDMMC_D1", "D4": "SDMMC_D0",       # D1-D6 are the SDMMC1 pins (the Dev Kit microSD slot)
     "D5": "SDMMC_CMD", "D6": "SDMMC_CK", "D7": "OLED_CS", "D8": "OLED_SCK", "D9": "OLED_DC", "D10": "OLED_MOSI",
     "D11": "I2C_SCL", "D12": "I2C_SDA", "D13": "MIDI_TX", "D14": "MIDI_RX",
-    "D15": "POT_MUX", "D16": None, "D17": "CV_IN_1_ADC", "D18": "CV_IN_2_ADC", "D19": "GATE_IN_1",
+    "D15": "POT_MUX", "D16": "I2C_INT", "D17": "CV_IN_1_ADC", "D18": "CV_IN_2_ADC", "D19": "GATE_IN_1",
     "D20": "GATE_OUT_1", "D21": "MUX_A", "D22": "CV_OUT_2_DAC", "D23": "CV_OUT_1_DAC",
     "D24": "SAI2_MCLK", "D25": "SAI2_SD_B", "D26": "SAI2_SD_A", "D27": "SAI2_FS", "D28": "SAI2_SCK",
-    "D29": "LED_OE", "D30": "I2C_INT", "D31": "MUX_B", "D32": "MUX_C",
+    "D29": "USB_OTG_HS_N", "D30": "USB_OTG_HS_P", "D31": "MUX_B", "D32": "MUX_C",
     "VIN": "DSY_VIN", "3V3_D": "+3V3", "3V3_A": "+3V3A", "GND": "GND",
     "AUDIO_IN_1": "SEED_IN_L", "AUDIO_IN_2": "SEED_IN_R", "AUDIO_VCOM": "VCOM_SEED",
     "AUDIO_OUT_1+": "SEED_OUT_L+", "AUDIO_OUT_1-": "SEED_OUT_L-",
@@ -191,6 +192,18 @@ with blk("Daisy", "sd"):
         R("47K", "+3V3", n)
     C("10uF", "+3V3", "GND", fp=FP_C0805)
     bypass("+3V3", 1)
+
+# USB-C, exactly as the Seed3 Eurorack Dev Kit (U14, J7, R1, R2): GCT USB4110-GF-A, VBUS on its own net (+5V_USB: it does not power the module),
+# CC1 and CC2 5K1 to GND, D+/D- (both rows) through a USBLC6-2SC6 ESD array to the Seed USB HS pins D30 / D29, SBU not connected, shield and GND to GND.
+with blk("Daisy", "usb"):
+    part("J", "USB4110GFA:USB4110GFA", "Daisy_Seed_Misc:GCT_USB4110GFA", "USB4110-GF-A",
+         {"CC1": "USB_CC1", "DP1": "USB_IN_P", "DN1": "USB_IN_N", "SBU1": None, "VBUS": "+5V_USB", "CC2": "USB_CC2", "DP2": "USB_IN_P", "DN2": "USB_IN_N",
+          "SBU2": None, "GND": "GND", "VBUS__1": "+5V_USB", "GND__1": "GND", "GND__2": "GND", "GND__3": "GND", "GND__4": "GND", "GND__5": "GND"},
+         side="B", ref_="J_USB1", lcsc="C5143397")
+    part("U", "Power_Protection:USBLC6-2SC6", FP_SOT23_6, "USBLC6-2SC6",
+         {"1": "USB_IN_P", "2": "GND", "3": "USB_IN_N", "4": "USB_OTG_HS_N", "5": "+5V_USB", "6": "USB_OTG_HS_P"}, lcsc=LCSC[("U", "USBLC6")], ref_="U_USB1")
+    R("5K1", "USB_CC1", "GND")
+    R("5K1", "USB_CC2", "GND")
 
 with blk("Daisy", "seedsock"):
     for _letter in "ABCDE":
@@ -374,7 +387,7 @@ with blk("Controls", "io"):
     BTN = [f"BTN{i}" for i in range(1, 7)]
     MX = [f"MX{i}" for i in range(1, 9)]
     io1 = [s for e in ENC for s in e] + BTN[:4]               # 16
-    io2 = BTN[4:] + MX                                          # 10 (+ 6 spare)
+    io2 = BTN[4:] + MX + ["LED_OE"]                             # 11 (+ 5 spare); LED_OE (PCA9685 output enable, pulled high) comes from the expander
     for u, (ref_, a, sigs) in enumerate((("U_IO1", (0, 0, 0), io1), ("U_IO2", (1, 0, 0), io2))):
         pins = {"V_{DD}": "+3V3", "V_{SS}": "GND", "SCK": "I2C_SCL", "SDA": "I2C_SDA",
                 "A0": "+3V3" if a[0] else "GND", "A1": "GND", "A2": "GND", "~{RESET}": "+3V3",
@@ -522,11 +535,11 @@ FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
 # back-side parts at a fixed place (x, y, rotation): the microSD slot at the bottom edge, card opening toward the edge (on the back side the footprint is mirrored in y, so rotation 180 puts the card opening toward +y, the bottom edge)
-BACK_FIXED = {"J_SD1": (46.0, 99.65, 180)}
+BACK_FIXED = {"J_SD1": (46.0, 99.65, 180), "J_USB1": (114.02, 60.0, 270)}
 
 ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
-    "midi": (88, 28), "sd": (46, 99), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
+    "midi": (88, 28), "sd": (46, 99), "usb": (114, 60), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }
 
 

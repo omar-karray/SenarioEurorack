@@ -18,7 +18,7 @@ D12 | PB9 | I2C1_SDA | I2C_SDA
 D13 | PB6 | USART1_TX | MIDI_TX
 D14 | PB7 | USART1_RX | MIDI_RX
 D15 | PC0 | ADC (A0) | POT_MUX
-D16 | PA3 | GPIO | (free)
+D16 | PA3 | GPIO | I2C_INT
 D17 | PB1 | ADC (A2) | CV_IN_1_ADC
 D18 | PA7 | ADC (A3) | CV_IN_2_ADC
 D19 | PA6 | ADC (A4) | GATE_IN_1
@@ -31,25 +31,25 @@ D25 | PA0 | SAI2_SD_B | SAI2_SD_B
 D26 | PD11 | SAI2_SD_A | SAI2_SD_A
 D27 | PG9 | SAI2_FS_B | SAI2_FS
 D28 | PA2 | SAI2_SCK_B | SAI2_SCK
-D29 | PB14 | GPIO | LED_OE
-D30 | PB15 | GPIO | I2C_INT
+D29 | PB14 | GPIO | USB_OTG_HS_N
+D30 | PB15 | GPIO | USB_OTG_HS_P
 D31 | PC2 | GPIO (ADC-capable) | MUX_B
 D32 | PC3 | GPIO (ADC-capable) | MUX_C
 
 Audio pads: AUDIO_IN_1/2 = `SEED_IN_L/R`, OUT 1 = left (+/-), OUT 2 = right (+/-), VCOM = `VCOM_SEED`.
 
-D1-D6 are the SDMMC1 pins of the microSD slot (as on the Seed3 Eurorack Dev Kit), so GATE_IN_1, GATE_OUT_1, I2C_INT and LED_OE moved to D19, D20, D30 and D29. Free: D16 only (ADC). D29 / D30 are the USB HS pins of the Seed: free to use as GPIO as long as the module has no USB HS of its own (the Seed's own USB-C is on PA11 / PA12).
+D1-D6 are the SDMMC1 pins of the microSD slot and D29 / D30 the USB HS D- / D+ pins of the USB-C connector (both as on the Seed3 Eurorack Dev Kit), so GATE_IN_1, GATE_OUT_1 and I2C_INT are on D19, D20 and D16, and LED_OE (PCA9685 output enable, pulled high) is a spare GPIO of the second I/O expander (U_IO2). No Seed pin is free now. The Seed's own USB-C (PA11 / PA12) is a separate port.
 
 ## I2C devices (I2C1, 4.7K pull-ups, 400 kHz to 1 MHz)
 
 Address | Device | Job
 --- | --- | ---
 0x20 | MCP23017 `U_IO1` | GPA0..7 / GPB0..7 = ENC1_A, ENC1_B, ENC1_SW, ENC2_A ... ENC4_SW (12), BTN1..BTN4. Enable the internal pull-ups (GPPU) on A, B and the buttons; **the encoder switches `ENCn_SW` are active high (divider from +5 V): GPPU off on those four pins**
-0x21 | MCP23017 `U_IO2` | BTN5, BTN6, MX1..MX8, six pins spare. Both INT pins are open-drain wired to `I2C_INT` (D5)
+0x21 | MCP23017 `U_IO2` | BTN5, BTN6, MX1..MX8 on GPA0..GPB1, `LED_OE` on GPB2 (output), five pins spare. Both INT pins are open-drain wired to `I2C_INT` (D16)
 0x40 | PCA9685 `U_LED1` | LED0..7 = MX1..8, LED8..13 = BTN1..6, LED14/15 = PTL1/PTL2 (all 16 channels used)
 0x41 | PCA9685 `U_LED2` | LED0..11 = encoder RGB LEDs: ENC1 R,G,B, ENC2 R,G,B ... ENC4 R,G,B (common anode on +5 V, the chip sinks each colour); 4 channels free
 
-PCA9685: set OUTDRV = 0 (open drain; the LED anodes are on +5 V), clear ALLCALL; `LED_OE` (D6) high = LEDs off (10K pull-up keeps them off until the firmware drives it low).
+PCA9685: set OUTDRV = 0 (open drain; the LED anodes are on +5 V), clear ALLCALL; `LED_OE` (U_IO2 GPB2, no longer a Seed pin) high = LEDs off (the 10K pull-up keeps them off until the firmware configures the expander and drives it low).
 
 ## Panel analog (74HC4051 `U_MUX1`, ADC on D15, select lines `MUX_A/B/C` on D21/D31/D32)
 

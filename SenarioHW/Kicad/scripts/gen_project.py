@@ -38,7 +38,7 @@ for n in sorted(fp_libs):
     lines.append(f'\t(lib (name "{n}") (type "KiCad") (uri "{uri}") (options "") (descr ""))')
 lines.append(")")
 (out / "fp-lib-table").write_text("\n".join(lines) + "\n")
-pro = {"meta": {"filename": "Senario.kicad_pro", "version": 3}, "board": {"design_settings": {"rules": {"min_clearance": 0.2, "min_copper_edge_clearance": 0.3}}},
+pro = {"meta": {"filename": "Senario.kicad_pro", "version": 3}, "board": {"design_settings": {"rules": {"min_clearance": 0.2, "min_copper_edge_clearance": 0.3, "min_hole_clearance": 0.17}}},
        "sheets": [], "text_variables": {"KICADLIBS": "${KIPRJMOD}/../../KicadLibs"}}
 (out / "Senario.kicad_pro").write_text(json.dumps(pro, indent=2) + "\n")
 
