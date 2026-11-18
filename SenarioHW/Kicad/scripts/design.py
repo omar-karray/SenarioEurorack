@@ -428,7 +428,7 @@ with blk("Controls", "panel"):
         part("LED", "Device:LED", FP_LED3, "LED red 3mm", {"K": f"LED_MX{i}_K", "A": f"LED_MX{i}_A"}, side="T", ref_=f"LED_MX{i}")
         R("330R", "+5V", f"LED_MX{i}_A")
     for i in range(1, 7):                      # push buttons with LED on top: Hroparts K6-6140A-02 (red). Only 1 and 2 are placed (flanking the slider)
-        part("SW", SYM_PUSH_LED, "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "K6-6140A-02 (red LED)",
+        part("SW", SYM_PUSH_LED, "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "K6-6140A-02 (red LED)" if i <= 2 else "BUTTON TBD (K6 placeholder)",
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
