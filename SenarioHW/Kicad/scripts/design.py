@@ -458,9 +458,9 @@ for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
     FLOOR[f"SW_BTN{i + 3}"] = (x, 90.0, 0)
 FLOOR["VR1"] = (21.0, 91.5, 0)
 FLOOR["VR2"] = (99.0, 91.5, 0)
-FLOOR["SL1"] = (60.0, 102.5, 0)                       # Alps RS6011 60 mm, 76 mm body, between the two keys
-FLOOR["SW_BTN1"] = (15.0, 102.5, 0)
-FLOOR["SW_BTN2"] = (105.0, 102.5, 0)
+FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
+FLOOR["SW_BTN1"] = (15.0, 92.15, 0)
+FLOOR["SW_BTN2"] = (105.0, 92.15, 0)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 38.0), (118.0, 38.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
