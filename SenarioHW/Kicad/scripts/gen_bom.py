@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BOM (one row per part) from design.py: SenarioHW/docs/bom.csv. Hand = soldered by hand, front side; SMD = back side (JLCPCB)."""
+"""BOM (one row per part) from design.py: SenarioHW/docs/bom.csv. Hand = soldered by hand, front side; smd-top = SMT part on the front side (JLCPCB places it: the K6-6272S buttons, the Molex USB-C); SMD = back side (JLCPCB)."""
 import csv, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -9,7 +9,7 @@ rows = {}
 for p in D.PARTS:
     if not p["fp"] or p["sym"].startswith("Mechanical") or D.pcb_hidden(p):
         continue
-    key = (p["value"], p["fp"], p["props"].get("LCSC", ""), "hand" if p["side"] == "T" else "smd")
+    key = (p["value"], p["fp"], p["props"].get("LCSC", ""), ("smd-top" if p["fp"].endswith("_SMD") or "Molex_2047110001" in p["fp"] else "hand") if p["side"] == "T" else "smd")
     rows.setdefault(key, []).append(p["ref"])
 rows[("Daisy Seed2 DFM (Electrosmith, bought; plugs into J_SEED_A..E)", "module", "", "purchased")] = ["U_SEED1"]
 with open(out, "w", newline="") as f:
