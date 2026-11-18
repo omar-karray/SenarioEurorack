@@ -498,8 +498,8 @@ for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
 COL_L, COL_R = 14.8, 120.0 - 14.8                      # the pot / PTL slider / round button columns: PTL body edge 3 mm from the keycap edge (keycap 18 mm, PTL about 9.2 mm wide), symmetric about x = 60
-FLOOR["PTL1"] = (COL_L, 68.0 + DY, 90)      # 2 mm lower than the matrix centre: room for the pot above (same axis as the button row)                       # PTL20 left and right of the matrix
-FLOOR["PTL2"] = (COL_R, 68.0 + DY, 90)
+FLOOR["PTL1"] = (COL_L, 67.0 + DY, 90)      # 1 mm lower than the matrix centre: room for the pot above (same axis as the button row)                       # PTL20 left and right of the matrix
+FLOOR["PTL2"] = (COL_R, 67.0 + DY, 90)
 for i, x in enumerate(KX):                            # the 4 control buttons: on the axes of the encoders and the MX key columns
     FLOOR[f"SW_BTN{i + 3}"] = (x, BTN_Y, 0)
 FLOOR["VR1"] = (COL_L, BTN_Y, 0)                          # above the PTL sliders, on their axes; shaft on the same horizontal axis as the row of 4 buttons (BTN_Y)
