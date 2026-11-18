@@ -501,8 +501,8 @@ FLOOR["PTL2"] = (COL_R, 66.0 + DY, 90)
 BTN_PITCH = 10.0                                      # the 4 control buttons: a tight row centred under the OLED (not on the encoder axes)
 for i in range(4):
     FLOOR[f"SW_BTN{i + 3}"] = (60.0 + (i - 1.5) * BTN_PITCH, 35.0, 0)
-FLOOR["VR1"] = (COL_L, 39.0 + DY, 0)                          # above the PTL sliders, on their axes
-FLOOR["VR2"] = (COL_R, 39.0 + DY, 0)
+FLOOR["VR1"] = (COL_L, 39.5 + DY, 0)                          # above the PTL sliders, on their axes; shaft on the same horizontal axis as the encoders (y = 39.5 + DY)
+FLOOR["VR2"] = (COL_R, 39.5 + DY, 0)
 FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (COL_L, 92.15 + DY, 90)                    # on the axis of the pot and the PTL slider above it; turned 90 so the 8.5 mm pad span runs along y, clear of the hole H1
 FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 90)
