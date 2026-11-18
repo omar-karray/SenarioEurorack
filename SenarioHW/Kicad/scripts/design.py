@@ -426,21 +426,21 @@ with blk("Power", "holes"):
 # (community rule: board <= 108..110 mm, parts 10 mm clear of the top and bottom edges of the panel; see docs/design-notes.md)
 BOARD = dict(w=120.0, h=108.0)
 FLOOR = OrderedDict()
-JX = [7.0 + 11.0 * i for i in range(8)]
+JX = [6.5 + 10.8 * i for i in range(4)] + [79.7 + 10.8 * i for i in range(4)]   # inputs | OLED | outputs
 JY = [7.5, 22.5]
-_grid = [  # (row, col): jack. One function per column, two jacks per column; jacks turned 90 degrees (pad line vertical)
+_grid = [  # (row, col): jack. Left block = inputs, OLED in the middle, right block = outputs; two jacks per column
     (0, 0, "AIN1"), (1, 0, "AIN2"),            # audio in 1, 2 (Seed codec)
     (0, 1, "AIN3"), (1, 1, "AIN4"),            # audio in 3, 4 (PCM3060)
-    (0, 2, "AOUT1"), (1, 2, "AOUT2"),          # out main L, R
-    (0, 3, "AOUT3"), (1, 3, "AOUT4"),          # out send L, R
-    (0, 4, "CVIN1"), (1, 4, "CVIN2"),
-    (0, 5, "CVOUT1"), (1, 5, "CVOUT2"),
-    (0, 6, "GATEIN1"), (1, 6, "GATEOUT1"),
-    (0, 7, "MIDIIN1"), (1, 7, "MIDIOUT1"),
+    (0, 2, "CVIN1"), (1, 2, "CVIN2"),
+    (0, 3, "GATEIN1"), (1, 3, "MIDIIN1"),
+    (0, 4, "AOUT1"), (1, 4, "AOUT2"),          # out main L, R
+    (0, 5, "AOUT3"), (1, 5, "AOUT4"),          # out send L, R
+    (0, 6, "CVOUT1"), (1, 6, "CVOUT2"),
+    (0, 7, "GATEOUT1"), (1, 7, "MIDIOUT1"),
 ]
 for r_, c_, n in _grid:
     FLOOR["J_" + n] = (JX[c_], JY[r_], 90)
-FLOOR["J_OLED1"] = (97.73, 2.82, 0)                   # module x 91.7 .. 119.0, y 1.5 .. 29.3, beside the jacks
+FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
 for i, x in enumerate((24.0, 48.0, 72.0, 96.0), 1):
     FLOOR[f"ENC{i}"] = (x, 39.5, 0)
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
@@ -462,5 +462,5 @@ FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
 ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
-    "midi": (88, 28), "io": (60, 60), "oled": (100, 20), "panel": (60, 80), "holes": (60, 50),
+    "midi": (88, 28), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }

@@ -29,11 +29,11 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 | OLED HS96L01W4S03 | datasheet fetched from LCSC (C5139758): 0.96", SSD1315, 128 x 64, 4-wire SPI, 7-pin header. New footprint + symbol in KicadLibs (`Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03`, `Display_OLED:OLED_HS96L01W4S03`); the window to cut in the faceplate is on `Dwgs.User` (22.74 x 11.86) |
 | 4 audio in (extra codec like the Daisy Patch) | Seed codec = 2 in; **PCM3060** (as the Patch Rev8, H/W mode, on SAI2) = 2 in. Front ends from the Patch Rev8 and the Seed2 DFM datasheet (Figures 1.3 and 1.5) |
 | Audio out main + send | 4 jacks: MAIN L/R from the Seed codec, SEND L/R from the PCM3060 |
-| CV / gate (to determine) | **16 jacks fit in 108 mm**: 2 CV in, 2 CV out (the two DACs), 1 gate in, 1 gate out, MIDI in + out (TRS type A). **?** The earlier 4 CV in / 2 gate in / 2 gate out do not fit with the OLED beside the jacks; say if you want fewer audio jacks instead. Circuits from the Seed3 Eurorack Dev Kit |
+| CV / gate (to determine) | **16 jacks fit in 108 mm**: 2 CV in, 2 CV out (the two DACs), 1 gate in, 1 gate out, MIDI in + out (TRS type A). **?** The earlier 4 CV in / 2 gate in / 2 gate out do not fit with the OLED between the input and output jack blocks; say if you want fewer audio jacks instead. Circuits from the Seed3 Eurorack Dev Kit |
 
 ## Floorplan (top to bottom)
 
-1. Jacks, 8 columns of 2 (turned 90 degrees, 11 mm pitch), one function per column, left to right: audio in 1-2, audio in 3-4, out main L-R, out send L-R, CV in 1-2, CV out 1-2, gate in / gate out, MIDI in / MIDI out. **The OLED sits to the right of the jacks.**
+1. Jacks, 8 columns of 2 (turned 90 degrees, 10.8 mm pitch). **Left block = inputs**: audio in 1-2, audio in 3-4, CV in 1-2, gate in / MIDI in. **OLED in the middle.** **Right block = outputs**: out main L-R, out send L-R, CV out 1-2, gate out / MIDI out.
 2. The 4 encoders in one row.
 3. Matrix 4 x 2 with a PTL20 slider on each side.
 4. The 4 buttons in a row with the 2 pots at its ends.
