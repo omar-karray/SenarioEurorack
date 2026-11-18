@@ -496,8 +496,8 @@ for n in range(8):
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
 FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
 FLOOR["PTL2"] = (111.0, 66.0, 90)
-for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 102.5, 0)                # row of 4 under the slider
+for i, x in enumerate(KX):
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 102.5, 0)                # row of 4 under the slider, on the axes of the encoders and the MX keys
 FLOOR["VR1"] = (9.0, 39.0, 0)                          # above the PTL sliders, on their axes
 FLOOR["VR2"] = (111.0, 39.0, 0)
 FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall

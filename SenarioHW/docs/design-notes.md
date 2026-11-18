@@ -37,7 +37,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 2. The 4 illuminated encoders in one row, on the key column axes.
 3. Matrix 4 x 2 with a PTL20 slider on each side.
 4. The 2 pots above the PTL sliders, on the slider axes.
-5. The Alps slider, and the row of 4 blue HOOYA buttons under it. The two K6-6272S 10 mm round buttons sit under the PTL sliders, **on the same axes as the pots and sliders** (x = 9 and 111 mm), turned 90 degrees so their pads clear the corner holes (cap edge 0.65 mm from the H1/H2 hole edge).
+5. The Alps slider, and the row of 4 blue HOOYA buttons under it, **on the axes of the encoders and the MX key columns** (x = 31.4, 50.5, 69.5, 88.6 mm). The two K6-6272S 10 mm round buttons sit under the PTL sliders, **on the same axes as the pots and sliders** (x = 9 and 111 mm), turned 90 degrees so their pads clear the corner holes (cap edge 0.65 mm from the H1/H2 hole edge).
 
 I changed the order from your description (OLED and encoders were one band under the jacks) because 108 mm does not leave room for a separate OLED band. If you meant the main encoder below the OLED, something else has to give.
 
