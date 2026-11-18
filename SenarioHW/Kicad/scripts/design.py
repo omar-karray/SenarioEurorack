@@ -418,10 +418,10 @@ with blk("Controls", "io"):
         bypass("+3V3", 1)
         C("10uF", "+3V3", "GND", fp=FP_C0805)
     R("10K", "+3V3", "LED_OE")                     # LEDs off until the firmware enables them
-    # panel analog: 74HC4051 on +3V3A. 0 PTL1 | 1 PTL2 | 2 slider | 3 POT1 | 4 POT2
+    # panel analog: 74HC4051 on +3V3A. 0 PTL1 | 1 PTL2 | 2 slider | 3 POT1 | 4 POT2 | 5 POT3 | 6 POT4
     part("U", "74xx:74HC4051", FP_SOIC16, "74HC4051",
          {"A0": "WIP_PTL1", "A1": "WIP_PTL2", "A2": "WIP_SL", "A3": "WIP_POT1", "A4": "WIP_POT2",
-          "A5": None, "A6": None, "A7": None, "A": "POT_MUX", "S0": "MUX_A", "S1": "MUX_B", "S2": "MUX_C",
+          "A5": "WIP_POT3", "A6": "WIP_POT4", "A7": None, "A": "POT_MUX", "S0": "MUX_A", "S1": "MUX_B", "S2": "MUX_C",
           "~{E}": "GND", "VEE": "GND", "GND": "GND", "VCC": "+3V3A"}, lcsc="?", ref_="U_MUX1")
     bypass("+3V3A", 1)
     C("10nF", "POT_MUX", "GND")
@@ -473,7 +473,7 @@ with blk("Controls", "panel"):
         R("330R", "+5V", f"LED_PTL{i}_A")
     part("SL", "4ms_Potentiometer:Pot_Slider_60mm_10k", "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel", "Alps RS6011 60mm 10K",
          {"1": "GND", "2": "WIP_SL", "3": "+3V3A", "4": None, "5": None, "6": None, "7": None, "8": None}, side="T", ref_="SL1")
-    for i in (1, 2):
+    for i in (1, 2, 3, 4):
         part("VR", "4ms_Potentiometer:9mm_NoDet_10k_DShaft", "4ms_Potentiometer:Pot_9mm_Knurl_NoDet", "RK09K1130A5R 10K linear",
              {"1": "GND", "2": f"WIP_POT{i}", "3": "+3V3A", "4": "GND", "5": "GND"}, side="T", ref_=f"VR{i}", lcsc="C209779")   # Alps RK09K1130A5R: 9 mm, knurled insulated shaft 20 mm, no detent
 
@@ -514,9 +514,9 @@ _grid = [  # (row, col): jack. Left block = inputs, OLED in the middle, right bl
 for r_, c_, n in _grid:
     FLOOR["J_" + n] = (JX[c_], JY[r_], 90)
 DY = 9.5                                              # the matrix, sliders and round buttons sit this much lower than in the first layout, to make room for the row of 4 buttons between the encoders and the matrix
-FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
+FLOOR["J_OLED1"] = (52.53, 2.22, 0)                   # module x 46.5 .. 73.8, y 0.9 .. 28.7 (centred on the jack block, y centre 14.8), between the input and output jack blocks
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
-ENC_Y = 38.0                                          # encoder row
+ENC_Y = 37.4                                          # encoder row (and the pots VR3, VR4 above the lower pots): 0.06 mm under the jacks
 BTN_Y = 51.4                                          # row of 4 control buttons between the encoders and the matrix
 for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
     FLOOR[f"ENC{i}"] = (x, ENC_Y, 0)
@@ -531,6 +531,8 @@ for i, x in enumerate(KX):                            # the 4 control buttons: o
     FLOOR[f"SW_BTN{i + 3}"] = (x, BTN_Y, 0)
 FLOOR["VR1"] = (COL_L, BTN_Y, 0)                          # above the PTL sliders, on their axes; shaft on the same horizontal axis as the row of 4 buttons (BTN_Y)
 FLOOR["VR2"] = (COL_R, BTN_Y, 0)
+FLOOR["VR3"] = (COL_L, ENC_Y, 0)                       # two more pots right above them, on the axis of the encoders (read by the mux, channels 5 and 6)
+FLOOR["VR4"] = (COL_R, ENC_Y, 0)
 FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (COL_L, 92.15 + DY, 0)                    # on the axis of the pot and the PTL slider above it; not turned: the 11 mm pad span runs along x, so the PTL slider can come down
 FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 0)

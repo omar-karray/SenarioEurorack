@@ -58,9 +58,11 @@ Channel | Control
 0 | PTL1 wiper (Bourns PTL20, left)
 1 | PTL2 wiper (Bourns PTL20, right)
 2 | Alps RS6011 slider (60 mm, between the two keys)
-3 | POT1
-4 | POT2
-5..7 | free
+3 | POT1 (rotary pot, left, lower)
+4 | POT2 (rotary pot, right, lower)
+5 | POT3 (rotary pot, left, upper)
+6 | POT4 (rotary pot, right, upper)
+7 | free
 
 ## Notes for the firmware
 
