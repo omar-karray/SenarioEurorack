@@ -406,8 +406,8 @@ with blk("Controls", "panel"):
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
-    for i in range(1, 5):                      # RGB LED above each encoder: 5 mm, common anode on +5 V, PCA9685 sinks each colour
-        part("LED", "Device:LED_RAGB", "LED_THT:LED_D5.0mm-4_RGB_Wide_Pins", "RGB LED 5mm common anode",
+    for i in range(1, 5):                      # RGB LED above each encoder: 3 mm tower (Betlux BL-L375RGBW-CA), common anode on +5 V, PCA9685 sinks each colour
+        part("LED", "Device:LED_RAGB", "Daisy_Seed_Misc:LED_RGB_3mm_Tower_Betlux_BL-L375", "BL-L375RGBW-CA 3mm RGB",
              {"A": "+5V", "RK": f"LED_ENC{i}_R_LK", "GK": f"LED_ENC{i}_G_LK", "BK": f"LED_ENC{i}_B_LK"}, side="T", ref_=f"LED_ENC{i}")
         R("330R", f"LED_ENC{i}_R_K", f"LED_ENC{i}_R_LK")
         R("220R", f"LED_ENC{i}_G_K", f"LED_ENC{i}_G_LK")
@@ -454,21 +454,21 @@ for r_, c_, n in _grid:
 FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
 for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
-    FLOOR[f"ENC{i}"] = (x, 46.5, 0)
-    FLOOR[f"LED_ENC{i}"] = (x - 3.24, 46.5 - 12.5, 0)   # RGB LED centred above the encoder (footprint origin = pad 1, body centre +3.24)
-KY = [63.5, 82.55]
+    FLOOR[f"ENC{i}"] = (x, 43.5, 0)
+    FLOOR[f"LED_ENC{i}"] = (x - 3.81, 43.5 - 11.3, 0)   # RGB LED centred above the encoder (footprint origin = pad 1, body centre +3.81)
+KY = [60.5, 79.55]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
-FLOOR["PTL1"] = (9.0, 73.0, 90)                       # PTL20 left and right of the matrix
-FLOOR["PTL2"] = (111.0, 73.0, 90)
+FLOOR["PTL1"] = (9.0, 70.0, 90)                       # PTL20 left and right of the matrix
+FLOOR["PTL2"] = (111.0, 70.0, 90)
 for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 97.0, 0)
-FLOOR["VR1"] = (21.0, 98.5, 0)
-FLOOR["VR2"] = (99.0, 98.5, 0)
-FLOOR["SL1"] = (60.0, 99.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (91.55), body 9.2 mm tall
-FLOOR["SW_BTN1"] = (15.0, 99.15, 0)
-FLOOR["SW_BTN2"] = (105.0, 99.15, 0)
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 94.0, 0)
+FLOOR["VR1"] = (21.0, 95.5, 0)
+FLOOR["VR2"] = (99.0, 95.5, 0)
+FLOOR["SL1"] = (60.0, 96.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (88.55), body 9.2 mm tall
+FLOOR["SW_BTN1"] = (15.0, 96.15, 0)
+FLOOR["SW_BTN2"] = (105.0, 96.15, 0)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 38.0), (118.0, 38.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)

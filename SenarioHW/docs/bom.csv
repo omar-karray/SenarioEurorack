@@ -19,10 +19,10 @@ MIDI OUT,4ms_Jack:EighthInch_Stereo_PJ366ST,,hand,1,J_MIDIOUT1
 Alps RS6011 60mm 10K,4ms_Potentiometer:ALPS-RS6011_60mm_standard,,hand,1,SL1
 10K linear 9mm,4ms_Potentiometer:Pot_9mm_DShaft,,hand,2,VR1 VR2
 PTL20 10K,Bourns_PTL:Bourns_PTL20_Slide_LED,,hand,2,PTL1 PTL2
+BL-L375RGBW-CA 3mm RGB,Daisy_Seed_Misc:LED_RGB_3mm_Tower_Betlux_BL-L375,,hand,4,LED_ENC1 LED_ENC2 LED_ENC3 LED_ENC4
 HS96L01W4S03,Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03,C5139758,hand,1,J_OLED1
 Tact + LED,Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT,,hand,6,SW_BTN1 SW_BTN2 SW_BTN3 SW_BTN4 SW_BTN5 SW_BTN6
 LED red 3mm,LED_THT:LED_D3.0mm,,hand,8,LED_MX1 LED_MX2 LED_MX3 LED_MX4 LED_MX5 LED_MX6 LED_MX7 LED_MX8
-RGB LED 5mm common anode,LED_THT:LED_D5.0mm-4_RGB_Wide_Pins,,hand,4,LED_ENC1 LED_ENC2 LED_ENC3 LED_ENC4
 Cherry MX Red,Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u,,hand,8,SW_MX1 SW_MX2 SW_MX3 SW_MX4 SW_MX5 SW_MX6 SW_MX7 SW_MX8
 Eurorack power 10-pin,4ms_Connector:Pins_2x05_2.54mm_TH_EurorackPower_Shrouded,,smd,1,J_PWR1
 100uF,Capacitor_SMD:CP_Elec_6.3x7.7,C48971042,smd,5,C3 C6 C7 C8 C13
