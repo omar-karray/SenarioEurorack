@@ -22,13 +22,16 @@ def write(name, parts):
     (out / name).write_text("#VRML V2.0 utf8\n" + "".join(box(*p) for p in parts))
 
 
-# Bourns PTL20 (datasheet): body 35.0 x 9.0 x 6.0 mm; lever 3.0 along the travel x 2.05 across, length L = 10 / 15 / 19 mm above the body (15 here:
-# CHANGE LEVER_L to your lever), a red lens on the top 6 mm (the LED sits in the lever). Lever drawn at mid travel.
+# Bourns PTL20 (datasheet p.1): housing 35.0 x 9.0 x 6.6 mm (from the side view: 6.6 between the mounting surface and the board side), lever 3.0 along
+# the travel x 2.05 across. "MOUNTING SURFACE" on the drawing = the top face of the housing (the face that screws to the panel, M2 x 2), and the
+# lever length L = 10 / 15 / 19 mm is measured from that face to the lever tip, so the tip is L above the housing, 6.6 + L above the board.
+# CHANGE LEVER_L to the lever you order. A red lens on the top 6 mm (the LED sits in the lever). Lever drawn at mid travel.
 LEVER_L = 15.0
+BODY_H = 6.6
 write("PTL20_placeholder.wrl", [
-    (0, 0, 0, 35.0, 9.0, 6.0, (0.15, 0.15, 0.17)),
-    (0, 0, 6.0, 3.0, 2.05, LEVER_L - 6.0, (0.1, 0.1, 0.12)),
-    (0, 0, 6.0 + LEVER_L - 6.0, 3.0, 2.05, 6.0, (0.85, 0.1, 0.1)),
+    (0, 0, 0, 35.0, 9.0, BODY_H, (0.15, 0.15, 0.17)),
+    (0, 0, BODY_H, 3.0, 2.05, LEVER_L - 6.0, (0.1, 0.1, 0.12)),
+    (0, 0, BODY_H + LEVER_L - 6.0, 3.0, 2.05, 6.0, (0.85, 0.1, 0.1)),
 ])
 # Alps RS6011: body 75 x 9 x 7 mm; lever about 4 x 2 mm up to 15 mm above the board (style 17 drawing; the lever length is a customer option)
 write("Alps_RS6011_placeholder.wrl", [
