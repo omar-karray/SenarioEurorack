@@ -532,7 +532,7 @@ FLOOR["VR2"] = (COL_R, BTN_Y, 0)
 FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (COL_L, 92.15 + DY, 0)                    # on the axis of the pot and the PTL slider above it; not turned: the 11 mm pad span runs along x, so the PTL slider can come down
 FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 0)
-FLOOR["J_USB1"] = (COL_L, 35.0, 0)                      # vertical USB-C on the left column axis, above the pot, below the input jacks (panel cutout)
+FLOOR["J_USB1"] = (4.5, BTN_Y, 90)                     # vertical USB-C turned 90 (long side vertical), left of the pot on its horizontal axis (panel cutout)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 36.0), (118.0, 36.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
@@ -541,7 +541,7 @@ BACK_FIXED = {"J_SD1": (46.0, 99.65, 180)}
 
 ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
-    "midi": (88, 28), "sd": (46, 99), "usb": (14.8, 35), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
+    "midi": (88, 28), "sd": (46, 99), "usb": (4.5, 51.4), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }
 
 
