@@ -428,9 +428,15 @@ BOARD = dict(w=120.0, h=108.0)
 FLOOR = OrderedDict()
 JX = [7.0 + 11.0 * i for i in range(8)]
 JY = [7.5, 22.5]
-_grid = [  # (row, col): jack. Row 1 = inputs, row 2 = outputs; jacks turned 90 degrees (pad line vertical)
-    (0, 0, "AIN1"), (0, 1, "AIN2"), (0, 2, "AIN3"), (0, 3, "AIN4"), (0, 4, "CVIN1"), (0, 5, "CVIN2"), (0, 6, "GATEIN1"), (0, 7, "MIDIIN1"),
-    (1, 0, "AOUT1"), (1, 1, "AOUT2"), (1, 2, "AOUT3"), (1, 3, "AOUT4"), (1, 4, "CVOUT1"), (1, 5, "CVOUT2"), (1, 6, "GATEOUT1"), (1, 7, "MIDIOUT1"),
+_grid = [  # (row, col): jack. One function per column, two jacks per column; jacks turned 90 degrees (pad line vertical)
+    (0, 0, "AIN1"), (1, 0, "AIN2"),            # audio in 1, 2 (Seed codec)
+    (0, 1, "AIN3"), (1, 1, "AIN4"),            # audio in 3, 4 (PCM3060)
+    (0, 2, "AOUT1"), (1, 2, "AOUT2"),          # out main L, R
+    (0, 3, "AOUT3"), (1, 3, "AOUT4"),          # out send L, R
+    (0, 4, "CVIN1"), (1, 4, "CVIN2"),
+    (0, 5, "CVOUT1"), (1, 5, "CVOUT2"),
+    (0, 6, "GATEIN1"), (1, 6, "GATEOUT1"),
+    (0, 7, "MIDIIN1"), (1, 7, "MIDIOUT1"),
 ]
 for r_, c_, n in _grid:
     FLOOR["J_" + n] = (JX[c_], JY[r_], 90)

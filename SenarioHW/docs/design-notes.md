@@ -33,7 +33,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 
 ## Floorplan (top to bottom)
 
-1. Jacks, 2 rows of 8 (turned 90 degrees, 11 mm pitch), inputs on top (AIN1-4, CV in 1-2, gate in, MIDI in), outputs below (OUT main L/R, send L/R, CV out 1-2, gate out, MIDI out). **The OLED sits to the right of the jacks.**
+1. Jacks, 8 columns of 2 (turned 90 degrees, 11 mm pitch), one function per column, left to right: audio in 1-2, audio in 3-4, out main L-R, out send L-R, CV in 1-2, CV out 1-2, gate in / gate out, MIDI in / MIDI out. **The OLED sits to the right of the jacks.**
 2. The 4 encoders in one row.
 3. Matrix 4 x 2 with a PTL20 slider on each side.
 4. The 4 buttons in a row with the 2 pots at its ends.
