@@ -166,7 +166,7 @@ def build(out):
         if bottom:
             for f in fp.GetFields():
                 f.SetMirrored(True)
-        if p["ref"].startswith("SW_MX"):             # the LED sits in the switch window: the switch has no courtyard of its own
+        if p["ref"].startswith(("SW_MX", "J_SEED")):    # MX: the LED sits in the window; sockets: the module outline covers them
             for g in list(fp.GraphicalItems()):
                 if g.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
                     fp.Remove(g)
@@ -269,7 +269,48 @@ def build(out):
                         return x, y, rot, b
         raise RuntimeError(f"no room for {p['ref']}")
 
-    bottom = [p for p in parts if p["side"] == "B"]
+    seed_src = next(q for q in D.PARTS if q["ref"] == "U_SEED1")
+    seed_part = dict(seed_src, fp=seed_src["board_fp"], _nets={}, _sym=None, padmap={}, props={})
+    parts.append(seed_part)
+    def place_seed(p, x, y, rot):
+        """3D module footprint (board only) and the five sockets, placed so that socket pad n touches the Seed pad of the map."""
+        fp3 = load_fp("Daisy-Boards:DAISY_SEED2_DFM_3D")
+        board.Add(fp3)
+        place(fp3, x, y, rot, True)
+        for g in list(fp3.GraphicalItems()):          # the module hovers 4.3 mm over the front-side leads: no courtyard check
+            if g.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
+                fp3.Remove(g)
+        fp3.SetReference("U_SEED1")
+        fp3.SetValue("Daisy Seed2 DFM")
+        fp3.Reference().SetVisible(False)
+        fp3.Value().SetVisible(False)
+        try:
+            fp3.SetBoardOnly(True)
+        except Exception:
+            pass
+        tmp = load_fp(p["fp"])                             # landing pattern, only to read the pad positions
+        _scratch.Add(tmp)
+        place(tmp, x, y, rot, True)
+        world = {q.GetNumber(): (tomm(q.GetPosition().x), tomm(q.GetPosition().y)) for q in tmp.Pads()}
+        for letter in "ABCDE":
+            sp = next(q for q in parts if q["ref"] == f"J_SEED_{letter}")
+            mp = D.SEED_SOCKETS[letter]["map"]
+            fit = None
+            for srot in (0, 90, 180, 270):
+                ts = load_fp(sp["fp"])
+                _scratch.Add(ts)
+                place(ts, 0, 0, srot, True)
+                off = {q.GetNumber(): (tomm(q.GetPosition().x), tomm(q.GetPosition().y)) for q in ts.Pads()}
+                tx, ty = world[mp["1"]][0] - off["1"][0], world[mp["1"]][1] - off["1"][1]
+                if all(abs(world[mp[n]][0] - (off[n][0] + tx)) < 0.15 and abs(world[mp[n]][1] - (off[n][1] + ty)) < 0.15 for n in mp):
+                    fit = (tx, ty, srot)
+                    break
+            if not fit:
+                raise RuntimeError(f"socket {letter} does not fit the Seed pads")
+            make(sp, fit[0], fit[1], fit[2], True)
+            pos[sp["ref"]] = (fit[0], fit[1])
+
+    bottom = [p for p in parts if p["side"] == "B" and p["block"] != "seedsock"]
     order = ([p for p in bottom if p["ref"] == "J_PWR1"] + [p for p in bottom if p["ref"] == "U_SEED1"] +
              [p for p in bottom if p["ref"].startswith("U") and p["ref"] != "U_SEED1"] +
              [p for p in bottom if not p["ref"].startswith("U") and p["ref"] != "J_PWR1"])
@@ -286,7 +327,12 @@ def build(out):
             x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True, step=1.0)
         else:
             x, y, rot, b = find(p, anchor, (0, 90))
-        make(p, x, y, rot, True)
+        if p["ref"] == "U_SEED1":
+            place_seed(p, x, y, rot)
+            box3, _ = geometry("Daisy-Boards:DAISY_SEED2_DFM_3D", True, rot)     # the module outline is the keep-out for the other parts
+            b = (min(b[0], x + box3[0]), min(b[1], y + box3[1]), max(b[2], x + box3[2]), max(b[3], y + box3[3]))
+        else:
+            make(p, x, y, rot, True)
         pos[p["ref"]] = (x, y)
         bot_obst.add(b)
         box, pads = geometry(p["fp"], True, rot)

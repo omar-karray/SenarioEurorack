@@ -18,7 +18,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 
 | Brief | Built |
 |---|---|
-| 24HP, Daisy Seed2 DFM | board 120 x 108 mm. Seed2 DFM on SMT sockets (`DAISY_SEED2_DFM`), **back side** |
+| 24HP, Daisy Seed2 DFM | board 120 x 108 mm. Seed2 DFM plugged into **five 2 x 5 1.27 mm female SMD sockets** (Boomele 1.27-2*5PLTM, LCSC C59983, the part already sourced for Tanghim), **back side**, with the Electrosmith 3D model on top |
 | Front = controls you solder by hand, back = Seed + all SMD | exactly that: 52 front parts (all through-hole), 195 back parts (Seed, ICs, 0603 passives, LD1117, ...) |
 | Slider between the two keys | **Alps RS6011**, 60 mm travel, 76 x 10 mm body, no LED (4ms library `Pot_Slider_60mm_10k`). The 4ms library has no 100 mm slider; the Top-Up 60RFT2-B dual (88.7 x 20.7 mm) does not fit |
 | MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm above the key centre, window facing the top of the panel, LED centred on the key axis) |
@@ -43,9 +43,11 @@ I changed the order from your description (OLED and encoders were one band under
 
 ## Back side
 
-The generator places the back side automatically: the Seed (pad-level check against the front through-hole pads; it sits low, its micro-USB / BOOT / RESET end toward the left edge, reachable from the back), then ICs, then every passive next to the part it connects to, without overlapping anything. It is a starting point for you to improve, not a finished placement: ICs are grouped under the jack area, and decoupling is near the IC, not at the pin.
+**The Seed2 DFM** is a bought module (Electrosmith), not a PCB footprint: it plugs into five female SMD sockets (`J_SEED_A` to `J_SEED_E`, one per pad bank, 4.3 mm tall, the same part as the Tanghim board). The schematic keeps the full 50-pin Seed symbol for the nets (`U_SEED1`, not placed on the board) and each socket carries the same nets pin by pin; `scripts/seed_sockets.json` records which Seed pad each socket pin touches (computed from the two footprints by `make_seed_socket_map.py`: socket pins 1, 2, 3 ... touch pads X1, X10, X2 ...). On the board the module is the pad-less `DAISY_SEED2_DFM_3D` footprint (outline and the STEP model `ES_Daisy_Seed2_DFM_Rev5-3.step`, both in KicadLibs) placed over the sockets, so the 3D view shows the real module. The project defines `KICADLIBS` itself, so the model is found with no machine set-up.
 
-Seed module: Seed2 DFM has no USB-C on the carrier here: program through the **module's own micro-USB**, BOOT and RESET (all on its top, which faces the back of the module).
+The generator places the Seed first (its pads checked against the front through-hole pads), then the ICs, then every passive next to the part it connects to, none overlapping anything. The module outline is a keep-out for the other back-side parts; front-side leads under the module are fine (the sockets stand 4.3 mm off the board). It is a starting point for you to improve: ICs are grouped under the jack area, and decoupling is near the IC, not at the pin.
+
+The module's **micro-USB, BOOT and RESET** are on its top, facing the back of the module; the module sits with the USB end toward the right board edge. No USB-C on the carrier: program through the module.
 
 ## Power
 

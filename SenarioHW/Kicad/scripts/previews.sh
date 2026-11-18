@@ -10,4 +10,6 @@ $K pcb export pdf --layers "F.Cu,F.SilkS,F.CrtYd,Edge.Cuts,Dwgs.User" -o /tmp/se
 $K pcb export pdf --layers "B.Cu,B.SilkS,B.CrtYd,Edge.Cuts" --mirror -o /tmp/senario_back.pdf Senario.kicad_pcb >/dev/null 2>&1
 pdftoppm -r 150 -png -singlefile /tmp/senario_front.pdf "$DOCS/previews/pcb_front"
 pdftoppm -r 150 -png -singlefile /tmp/senario_back.pdf "$DOCS/previews/pcb_back"
+$K pcb render --side top --quality basic --width 1400 --height 1200 -o "$DOCS/previews/pcb_3d_front.png" Senario.kicad_pcb >/dev/null 2>&1
+$K pcb render --side bottom --quality basic --width 1400 --height 1200 -o "$DOCS/previews/pcb_3d_back.png" Senario.kicad_pcb >/dev/null 2>&1
 python3 -I "$HERE/gen_bom.py" "$DOCS/bom.csv"

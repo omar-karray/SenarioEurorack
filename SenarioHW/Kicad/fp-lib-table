@@ -6,7 +6,6 @@
 	(lib (name "4ms_Potentiometer") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/footprints/4ms_Potentiometer.pretty") (options "") (descr ""))
 	(lib (name "Bourns_PTL") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/footprints/Bourns_PTL.pretty") (options "") (descr ""))
 	(lib (name "Capacitor_SMD") (type "KiCad") (uri "${KICAD10_FOOTPRINT_DIR}/Capacitor_SMD.pretty") (options "") (descr ""))
-	(lib (name "Daisy-Boards") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/footprints/Daisy-Boards.pretty") (options "") (descr ""))
 	(lib (name "Daisy_Seed_Misc") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/footprints/Daisy_Seed_Misc.pretty") (options "") (descr ""))
 	(lib (name "Diode_SMD") (type "KiCad") (uri "${KICAD10_FOOTPRINT_DIR}/Diode_SMD.pretty") (options "") (descr ""))
 	(lib (name "Inductor_SMD") (type "KiCad") (uri "${KICAD10_FOOTPRINT_DIR}/Inductor_SMD.pretty") (options "") (descr ""))

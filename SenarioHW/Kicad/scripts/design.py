@@ -71,8 +71,8 @@ def ref(prefix):
     return f"{prefix}{_cnt[prefix]}"
 
 
-def part(prefix, sym, fp, value, pins, side="B", padmap=None, lcsc=None, desc="", ref_=None, **props):
-    p = dict(ref=ref_ or ref(prefix), sym=sym, fp=fp, value=value, pins=dict(pins), side=side,
+def part(prefix, sym, fp, value, pins, side="B", padmap=None, lcsc=None, desc="", ref_=None, board_fp=None, **props):
+    p = dict(ref=ref_ or ref(prefix), sym=sym, fp=fp, board_fp=board_fp, value=value, pins=dict(pins), side=side,
              padmap=padmap or {}, sheet=_ctx["sheet"], block=_ctx["block"], props=props, desc=desc)
     if lcsc:
         p["props"]["LCSC"] = lcsc
@@ -164,10 +164,28 @@ SEED_PINS = {
     "AUDIO_OUT_1+": "SEED_OUT_L+", "AUDIO_OUT_1-": "SEED_OUT_L-",
     "AUDIO_OUT_2+": "SEED_OUT_R+", "AUDIO_OUT_2-": "SEED_OUT_R-",
 }
+# The Seed module is not a board footprint: it plugs into five 2 x 5 1.27 mm female SMD sockets (Boomele 1.27-2*5PLTM, LCSC C59983,
+# the part already sourced for Tanghim). The symbol stays the full 50-pin Seed (nets), the sockets carry the same nets pin by pin, and the
+# board gets the pad-less 3D module footprint on top of them. seed_sockets.json says which Seed pad each socket pin touches.
+import json as _json
+from pathlib import Path as _Path
+from kicad_sexp import load_symbol_lib as _lsl, symbol_pins as _sp
+SEED_SOCKETS = _json.loads((_Path(__file__).parent / "seed_sockets.json").read_text())
+_seed_sym = _lsl(_Path(__file__).resolve().parents[3] / "KicadLibs" / "symbols" / "Daisy-Boards.kicad_sym")["Daisy_Seed2_DFM"]
+_pad_net = {}
+for _p in _sp(_seed_sym):
+    if _p["name"] in SEED_PINS:
+        _pad_net[_p["number"]] = SEED_PINS[_p["name"]]
+FP_SEED_SOCKET = "Daisy_Seed_Misc:PinSocket_2x05_P1.27mm_SMD_Boomele_C59983"
 with blk("Daisy", "seed"):
-    part("U", "Daisy-Boards:Daisy_Seed2_DFM", "Daisy-Boards:DAISY_SEED2_DFM", "Daisy Seed2 DFM", SEED_PINS,
-         side="B", ref_="U_SEED1", desc="Daisy Seed2 DFM on SMT sockets (20021321-00010C4LF), bottom side")
+    part("U", "Daisy-Boards:Daisy_Seed2_DFM", "", "Daisy Seed2 DFM", SEED_PINS, side="B", ref_="U_SEED1",
+         board_fp="Daisy-Boards:DAISY_SEED2_DFM", desc="Daisy Seed2 DFM module (Electrosmith, bought), plugs into the five sockets J_SEED_A..E, back side")
     C("100nF", "VCOM_SEED", "GND")
+with blk("Daisy", "seedsock"):
+    for _letter in "ABCDE":
+        part("J", "Connector_Generic:Conn_02x05_Odd_Even", FP_SEED_SOCKET, "1.27-2*5PLTM",
+             {n: _pad_net.get(pad) for n, pad in SEED_SOCKETS[_letter]["map"].items()},
+             side="B", ref_=f"J_SEED_{_letter}", lcsc="C59983", desc=f"socket for the Seed bank {_letter}")
 
 # ================================================================== AUDIO (Seed codec: Seed2 DFM Fig. 1.3 in / Fig. 1.5 out)
 with blk("Audio", "audio_seed"):

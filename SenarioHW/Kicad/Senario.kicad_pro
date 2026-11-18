@@ -12,5 +12,7 @@
     }
   },
   "sheets": [],
-  "text_variables": {}
+  "text_variables": {
+    "KICADLIBS": "${KIPRJMOD}/../../KicadLibs"
+  }
 }

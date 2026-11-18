@@ -24,6 +24,7 @@ Tact + LED,Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT,,hand,6,SW_BTN1 SW_
 LED red 3mm,LED_THT:LED_D3.0mm,,hand,8,LED_MX1 LED_MX2 LED_MX3 LED_MX4 LED_MX5 LED_MX6 LED_MX7 LED_MX8
 RGB LED 5mm common anode,LED_THT:LED_D5.0mm-4_RGB_Wide_Pins,,hand,4,LED_ENC1 LED_ENC2 LED_ENC3 LED_ENC4
 Cherry MX Red,Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u,,hand,8,SW_MX1 SW_MX2 SW_MX3 SW_MX4 SW_MX5 SW_MX6 SW_MX7 SW_MX8
+"Daisy Seed2 DFM (Electrosmith, bought; plugs into J_SEED_A..E)",module,,purchased,1,U_SEED1
 Eurorack power 10-pin,4ms_Connector:Pins_2x05_2.54mm_TH_EurorackPower_Shrouded,,smd,1,J_PWR1
 100uF,Capacitor_SMD:CP_Elec_6.3x7.7,C48971042,smd,5,C3 C6 C7 C8 C13
 100nF,Capacitor_SMD:C_0603_1608Metric,C14663,smd,30,C1 C4 C11 C12 C14 C15 C16 C18 C20 C33 C34 C41 C42 C49 C50 C53 C54 C56 C60 C61 C62 C63 C64 C65 C66 C67 C68 C70 C72 C75
@@ -36,7 +37,7 @@ Eurorack power 10-pin,4ms_Connector:Pins_2x05_2.54mm_TH_EurorackPower_Shrouded,,
 47pF,Capacitor_SMD:C_0603_1608Metric,?,smd,8,C35 C37 C38 C40 C44 C45 C47 C48
 10uF,Capacitor_SMD:C_0805_2012Metric,C15850,smd,19,C2 C5 C9 C10 C17 C19 C21 C23 C28 C32 C36 C39 C43 C46 C55 C57 C69 C71 C74
 2.2uF,Capacitor_SMD:C_0805_2012Metric,,smd,1,C52
-Daisy Seed2 DFM,Daisy-Boards:DAISY_SEED2_DFM,,smd,1,U_SEED1
+1.27-2*5PLTM,Daisy_Seed_Misc:PinSocket_2x05_P1.27mm_SMD_Boomele_C59983,C59983,smd,5,J_SEED_A J_SEED_B J_SEED_C J_SEED_D J_SEED_E
 1N5817WS,Diode_SMD:D_SOD-323F,,smd,1,D3
 NSR1020MW2T3G,Diode_SMD:D_SOD-323F,,smd,2,D1 D2
 FB 0603,Inductor_SMD:L_0603_1608Metric,,smd,2,FB1 FB2

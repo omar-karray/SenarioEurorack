@@ -11,6 +11,7 @@ for p in D.PARTS:
         continue
     key = (p["value"], p["fp"], p["props"].get("LCSC", ""), "hand" if p["side"] == "T" else "smd")
     rows.setdefault(key, []).append(p["ref"])
+rows[("Daisy Seed2 DFM (Electrosmith, bought; plugs into J_SEED_A..E)", "module", "", "purchased")] = ["U_SEED1"]
 with open(out, "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(["Value", "Footprint", "LCSC", "Assembly", "Qty", "Designators"])

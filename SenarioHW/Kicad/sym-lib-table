@@ -9,6 +9,7 @@
 	(lib (name "Amplifier_Operational") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Amplifier_Operational.kicad_sym") (options "") (descr ""))
 	(lib (name "Audio") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Audio.kicad_sym") (options "") (descr ""))
 	(lib (name "Bourns_PTL") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/Bourns_PTL.kicad_sym") (options "") (descr ""))
+	(lib (name "Connector_Generic") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Connector_Generic.kicad_sym") (options "") (descr ""))
 	(lib (name "Daisy-Boards") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/Daisy-Boards.kicad_sym") (options "") (descr ""))
 	(lib (name "Device") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Device.kicad_sym") (options "") (descr ""))
 	(lib (name "Display_OLED") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/Display_OLED.kicad_sym") (options "") (descr ""))
