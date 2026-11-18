@@ -479,7 +479,7 @@ with blk("Controls", "panel"):
 
 # mounting holes (M2.5, in the corners)
 with blk("Power", "holes"):
-    for i in range(1, 5):
+    for i in range(1, 7):                      # H1-H4 at the sides / corners, H5 and H6 in the middle of the board, between the buttons of the button row
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
 # Parts left out of the PCB placement for now (the schematic keeps them). Set to () to bring them back.
@@ -540,6 +540,8 @@ FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 0)
 FLOOR["SW_BTN7"] = (5.1, 94.1 - 3.75, 0)
 FLOOR["SW_BTN8"] = (120.0 - 5.1, 94.1 - 3.75, 0)
 FLOOR["J_USB1"] = (4.5, BTN_Y, 90)                     # vertical USB-C turned 90 (long side vertical), left of the pot on its horizontal axis (panel cutout)
+FLOOR["H5"] = ((KX[0] + KX[1]) / 2, BTN_Y, 0)               # between buttons 3 / 4 (the first two of the row) ...
+FLOOR["H6"] = ((KX[2] + KX[3]) / 2, BTN_Y, 0)               # ... and 5 / 6, on the axis of the button row
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 36.0), (118.0, 36.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
