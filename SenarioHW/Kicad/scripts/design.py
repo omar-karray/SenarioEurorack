@@ -129,11 +129,14 @@ with blk("Power", "power"):
         bypass(rail, 1, "100nF")
         C("10uF", rail, "GND", fp=FP_C0805)
         CP("100uF", rail if rail == "+12V" else "GND", "GND" if rail == "+12V" else rail)
-    # Seed supply: 2 x 3R3 + 2 x 100 uF (Dev Kit)
+
+with blk("Power", "seedpwr"):
+    # Seed supply: 2 x 3R3 + 2 x 100 uF (Dev Kit); placed next to the Seed's socket A (the DSY_VIN pins), in the free space of the right column
     R("3R3", "+12V", "DSY_VIN_A", fp=FP_R1206)
     R("3R3", "DSY_VIN_A", "DSY_VIN", fp=FP_R1206)
     CP("100uF", "DSY_VIN_A", "GND")
     CP("100uF", "DSY_VIN", "GND")
+with blk("Power", "power"):
     # +5 V for the PCM3060 analog supply, the LEDs and the gate-out buffers
     part("U", "Regulator_Linear:LD1117S50TR_SOT223", "Package_TO_SOT_SMD:SOT-223-3_TabPin2", "LD1117S50",
          {"VI": "+12V", "VO": "+5V", "GND": "GND"}, lcsc=LCSC[("U", "LD1117S50")], block="power")

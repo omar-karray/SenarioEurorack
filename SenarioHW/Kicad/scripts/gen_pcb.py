@@ -226,6 +226,8 @@ def build(out):
     def anchor_of(p):
         if p["block"] == "sd" and "J_SD1" in pos:            # the slot's pull-ups and bypass sit next to it
             return pos["J_SD1"]
+        if p["block"] == "seedpwr" and "J_SEED_A" in pos:    # the Seed supply filter: next to the Seed socket that carries DSY_VIN
+            return pos["J_SEED_A"]
         cand = []
         for num, n in p["_nets"].items():
             if not n or n in RAIL_NETS or len(netparts[n]) > 14:

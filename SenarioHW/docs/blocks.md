@@ -34,7 +34,7 @@ Not a front block, but fixed on the board: H1..H4 (corner / side holes), H5, H6 
 | 1 Slider block | LED resistors R120, R121 | 2 |
 | 2 MX matrix | LED resistors R112..R119 (one per key LED) | 8 |
 | 3a Left column | LED resistors R126 (PTL1), R128 (BTN7) | 2 |
-| 3b Right column | LED resistors R127 (PTL2), R129 (BTN8) | 2 |
+| 3b Right column | LED resistors R127 (PTL2), R129 (BTN8) | 2 (+ the Seed supply filter placed in its free space, below) |
 | 4 Button row | LED resistors R122..R125 | 4 |
 | 5 Encoders | R92..R111: per encoder 3 LED resistors + the 10K / 15K divider on the push switch | 20 |
 | 6 OLED | nothing by signal; only its 3V3 bypass caps (C76, C77) | 0 (+2 caps) |
@@ -65,4 +65,5 @@ Not a front block, but fixed on the board: H1..H4 (corner / side holes), H5, H6 
 * A passive part (resistor, capacitor, diode, transistor) that is wired to a front control is placed **behind that control** (the key LED resistors, the encoder LED resistors and switch dividers, the button and slider LED resistors, the jack input parts). The ring search moves it to the nearest free spot where the Seed, a through-hole pad or another part is in the way: the blocks are a guide, not a strict area.
 * The five shared chips (U_IO1, U_IO2, U_LED1, U_LED2, U_MUX1) stay in the middle of the board.
 * The Seed module, the microSD slot, the power header and the USB ESD chip are fixed or anchored first; everything else is placed around them.
+* **The Seed supply filter** (2 x 3R3 in 1206 and 2 x 100 uF, block `seedpwr`) is anchored to the Seed's socket A, the one that carries `DSY_VIN`: it lands in the free space of the right column (x 100 - 116, y 68 - 78).
 * The map `docs/previews/back_block_map.png` (SVG next to it, `scripts/block_map.py` regenerates it) shows the result: dashed = front blocks, filled = back SMD parts coloured by block.
