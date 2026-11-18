@@ -422,7 +422,7 @@ with blk("Power", "holes"):
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
 # Parts left out of the PCB placement for now (the schematic keeps them). Set to () to bring them back.
-PCB_HIDE_REFS = ("SW_BTN",)          # the six C&K buttons
+PCB_HIDE_REFS = ("SW_BTN", "VR")      # the six C&K buttons and the two pots
 PCB_HIDE_NETS = ("LED_BTN",)         # and their LED resistors
 
 # ================================================================== FLOORPLAN (front side, mm, origin = board top-left)
