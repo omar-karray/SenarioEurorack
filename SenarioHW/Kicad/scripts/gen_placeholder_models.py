@@ -26,7 +26,7 @@ def write(name, parts):
 # the travel x 2.05 across. "MOUNTING SURFACE" on the drawing = the top face of the housing (the face that screws to the panel, M2 x 2), and the
 # lever length L = 10 / 15 / 19 mm is measured from that face to the lever tip, so the tip is L above the housing, 6.6 + L above the board.
 # CHANGE LEVER_L to the lever you order. A red lens on the top 6 mm (the LED sits in the lever). Lever drawn at mid travel.
-LEVER_L = 15.0
+LEVER_L = 10.0       # PTL20-10R: 10 mm lever, red LED
 BODY_H = 6.6
 write("PTL20_placeholder.wrl", [
     (0, 0, 0, 35.0, 9.0, BODY_H, (0.15, 0.15, 0.17)),

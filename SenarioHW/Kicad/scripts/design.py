@@ -433,7 +433,7 @@ with blk("Controls", "panel"):
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
-        part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20 10K",
+        part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20-10R 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
              side="T", ref_=f"PTL{i}")
         R("330R", "+5V", f"LED_PTL{i}_A")
