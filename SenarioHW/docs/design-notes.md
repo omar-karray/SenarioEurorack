@@ -23,7 +23,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 | Slider between the two keys | **Alps RS6011**, 60 mm travel, 76 x 10 mm body, no LED (4ms library `Pot_Slider_60mm_10k`). The 4ms library has no 100 mm slider; the Top-Up 60RFT2-B dual (88.7 x 20.7 mm) does not fit |
 | MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm above the key centre, window facing the top of the panel, LED centred on the key axis) |
 | 6 C&K buttons with LED on top | **?** placeholder: `SW_Tact_LED_Hroparts_K6-6140A_THT` (2 switch contacts + LED). Give me the C&K part number and I swap the footprint |
-| 4 encoders with switch, each with an RGB LED at its top | `ENC_SPST_12mm` x 4 on the I/O expander. Above each one a **3 mm through-hole RGB LED, common anode: Betlux BL-L375RGBW-CA** (diffused; "tower" body 6.54 x 2.35 mm with a dia 3.34 dome, 4 leads at 2.54 mm; datasheet in KicadLibs), centred on the encoder axis, driven by a **second PCA9685** (0x41, 12 of its 16 channels; 330R red, 220R green and blue) |
+| 4 encoders with switch, each with an RGB LED at its top | `ENC_SPST_12mm` x 4 on the I/O expander. Above each one a 5 mm common-anode RGB LED (`LED_D5.0mm-4_RGB_Wide_Pins`, as the Eurorack Dev Kit), centred on the encoder axis. (A 3 mm Betlux BL-L375 tower LED was tried and dropped: not in stock; its footprint stays in KicadLibs.) driven by a **second PCA9685** (0x41, 12 of its 16 channels; 330R red, 220R green and blue) |
 | 2 sliders left and right | **Bourns PTL20** (20 mm travel, LED), vertical, 38.5 mm long, left and right of the matrix |
 | 2 pots | Alpha 9 mm D-shaft, 10K linear |
 | OLED HS96L01W4S03 | datasheet fetched from LCSC (C5139758): 0.96", SSD1315, 128 x 64, 4-wire SPI, 7-pin header. New footprint + symbol in KicadLibs (`Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03`, `Display_OLED:OLED_HS96L01W4S03`); the window to cut in the faceplate is on `Dwgs.User` (22.74 x 11.86) |
@@ -57,7 +57,6 @@ Eurorack 10-pin header (4ms symbol: pins 1-2 -12 V, 3-8 GND, 9-10 +12 V; red str
 
 - **C&K button**: part number and footprint (see above).
 - **MIDI jacks**: the pad order of the 4ms `PJ366ST` footprint (symbol `Senario:Jack_TRS`: 1 tip, 2 sleeve, 3 ring) is assumed; check with the jack in hand.
-- **RGB LED lead order**: the BL-L375 datasheet drawing does not show which lead is which. I assumed R, anode, G, B (pads 1-4). Check with a meter on the real part; if it differs, swap the nets in `design.py` (one line). Also check the Betlux part is available to you (it is a Betlux part, not an LCSC one).
 - **PTL20 LED polarity**, **K6 LED polarity**: not verifiable from the datasheets (same open points as in the Tanghim audit).
 - **PCM3060 strapping**: MODE = 220K to VDD (single-ended), FMT high (24-bit left-justified, as the Patch note), DEMP low, IFMD low (slave). Confirm against libDaisy's SAI2 set-up for the Patch.
 - **CV ranges**: CV in is +-5 V (Dev Kit), CV out 0-5 V. The Patch does 0-10 V out; changing it is two resistor values.
