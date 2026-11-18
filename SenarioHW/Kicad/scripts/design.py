@@ -429,7 +429,8 @@ with blk("Controls", "panel"):
         R("330R", "+5V", f"LED_MX{i}_A")
     for i in range(1, 7):                      # push buttons with LED on top: 1, 2 = Hroparts K6-6272S03 (blue, 10 mm round cap, 13 mm high, SMD) at the slider, 3-6 = HOOYA TC-1198A-L-E-C2 (blue)
         if i <= 2:
-            fp_btn, val, lcsc_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD", "K6-6272S03 (blue LED)", "C693826"
+            fp_btn, val, lcsc_btn = ("Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD",) + (
+                ("K6-6272S04 (green LED)", "C693827") if i == 1 else ("K6-6272S02 (red LED)", "C128970"))      # left green, right red
             led = {"5": f"LED_BTN{i}_A", "6": f"LED_BTN{i}_K"}        # K6-6272S: 5 = anode, 6 = cathode (the K6-6140A is the other way round)
         else:
             fp_btn, val, lcsc_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hooya_TC-1198A_THT", "TC-1198A-L-E-C2 (blue LED)", "C7428718"
@@ -437,7 +438,7 @@ with blk("Controls", "panel"):
         part("SW", SYM_PUSH_LED, fp_btn, val,
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", **led},
              side="T", ref_=f"SW_BTN{i}", lcsc=lcsc_btn)
-        R("150R", "+5V", f"LED_BTN{i}_A")        # blue LED: Vf about 3.2 V, 150R gives about 10 mA from 5 V (datasheet gives no LED data: check)
+        R("330R" if i == 2 else "150R", "+5V", f"LED_BTN{i}_A")        # red 330R (about 9 mA); green and blue 150R (Vf about 3.2 V gives about 10 mA from 5 V); the datasheets give no LED data: check
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20-15R 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
@@ -526,4 +527,11 @@ MODEL_OVERRIDE = {
     "4ms_Potentiometer:Pot_9mm_DShaft": ("${KICADLIBS}/3dmodels/Potentiometer.3dshapes/RK09L12-L20V.step", (0, 0, 6.3), (0, 0, 180), (1, 1, 1)),   # the library's own VRML does not render in KiCad; this is the 9 mm RK09 STEP, shape approximate
     "4ms_Jack:EighthInch_PJ398SM": ("${KICADLIBS}/3dmodels/Jack.3dshapes/WQP-PJ398SM.step", (0, 0, 0), (0, 0, -90), (1, 1, 1)),   # the Thonkiconn model, as the 4ms stereo footprint
     "Daisy_Seed_Misc:ENC_RGB_TopUp_EC12PLRGB": ("${KIPRJMOD}/models/Encoder_RGB_TopUp_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+}
+
+# per-reference model (same footprint, other cap colour): {ref: (file, offset, rotate, scale)}
+_K6 = "${KICADLIBS}/3dmodels/Daisy_Seed_Misc/Hroparts_K6-6272S"
+MODEL_BY_REF = {
+    "SW_BTN1": (_K6 + "_green.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "SW_BTN2": (_K6 + "_red.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
 }
