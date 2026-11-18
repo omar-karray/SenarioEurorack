@@ -193,13 +193,13 @@ with blk("Daisy", "sd"):
     C("10uF", "+3V3", "GND", fp=FP_C0805)
     bypass("+3V3", 1)
 
-# USB-C, exactly as the Seed3 Eurorack Dev Kit (U14, J7, R1, R2): GCT USB4110-GF-A, VBUS on its own net (+5V_USB: it does not power the module),
+# USB-C, wired exactly as the Seed3 Eurorack Dev Kit (U14, J7, R1, R2), but with a vertical through-hole receptacle on the front (Hroparts TYPE-C-31-D-16F, C22464504; same pin numbers as the Dev Kit's GCT USB4110-GF-A symbol), VBUS on its own net (+5V_USB: it does not power the module),
 # CC1 and CC2 5K1 to GND, D+/D- (both rows) through a USBLC6-2SC6 ESD array to the Seed USB HS pins D30 / D29, SBU not connected, shield and GND to GND.
 with blk("Daisy", "usb"):
-    part("J", "USB4110GFA:USB4110GFA", "Daisy_Seed_Misc:GCT_USB4110GFA", "USB4110-GF-A",
+    part("J", "USB4110GFA:USB4110GFA", "Daisy_Seed_Misc:USB_C_Vertical_Hroparts_TYPE-C-31-D-16F", "TYPE-C-31-D-16F",
          {"CC1": "USB_CC1", "DP1": "USB_IN_P", "DN1": "USB_IN_N", "SBU1": None, "VBUS": "+5V_USB", "CC2": "USB_CC2", "DP2": "USB_IN_P", "DN2": "USB_IN_N",
           "SBU2": None, "GND": "GND", "VBUS__1": "+5V_USB", "GND__1": "GND", "GND__2": "GND", "GND__3": "GND", "GND__4": "GND", "GND__5": "GND"},
-         side="B", ref_="J_USB1", lcsc="C5143397")
+         side="T", ref_="J_USB1", lcsc="C22464504")
     part("U", "Power_Protection:USBLC6-2SC6", FP_SOT23_6, "USBLC6-2SC6",
          {"1": "USB_IN_P", "2": "GND", "3": "USB_IN_N", "4": "USB_OTG_HS_N", "5": "+5V_USB", "6": "USB_OTG_HS_P"}, lcsc=LCSC[("U", "USBLC6")], ref_="U_USB1")
     R("5K1", "USB_CC1", "GND")
@@ -531,15 +531,16 @@ FLOOR["VR2"] = (COL_R, BTN_Y, 0)
 FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (COL_L, 92.15 + DY, 0)                    # on the axis of the pot and the PTL slider above it; not turned: the 11 mm pad span runs along x, so the PTL slider can come down
 FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 0)
+FLOOR["J_USB1"] = (COL_L, 35.0, 0)                      # vertical USB-C on the left column axis, above the pot, below the input jacks (panel cutout)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 36.0), (118.0, 36.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
 # back-side parts at a fixed place (x, y, rotation): the microSD slot at the bottom edge, card opening toward the edge (on the back side the footprint is mirrored in y, so rotation 180 puts the card opening toward +y, the bottom edge)
-BACK_FIXED = {"J_SD1": (46.0, 99.65, 180), "J_USB1": (114.02, 60.0, 270)}
+BACK_FIXED = {"J_SD1": (46.0, 99.65, 180)}
 
 ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
-    "midi": (88, 28), "sd": (46, 99), "usb": (114, 60), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
+    "midi": (88, 28), "sd": (46, 99), "usb": (14.8, 35), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }
 
 

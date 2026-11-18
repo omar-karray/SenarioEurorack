@@ -23,6 +23,7 @@ HS96L01W4S03,Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03,C5139758,hand,1
 TC-1198A-L-E-C2 (blue LED),Daisy_Seed_Misc:SW_Tact_LED_Hooya_TC-1198A_THT,C7428718,hand,4,SW_BTN3 SW_BTN4 SW_BTN5 SW_BTN6
 K6-6272S02 (red LED),Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD,C128970,hand,1,SW_BTN1
 K6-6272S04 (green LED),Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD,C693827,hand,1,SW_BTN2
+TYPE-C-31-D-16F,Daisy_Seed_Misc:USB_C_Vertical_Hroparts_TYPE-C-31-D-16F,C22464504,hand,1,J_USB1
 LED red 3mm,LED_THT:LED_D3.0mm,,hand,8,LED_MX1 LED_MX2 LED_MX3 LED_MX4 LED_MX5 LED_MX6 LED_MX7 LED_MX8
 Cherry MX Red,Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u,,hand,8,SW_MX1 SW_MX2 SW_MX3 SW_MX4 SW_MX5 SW_MX6 SW_MX7 SW_MX8
 "Daisy Seed2 DFM (Electrosmith, bought; plugs into J_SEED_A..E)",module,,purchased,1,U_SEED1
@@ -38,7 +39,6 @@ Eurorack power 10-pin,4ms_Connector:Pins_2x05_2.54mm_TH_EurorackPower_Shrouded,,
 47pF,Capacitor_SMD:C_0603_1608Metric,?,smd,8,C37 C39 C40 C42 C46 C47 C49 C50
 10uF,Capacitor_SMD:C_0805_2012Metric,C15850,smd,20,C2 C5 C9 C10 C17 C19 C21 C23 C25 C30 C34 C38 C41 C45 C48 C57 C59 C71 C73 C76
 2.2uF,Capacitor_SMD:C_0805_2012Metric,,smd,1,C54
-USB4110-GF-A,Daisy_Seed_Misc:GCT_USB4110GFA,C5143397,smd,1,J_USB1
 1.27-2*5PLTM,Daisy_Seed_Misc:PinSocket_2x05_P1.27mm_SMD_Boomele_C59983,C59983,smd,5,J_SEED_A J_SEED_B J_SEED_C J_SEED_D J_SEED_E
 TF-01A microSD,Daisy_Seed_Misc:TF-01A,C91145,smd,1,J_SD1
 1N5817WS,Diode_SMD:D_SOD-323F,,smd,1,D3
