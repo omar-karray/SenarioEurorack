@@ -427,15 +427,17 @@ with blk("Controls", "panel"):
              {"1": f"MX{i}", "2": "GND"}, side="T", ref_=f"SW_MX{i}")
         part("LED", "Device:LED", FP_LED3, "LED red 3mm", {"K": f"LED_MX{i}_K", "A": f"LED_MX{i}_A"}, side="T", ref_=f"LED_MX{i}")
         R("330R", "+5V", f"LED_MX{i}_A")
-    for i in range(1, 7):                      # push buttons with LED on top: 1, 2 = Hroparts K6-6140A-02 (red) at the slider, 3-6 = HOOYA TC-1198A-L-E-C2 (blue)
+    for i in range(1, 7):                      # push buttons with LED on top: 1, 2 = Hroparts K6-6272S03 (blue, 10 mm round cap, 13 mm high, SMD) at the slider, 3-6 = HOOYA TC-1198A-L-E-C2 (blue)
         if i <= 2:
-            fp_btn, val, lcsc_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "K6-6140A-02 (red LED)", None
+            fp_btn, val, lcsc_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD", "K6-6272S03 (blue LED)", "C693826"
+            led = {"5": f"LED_BTN{i}_A", "6": f"LED_BTN{i}_K"}        # K6-6272S: 5 = anode, 6 = cathode (the K6-6140A is the other way round)
         else:
             fp_btn, val, lcsc_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hooya_TC-1198A_THT", "TC-1198A-L-E-C2 (blue LED)", "C7428718"
+            led = {"5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"}
         part("SW", SYM_PUSH_LED, fp_btn, val,
-             {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
+             {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", **led},
              side="T", ref_=f"SW_BTN{i}", lcsc=lcsc_btn)
-        R("330R" if i <= 2 else "150R", "+5V", f"LED_BTN{i}_A")        # blue LED: Vf about 3.2 V, 150R gives about 10 mA from 5 V (datasheet gives no LED data: check)
+        R("150R", "+5V", f"LED_BTN{i}_A")        # blue LED: Vf about 3.2 V, 150R gives about 10 mA from 5 V (datasheet gives no LED data: check)
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20-15R 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
