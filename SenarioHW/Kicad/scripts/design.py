@@ -37,10 +37,10 @@ LCSC = {
     ("R", "47K"): "C25819", ("R", "5K1"): "C23186", ("R", "62K"): "C23221", ("R", "100K"): "C25803", ("R", "120K"): "C25808",
     ("R", "1M"): "C22935", ("R", "3R3"): "C17945", ("R", "820R"): "C23253", ("R", "22K"): "C31850",
     ("C", "100nF"): "C14663", ("C", "10nF"): "C57112", ("C", "1nF"): "C1588", ("C", "330pF"): "C1664",
-    ("C", "47pF"): "?", ("C", "1uF"): "C15849", ("C", "10uF"): "C15850",
+    ("C", "47pF"): "?", ("C", "1uF"): "C15849", ("C", "10uF"): "C15850", ("C", "22uF"): "C45783",
     ("C", "100uF"): "C48971042",
     ("U", "MCP6004"): "?", ("U", "TL074"): "?", ("U", "PCM3060"): "?",
-    ("U", "PCA9685"): "C92206", ("U", "USBLC6"): "C7519", ("U", "74HC4051"): "?", ("U", "MCP23017"): "?",
+    ("U", "PCA9685"): "C92206", ("U", "AP63205"): "C2071056", ("U", "USBLC6"): "C7519", ("U", "74HC4051"): "?", ("U", "MCP23017"): "?",
     ("U", "LD1117S50"): "C71124", ("U", "74AHCT1G125"): "C7484", ("U", "H11L1"): "C274632",
     ("U", "MMBT3904"): "C20526", ("U", "LM4040-10"): "?",
 }
@@ -137,13 +137,25 @@ with blk("Power", "seedpwr"):
     CP("100uF", "DSY_VIN_A", "GND")
     CP("100uF", "DSY_VIN", "GND")
 with blk("Power", "power"):
-    # +5 V for the PCM3060 analog supply, the LEDs and the gate-out buffers
+    # analog +5 V: LD1117 + ferrite bead + a second 10 uF, as the "+5V ANALOG" section of the Daisy Patch. Only the PCM3060 analog supply and the gate-out buffers
+    # (a few tens of mA): the LED current is on its own rail (+5V_LED, below).
     part("U", "Regulator_Linear:LD1117S50TR_SOT223", "Package_TO_SOT_SMD:SOT-223-3_TabPin2", "LD1117S50",
-         {"VI": "+12V", "VO": "+5V", "GND": "GND"}, lcsc=LCSC[("U", "LD1117S50")], block="power")
+         {"VI": "+12V", "VO": "+5V_LDO", "GND": "GND"}, lcsc=LCSC[("U", "LD1117S50")], block="power")
     C("10uF", "+12V", "GND", fp=FP_C0805)
+    C("10uF", "+5V_LDO", "GND", fp=FP_C0805)
+    part("FB", "Device:FerriteBead", FP_FB, "FB 0603", {"1": "+5V_LDO", "2": "+5V"})
     C("10uF", "+5V", "GND", fp=FP_C0805)
-    bypass("+5V", 2)
-    CP("100uF", "+5V", "GND")
+    bypass("+5V", 1)
+    # LED +5 V: AP63205 step-down (12 V -> 5 V, 2 A, fixed 5 V), datasheet typical circuit: 10 uF in, 4.7 uH, 2 x 22 uF out, 100 nF bootstrap, EN to VIN, FB to the output.
+    # It feeds only the LED anodes (up to about 0.3 A with every LED on), so the 12 V -> 5 V drop is not burnt in a linear regulator.
+    with blk("Power", "ledpwr"):                 # its own block: IC, inductor and capacitors placed together (the switching node must stay short)
+        part("U", "Regulator_Switching:AP63205WU", FP_SOT23_6, "AP63205WU-7",
+             {"1": "+5V_LED", "2": "+12V", "3": "+12V", "4": "GND", "5": "BUCK_SW", "6": "BUCK_BST"}, lcsc=LCSC[("U", "AP63205")], ref_="U_BUCK1")
+        C("10uF", "+12V", "GND", fp=FP_C0805)
+        C("100nF", "BUCK_BST", "BUCK_SW")
+        part("L", "Device:L", "Inductor_SMD:L_Changjiang_FNR4030S", "4.7uH 2.9A YNR4030-4R7M", {"1": "BUCK_SW", "2": "+5V_LED"}, lcsc="C340391")
+        C("22uF", "+5V_LED", "GND", fp=FP_C0805)
+        C("22uF", "+5V_LED", "GND", fp=FP_C0805)
     # -10 V reference for the CV inputs
     R("2K", "-12V", "-10V_REF")
     part("U", "Reference_Voltage:LM4040DBZ-10", FP_SOT23, "LM4040DBZ-10", {"K": "GND", "A": "-10V_REF", "NC": None})
@@ -443,7 +455,7 @@ with blk("Controls", "panel"):
     for i in range(1, 5):                      # illuminated encoders: Top-Up EC12PL RGB (SparkFun COM-15141), common anode on +5 V
         part("ENC", "Senario:Encoder_RGB_SW", "Daisy_Seed_Misc:ENC_RGB_TopUp_EC12PLRGB", "EC12PLRGBSDVBF RGB encoder",
              {"A": f"ENC{i}_A", "C": "GND", "B": f"ENC{i}_B", "S": "GND",
-              "1": f"LED_ENC{i}_R_LK", "2": f"LED_ENC{i}_G_LK", "4": f"LED_ENC{i}_B_LK", "5": "+5V", "3": f"ENC{i}_SWP"},
+              "1": f"LED_ENC{i}_R_LK", "2": f"LED_ENC{i}_G_LK", "4": f"LED_ENC{i}_B_LK", "5": "+5V_LED", "3": f"ENC{i}_SWP"},
              side="T", ref_=f"ENC{i}")
         R("330R", f"LED_ENC{i}_R_K", f"LED_ENC{i}_R_LK")        # PCA9685 sinks each colour
         R("220R", f"LED_ENC{i}_G_K", f"LED_ENC{i}_G_LK")
@@ -455,7 +467,7 @@ with blk("Controls", "panel"):
         part("SW", "Switch:SW_Push", "Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u", "Cherry MX Red",
              {"1": f"MX{i}", "2": "GND"}, side="T", ref_=f"SW_MX{i}")
         part("LED", "Device:LED", FP_LED3, "LED red 3mm", {"K": f"LED_MX{i}_K", "A": f"LED_MX{i}_A"}, side="T", ref_=f"LED_MX{i}")
-        R("330R", "+5V", f"LED_MX{i}_A")
+        R("330R", "+5V_LED", f"LED_MX{i}_A")
     for i in range(1, 9):                      # push buttons with LED on top: 1, 2 = Hroparts K6-6272S red / green (10 mm round cap, 13 mm high, SMD) under the PTL sliders, 3-6 = HOOYA TC-1198A-L-E-C2 (blue), 7, 8 = HOOYA TC-1198A-O-E-C2 (orange) beside the PTL sliders
         if i <= 2:
             fp_btn, val, lcsc_btn = ("Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD",) + (
@@ -468,12 +480,12 @@ with blk("Controls", "panel"):
         part("SW", SYM_PUSH_LED, fp_btn, val,
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", **led},
              side="T", ref_=f"SW_BTN{i}", lcsc=lcsc_btn)
-        R("330R" if i in (1, 7, 8) else "150R", "+5V", f"LED_BTN{i}_A")        # red and orange 330R (about 9 mA at Vf about 2 V); green and blue 150R (Vf about 3.2 V gives about 10 mA from 5 V); the datasheets give no LED data: check
+        R("330R" if i in (1, 7, 8) else "150R", "+5V_LED", f"LED_BTN{i}_A")        # red and orange 330R (about 9 mA at Vf about 2 V); green and blue 150R (Vf about 3.2 V gives about 10 mA from 5 V); the datasheets give no LED data: check
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20-15R 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
              side="T", ref_=f"PTL{i}")
-        R("330R", "+5V", f"LED_PTL{i}_A")
+        R("330R", "+5V_LED", f"LED_PTL{i}_A")
     part("SL", "4ms_Potentiometer:Pot_Slider_60mm_10k", "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel", "Alps RS6011 60mm 10K",
          {"1": "GND", "2": "WIP_SL", "3": "+3V3A", "4": None, "5": None, "6": None, "7": None, "8": None}, side="T", ref_="SL1")
     for i in (1, 2, 3, 4):
@@ -553,7 +565,7 @@ BACK_FIXED = {"J_SD1": (46.0, 99.65, 180)}
 
 ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
-    "midi": (88, 28), "sd": (46, 99), "usb": (4.5, 51.4), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
+    "midi": (88, 28), "sd": (46, 99), "ledpwr": (108, 48), "usb": (4.5, 51.4), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }
 
 

@@ -237,7 +237,7 @@ def build(out):
     root_uuid = uid("root")
     # power flags on rails that only connect to power-input pins
     with D.blk("Power", "power"):
-        for net in ("GND", "+12V", "-12V", "+3V3", "+3V3A", "DSY_VIN"):
+        for net in ("GND", "+12V", "-12V", "+3V3", "+3V3A", "DSY_VIN", "+5V"):
             D.part("FLG", "power:PWR_FLAG", "", "PWR_FLAG", {"1": net}, ref_="#FLG%02d" % (len(D.PARTS) % 100))
     bysheet = defaultdict(list)
     for p in D.PARTS:

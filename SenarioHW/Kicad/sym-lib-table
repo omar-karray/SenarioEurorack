@@ -20,6 +20,7 @@
 	(lib (name "Power_Protection") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Power_Protection.kicad_sym") (options "") (descr ""))
 	(lib (name "Reference_Voltage") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Reference_Voltage.kicad_sym") (options "") (descr ""))
 	(lib (name "Regulator_Linear") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Regulator_Linear.kicad_sym") (options "") (descr ""))
+	(lib (name "Regulator_Switching") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Regulator_Switching.kicad_sym") (options "") (descr ""))
 	(lib (name "Senario") (type "KiCad") (uri "${KIPRJMOD}/lib/Senario.kicad_sym") (options "") (descr ""))
 	(lib (name "Switch") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Switch.kicad_sym") (options "") (descr ""))
 	(lib (name "Transistor_BJT") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Transistor_BJT.kicad_sym") (options "") (descr ""))

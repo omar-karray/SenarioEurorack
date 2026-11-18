@@ -24,7 +24,7 @@ Not a front block, but fixed on the board: H1..H4 (corner / side holes), H5, H6 
 | Block | Parts | Area on the back |
 |---|---|---|
 | **Seed2 DFM** + 5 sockets | U_SEED1, J_SEED_A..E | 58.7, 73.7 - 114.4, 102.1 (sockets at the ends) |
-| **Power** | J_PWR1 (header), 2 regulators, diodes, ferrites, 19 capacitors, 3 resistors: 29 parts | header 1.8, 56.3 - 12.1, 78.7 |
+| **Power** | J_PWR1 (header), the LD1117 analog 5 V and the AP63205 LED 5 V step-down (the step-down parts are a `ledpwr` cluster in the right column), diodes, ferrites, capacitors | header 1.8, 56.3 - 12.1, 78.7 |
 | **microSD** | J_SD1 + 5 pull-ups + 2 bypass caps: 8 parts | 36.8, 90.4 - 55.2, 107.7 (bottom edge) |
 
 ## SMD parts that serve each block (by nets; supply rails and the I2C bus do not count)
