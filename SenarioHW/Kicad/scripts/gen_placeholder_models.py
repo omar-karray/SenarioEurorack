@@ -33,10 +33,13 @@ write("PTL20_placeholder.wrl", [
     (0, 0, BODY_H, 3.0, 2.05, LEVER_L - 6.0, (0.1, 0.1, 0.12)),
     (0, 0, BODY_H + LEVER_L - 6.0, 3.0, 2.05, 6.0, (0.85, 0.1, 0.1)),
 ])
-# Alps RS6011: body 75 x 9 x 7 mm; lever about 4 x 2 mm up to 15 mm above the board (style 17 drawing; the lever length is a customer option)
+# Alps RS6011 (datasheet "Super Slide, standard type", p.390 style 17 and p.392 "Lever Types"): housing 75 x 9 x 7 mm; metal lever type 6, t = 1.2 mm,
+# 5 mm wide, L1 = 15 mm (the standard 60 mm listing; 20 mm also exists) measured from the mounting surface (the housing top face, against the panel),
+# on a 6.6 mm flange 1 mm above it. So the tip is 7 + 15 = 22 mm above the board. Lever drawn at mid travel.
 write("Alps_RS6011_placeholder.wrl", [
     (0, 0, 0, 75.0, 9.0, 7.0, (0.62, 0.62, 0.65)),
-    (0, 0, 7.0, 4.0, 2.0, 8.0, (0.2, 0.2, 0.22)),
+    (0, 0, 7.0, 6.6, 2.0, 1.0, (0.55, 0.55, 0.58)),
+    (0, 0, 8.0, 5.0, 1.2, 14.0, (0.78, 0.78, 0.8)),
 ])
 # OLED: footprint origin = pin 1; module x -6.03 .. 21.27, y(PCB) -1.32 .. 26.48 -> model y = -y(PCB); glass centre x 7.62, y(PCB) 3.55 .. 20.45
 write("OLED_HS96L01_placeholder.wrl", [
