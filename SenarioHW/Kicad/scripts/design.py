@@ -385,10 +385,10 @@ with blk("Controls", "io"):
     for k, (addr, sigs) in enumerate(((0x20, {}), (0x21, {}))):
         pass
     ENC = [(f"ENC{i}_A", f"ENC{i}_B", f"ENC{i}_SW") for i in range(1, 5)]
-    BTN = [f"BTN{i}" for i in range(1, 7)]
+    BTN = [f"BTN{i}" for i in range(1, 9)]
     MX = [f"MX{i}" for i in range(1, 9)]
     io1 = [s for e in ENC for s in e] + BTN[:4]               # 16
-    io2 = BTN[4:] + MX + ["LED_OE"]                             # 11 (+ 5 spare); LED_OE (PCA9685 output enable, pulled high) comes from the expander
+    io2 = BTN[4:] + MX + ["LED_OE"]                             # 13 (+ 3 spare); LED_OE (PCA9685 output enable, pulled high) comes from the expander
     for u, (ref_, a, sigs) in enumerate((("U_IO1", (0, 0, 0), io1), ("U_IO2", (1, 0, 0), io2))):
         pins = {"V_{DD}": "+3V3", "V_{SS}": "GND", "SCK": "I2C_SCL", "SDA": "I2C_SDA",
                 "A0": "+3V3" if a[0] else "GND", "A1": "GND", "A2": "GND", "~{RESET}": "+3V3",
@@ -406,6 +406,7 @@ with blk("Controls", "io"):
     LED_CH = {}
     names = [f"LED_MX{i}" for i in range(1, 9)] + [f"LED_BTN{i}" for i in range(1, 7)] + ["LED_PTL1", "LED_PTL2"]
     names += [f"LED_ENC{i}_{c}" for i in range(1, 5) for c in "RGB"]         # 12 channels on the second chip
+    names += ["LED_BTN7", "LED_BTN8"]                                          # then the two orange buttons (channels 12, 13)
     for u, (ref_, a0) in enumerate((("U_LED1", "GND"), ("U_LED2", "+3V3"))):
         pins = {"A0": a0, "A1": "GND", "A2": "GND", "A3": "GND", "A4": "GND", "A5": "GND", "VSS": "GND",
                 "VDD": "+3V3", "~{OE}": "LED_OE", "EXTCLK": "GND", "SCL": "I2C_SCL", "SDA": "I2C_SDA"}
@@ -452,18 +453,19 @@ with blk("Controls", "panel"):
              {"1": f"MX{i}", "2": "GND"}, side="T", ref_=f"SW_MX{i}")
         part("LED", "Device:LED", FP_LED3, "LED red 3mm", {"K": f"LED_MX{i}_K", "A": f"LED_MX{i}_A"}, side="T", ref_=f"LED_MX{i}")
         R("330R", "+5V", f"LED_MX{i}_A")
-    for i in range(1, 7):                      # push buttons with LED on top: 1, 2 = Hroparts K6-6272S03 (blue, 10 mm round cap, 13 mm high, SMD) at the slider, 3-6 = HOOYA TC-1198A-L-E-C2 (blue)
+    for i in range(1, 9):                      # push buttons with LED on top: 1, 2 = Hroparts K6-6272S red / green (10 mm round cap, 13 mm high, SMD) under the PTL sliders, 3-6 = HOOYA TC-1198A-L-E-C2 (blue), 7, 8 = HOOYA TC-1198A-O-E-C2 (orange) beside the PTL sliders
         if i <= 2:
             fp_btn, val, lcsc_btn = ("Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6272S_SMD",) + (
                 ("K6-6272S02 (red LED)", "C128970") if i == 1 else ("K6-6272S04 (green LED)", "C693827"))      # left red, right green
             led = {"5": f"LED_BTN{i}_A", "6": f"LED_BTN{i}_K"}        # K6-6272S: 5 = anode, 6 = cathode (the K6-6140A is the other way round)
         else:
-            fp_btn, val, lcsc_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hooya_TC-1198A_THT", "TC-1198A-L-E-C2 (blue LED)", "C7428718"
+            fp_btn = "Daisy_Seed_Misc:SW_Tact_LED_Hooya_TC-1198A_THT"
+            val, lcsc_btn = ("TC-1198A-O-E-C2 (orange LED)", "C7428717") if i >= 7 else ("TC-1198A-L-E-C2 (blue LED)", "C7428718")
             led = {"5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"}
         part("SW", SYM_PUSH_LED, fp_btn, val,
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", **led},
              side="T", ref_=f"SW_BTN{i}", lcsc=lcsc_btn)
-        R("330R" if i == 1 else "150R", "+5V", f"LED_BTN{i}_A")        # red 330R (about 9 mA); green and blue 150R (Vf about 3.2 V gives about 10 mA from 5 V); the datasheets give no LED data: check
+        R("330R" if i in (1, 7, 8) else "150R", "+5V", f"LED_BTN{i}_A")        # red and orange 330R (about 9 mA at Vf about 2 V); green and blue 150R (Vf about 3.2 V gives about 10 mA from 5 V); the datasheets give no LED data: check
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20-15R 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
@@ -532,6 +534,9 @@ FLOOR["VR2"] = (COL_R, BTN_Y, 0)
 FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (COL_L, 92.15 + DY, 0)                    # on the axis of the pot and the PTL slider above it; not turned: the 11 mm pad span runs along x, so the PTL slider can come down
 FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 0)
+# two more buttons (HOOYA orange): beside each PTL slider on the outer side, cap bottom edge level with the slider body bottom (94.1 mm)
+FLOOR["SW_BTN7"] = (5.1, 94.1 - 3.75, 0)
+FLOOR["SW_BTN8"] = (120.0 - 5.1, 94.1 - 3.75, 0)
 FLOOR["J_USB1"] = (4.5, BTN_Y, 90)                     # vertical USB-C turned 90 (long side vertical), left of the pot on its horizontal axis (panel cutout)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 36.0), (118.0, 36.0), (2.3, 106.2), (117.7, 106.2))]
 
@@ -567,4 +572,6 @@ _K6 = "${KICADLIBS}/3dmodels/Daisy_Seed_Misc/Hroparts_K6-6272S"
 MODEL_BY_REF = {
     "SW_BTN1": (_K6 + "_red.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "SW_BTN2": (_K6 + "_green.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "SW_BTN7": ("${KICADLIBS}/3dmodels/Daisy_Seed_Misc/Hooya_TC-1198A_orange.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "SW_BTN8": ("${KICADLIBS}/3dmodels/Daisy_Seed_Misc/Hooya_TC-1198A_orange.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
 }

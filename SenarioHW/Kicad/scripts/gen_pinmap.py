@@ -24,11 +24,11 @@ rows.append("""
 Address | Device | Job
 --- | --- | ---
 0x20 | MCP23017 `U_IO1` | GPA0..7 / GPB0..7 = ENC1_A, ENC1_B, ENC1_SW, ENC2_A ... ENC4_SW (12), BTN1..BTN4. Enable the internal pull-ups (GPPU) on A, B and the buttons; **the encoder switches `ENCn_SW` are active high (divider from +5 V): GPPU off on those four pins**
-0x21 | MCP23017 `U_IO2` | BTN5, BTN6, MX1..MX8 on GPA0..GPB1, `LED_OE` on GPB2 (output), five pins spare. Both INT pins are open-drain wired to `I2C_INT` (D16)
+0x21 | MCP23017 `U_IO2` | BTN5..BTN8, MX1..MX8 on GPA0..GPB3, `LED_OE` on GPB4 (output), three pins spare. Both INT pins are open-drain wired to `I2C_INT` (D16)
 0x40 | PCA9685 `U_LED1` | LED0..7 = MX1..8, LED8..13 = BTN1..6, LED14/15 = PTL1/PTL2 (all 16 channels used)
-0x41 | PCA9685 `U_LED2` | LED0..11 = encoder RGB LEDs: ENC1 R,G,B, ENC2 R,G,B ... ENC4 R,G,B (common anode on +5 V, the chip sinks each colour); 4 channels free
+0x41 | PCA9685 `U_LED2` | LED0..11 = encoder RGB LEDs: ENC1 R,G,B, ENC2 R,G,B ... ENC4 R,G,B (common anode on +5 V, the chip sinks each colour), LED12 / LED13 = BTN7 / BTN8 (the two orange buttons beside the PTL sliders), 2 channels free
 
-PCA9685: set OUTDRV = 0 (open drain; the LED anodes are on +5 V), clear ALLCALL; `LED_OE` (U_IO2 GPB2, no longer a Seed pin) high = LEDs off (the 10K pull-up keeps them off until the firmware configures the expander and drives it low).
+PCA9685: set OUTDRV = 0 (open drain; the LED anodes are on +5 V), clear ALLCALL; `LED_OE` (U_IO2 GPB4, no longer a Seed pin) high = LEDs off (the 10K pull-up keeps them off until the firmware configures the expander and drives it low).
 
 ## Panel analog (74HC4051 `U_MUX1`, ADC on D15, select lines `MUX_A/B/C` on D21/D31/D32)
 
