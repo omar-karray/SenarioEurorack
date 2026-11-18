@@ -22,7 +22,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 | Front = controls you solder by hand, back = Seed + all SMD | exactly that: 52 front parts (all through-hole), 195 back parts (Seed, ICs, 0603 passives, LD1117, ...) |
 | Slider between the two keys | **Alps RS6011**, 60 mm travel, 76 x 10 mm body, no LED (4ms library `Pot_Slider_60mm_10k`). The 4ms library has no 100 mm slider; the Top-Up 60RFT2-B dual (88.7 x 20.7 mm) does not fit |
 | MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm above the key centre, window facing the top of the panel, LED centred on the key axis) |
-| Push buttons with LED on top | **2 x Hroparts K6-6140A-02** (red LED; -01 white, -03 blue, -04 green; same footprint `SW_Tact_LED_Hroparts_K6-6140A_THT`, datasheet in KicadLibs), one on each side of the slider. The schematic still has six: **buttons 3 to 6 are placeholders for another button part that is still to be sourced** (K6 footprint stands in; they and the two pots are hidden from the board and the BOM, `PCB_HIDE_*` in `design.py`). LED: 330R from +5 V, PCA9685 sinks it |
+| Push buttons with LED on top | **Hroparts K6-6140A**: 2 x **-02 (red LED)**, one on each side of the slider, and 4 x **-03 (blue LED)** in a row under the slider (-01 white, -04 green; same footprint `SW_Tact_LED_Hroparts_K6-6140A_THT`, datasheet in KicadLibs). LEDs from +5 V through 330R (red) and **150R (blue: Vf is about 3.2 V, giving about 10 mA; the datasheet has no LED electrical data, so check the brightness)**, the first PCA9685 sinks them. Only the two pots are hidden from the board and the BOM (`PCB_HIDE_*` in `design.py`) |
 | 4 illuminated encoders (RGB LED in the shaft) | **Top-Up EC12PL illuminated 12 mm encoder, SparkFun COM-15141** (`EC12PLRGBSDVBF-D-25K-24-24C-8RU(R)`: 24 pulses, 24 detents, push switch, common-anode RGB LED), replacing the plain encoder and its separate LED. Footprint `ENC_RGB_TopUp_EC12PLRGB` drawn from the maker drawing MD-15141 (in KicadLibs with both datasheets). LED: common anode on +5 V, the **second PCA9685** (0x41, 12 of 16 channels) sinks each colour through 330R (red), 220R (green, blue); Vf is 2.0 V red and 3.3 V green and blue, so the LED needs the 5 V rail. **The push switch connects pin 3 to the common anode (+5 V)**, so each encoder has a 10K / 15K divider (3.0 V at the I/O expander, pulled low): the switch reads **active high** and its expander pin needs the internal pull-up off |
 | 2 sliders left and right | **Bourns PTL20-15R** (20 mm travel, 15 mm lever, red LED), vertical, 38.5 mm long, left and right of the matrix |
 | 2 pots | Alpha 9 mm D-shaft, 10K linear |
@@ -36,8 +36,8 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 1. Jacks, 8 columns of 2 (turned 90 degrees, 10.8 mm pitch). **Left block = inputs**: audio in 1-2, audio in 3-4, CV in 1-2, gate in / MIDI in. **OLED in the middle.** **Right block = outputs**: out main L-R, out send L-R, CV out 1-2, gate out / MIDI out.
 2. The 4 illuminated encoders in one row, on the key column axes.
 3. Matrix 4 x 2 with a PTL20 slider on each side.
-4. The 4 buttons in a row with the 2 pots at its ends.
-5. The Alps slider with a button on each side.
+4. (the 2 pots are hidden for now)
+5. The Alps slider with a K6 button on each side, and the row of 4 blue K6 buttons under it.
 
 I changed the order from your description (OLED and encoders were one band under the jacks) because 108 mm does not leave room for a separate OLED band. If you meant the main encoder below the OLED, something else has to give.
 

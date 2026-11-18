@@ -428,10 +428,10 @@ with blk("Controls", "panel"):
         part("LED", "Device:LED", FP_LED3, "LED red 3mm", {"K": f"LED_MX{i}_K", "A": f"LED_MX{i}_A"}, side="T", ref_=f"LED_MX{i}")
         R("330R", "+5V", f"LED_MX{i}_A")
     for i in range(1, 7):                      # push buttons with LED on top: Hroparts K6-6140A-02 (red). Only 1 and 2 are placed (flanking the slider)
-        part("SW", SYM_PUSH_LED, "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "K6-6140A-02 (red LED)" if i <= 2 else "BUTTON TBD (K6 placeholder)",
+        part("SW", SYM_PUSH_LED, "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "K6-6140A-02 (red LED)" if i <= 2 else "K6-6140A-03 (blue LED)",
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
              side="T", ref_=f"SW_BTN{i}")
-        R("330R", "+5V", f"LED_BTN{i}_A")
+        R("330R" if i <= 2 else "150R", "+5V", f"LED_BTN{i}_A")        # blue LED: Vf about 3.2 V, 150R gives about 10 mA from 5 V (datasheet gives no LED data: check)
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20-15R 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
@@ -449,8 +449,8 @@ with blk("Power", "holes"):
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
 # Parts left out of the PCB placement for now (the schematic keeps them). Set to () to bring them back.
-PCB_HIDE_REFS = ("SW_BTN3", "SW_BTN4", "SW_BTN5", "SW_BTN6", "VR")      # buttons 3-6 and the two pots; buttons 1, 2 flank the slider
-PCB_HIDE_NETS = ("LED_BTN3", "LED_BTN4", "LED_BTN5", "LED_BTN6")        # and the LED resistors of those buttons
+PCB_HIDE_REFS = ("VR",)                                                  # the two pots (buttons 1, 2 flank the slider, 3-6 are under it)
+PCB_HIDE_NETS = ()                                                       # (nothing else hidden)
 
 
 def pcb_hidden(p):
@@ -490,7 +490,7 @@ for n in range(8):
 FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
 FLOOR["PTL2"] = (111.0, 66.0, 90)
 for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 90.0, 0)
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 102.5, 0)                # row of 4 under the slider
 FLOOR["VR1"] = (21.0, 91.5, 0)
 FLOOR["VR2"] = (99.0, 91.5, 0)
 FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
