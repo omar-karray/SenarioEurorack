@@ -16,9 +16,9 @@ OUT SEND L,4ms_Jack:EighthInch_PJ398SM,,hand,1,J_AOUT3
 OUT SEND R,4ms_Jack:EighthInch_PJ398SM,,hand,1,J_AOUT4
 MIDI IN,4ms_Jack:EighthInch_Stereo_PJ366ST,,hand,1,J_MIDIIN1
 MIDI OUT,4ms_Jack:EighthInch_Stereo_PJ366ST,,hand,1,J_MIDIOUT1
-Alps RS6011 60mm 10K,4ms_Potentiometer:ALPS-RS6011_60mm_standard,,hand,1,SL1
 10K linear 9mm,4ms_Potentiometer:Pot_9mm_DShaft,,hand,2,VR1 VR2
 PTL20 10K,Bourns_PTL:Bourns_PTL20_Slide_LED,,hand,2,PTL1 PTL2
+Alps RS6011 60mm 10K,Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel,,hand,1,SL1
 HS96L01W4S03,Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03,C5139758,hand,1,J_OLED1
 Tact + LED,Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT,,hand,6,SW_BTN1 SW_BTN2 SW_BTN3 SW_BTN4 SW_BTN5 SW_BTN6
 LED red 3mm,LED_THT:LED_D3.0mm,,hand,8,LED_MX1 LED_MX2 LED_MX3 LED_MX4 LED_MX5 LED_MX6 LED_MX7 LED_MX8

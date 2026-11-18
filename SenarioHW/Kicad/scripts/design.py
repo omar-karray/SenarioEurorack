@@ -435,7 +435,7 @@ with blk("Controls", "panel"):
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
              side="T", ref_=f"PTL{i}")
         R("330R", "+5V", f"LED_PTL{i}_A")
-    part("SL", "4ms_Potentiometer:Pot_Slider_60mm_10k", "4ms_Potentiometer:ALPS-RS6011_60mm_standard", "Alps RS6011 60mm 10K",
+    part("SL", "4ms_Potentiometer:Pot_Slider_60mm_10k", "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel", "Alps RS6011 60mm 10K",
          {"1": "GND", "2": "WIP_SL", "3": "+3V3A", "4": None, "5": None, "6": None, "7": None, "8": None}, side="T", ref_="SL1")
     for i in (1, 2):
         part("VR", "4ms_Potentiometer:9mm_NoDet_10k_DShaft", "4ms_Potentiometer:Pot_9mm_DShaft", "10K linear 9mm",

@@ -7626,7 +7626,7 @@
 	(uuid "33e06d3d-3911-5e5f-acaf-a8330469dfd8")
 	(property "Reference" "SL1" (at 350.52 451.2 0) (effects (font (size 1.27 1.27))))
 	(property "Value" "Alps RS6011 60mm 10K" (at 350.52 463.2 0) (effects (font (size 1.27 1.27))))
-	(property "Footprint" "4ms_Potentiometer:ALPS-RS6011_60mm_standard" (at 350.52 457.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
+	(property "Footprint" "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel" (at 350.52 457.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
 	(property "Datasheet" "" (at 350.52 457.2 0) (effects (font (size 1.27 1.27)) (hide yes)))
 	(pin "4" (uuid "51bb1459-e877-5112-8847-bb8bf3c14bd1"))
 	(pin "5" (uuid "a086839f-3cc1-506f-9242-efbfc1203612"))
