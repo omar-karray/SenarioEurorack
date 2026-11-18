@@ -225,7 +225,7 @@ def build(out):
                         return pos[r]
         return D.ANCHOR.get(p["block"], (54, 62))
 
-    def find(p, anchor, rots, margin=0.35, pad_only=False, step=0.5, rmax=80):
+    def find(p, anchor, rots, margin=0.35, pad_only=False, step=0.5, rmax=80, body_clear=False):
         ax, ay = anchor
         for rr in range(0, int(rmax / step)):
             r = rr * step
@@ -250,6 +250,8 @@ def build(out):
                                 ok = False
                                 break
                         if ok and bot_obst.hit(b):
+                            ok = False
+                        if ok and body_clear and tht_obst.hit(b):
                             ok = False
                     else:
                         ok = not tht_obst.hit(b)
@@ -276,7 +278,10 @@ def build(out):
         anchor = D.ANCHOR.get(p["block"], (54, 62)) if p["ref"] in ("J_PWR1", "U_SEED1") or p["ref"].startswith("U") else anchor_of(p)
         if p["ref"] == "J_PWR1":
             anchor = (18, 66)
-            x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True)
+            try:                                        # the connector body must not sit on front-side leads either
+                x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True, body_clear=True)
+            except RuntimeError:
+                x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True)
         elif p["ref"] == "U_SEED1":
             x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True, step=1.0)
         else:

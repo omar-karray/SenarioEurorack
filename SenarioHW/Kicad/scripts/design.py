@@ -359,10 +359,11 @@ with blk("Controls", "io"):
     R("10K", "+3V3", "I2C_INT")
     R("4.7K", "+3V3", "I2C_SCL")
     R("4.7K", "+3V3", "I2C_SDA")
-    # LED driver: PCA9685 open drain, LEDs on +5V through 330R, address 0x40 (16 LEDs = 16 channels)
+    # LED drivers: PCA9685 open drain, LEDs on +5V through 330R. 0x40: keys, buttons, PTL LEDs (16). 0x41: the 4 encoder RGB LEDs (12 of 16)
     LED_CH = {}
     names = [f"LED_MX{i}" for i in range(1, 9)] + [f"LED_BTN{i}" for i in range(1, 7)] + ["LED_PTL1", "LED_PTL2"]
-    for u, (ref_, a0) in enumerate((("U_LED1", "GND"),)):
+    names += [f"LED_ENC{i}_{c}" for i in range(1, 5) for c in "RGB"]         # 12 channels on the second chip
+    for u, (ref_, a0) in enumerate((("U_LED1", "GND"), ("U_LED2", "+3V3"))):
         pins = {"A0": a0, "A1": "GND", "A2": "GND", "A3": "GND", "A4": "GND", "A5": "GND", "VSS": "GND",
                 "VDD": "+3V3", "~{OE}": "LED_OE", "EXTCLK": "GND", "SCL": "I2C_SCL", "SDA": "I2C_SDA"}
         for ch in range(16):
@@ -405,6 +406,12 @@ with blk("Controls", "panel"):
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
+    for i in range(1, 5):                      # RGB LED above each encoder: 5 mm, common anode on +5 V, PCA9685 sinks each colour
+        part("LED", "Device:LED_RAGB", "LED_THT:LED_D5.0mm-4_RGB_Wide_Pins", "RGB LED 5mm common anode",
+             {"A": "+5V", "RK": f"LED_ENC{i}_R_LK", "GK": f"LED_ENC{i}_G_LK", "BK": f"LED_ENC{i}_B_LK"}, side="T", ref_=f"LED_ENC{i}")
+        R("330R", f"LED_ENC{i}_R_K", f"LED_ENC{i}_R_LK")
+        R("220R", f"LED_ENC{i}_G_K", f"LED_ENC{i}_G_LK")
+        R("220R", f"LED_ENC{i}_B_K", f"LED_ENC{i}_B_LK")
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
@@ -447,20 +454,21 @@ for r_, c_, n in _grid:
 FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
 for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
-    FLOOR[f"ENC{i}"] = (x, 39.5, 0)
-KY = [56.5, 75.55]
+    FLOOR[f"ENC{i}"] = (x, 46.5, 0)
+    FLOOR[f"LED_ENC{i}"] = (x - 3.24, 46.5 - 12.5, 0)   # RGB LED centred above the encoder (footprint origin = pad 1, body centre +3.24)
+KY = [63.5, 82.55]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
-FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
-FLOOR["PTL2"] = (111.0, 66.0, 90)
+FLOOR["PTL1"] = (9.0, 73.0, 90)                       # PTL20 left and right of the matrix
+FLOOR["PTL2"] = (111.0, 73.0, 90)
 for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 90.0, 0)
-FLOOR["VR1"] = (21.0, 91.5, 0)
-FLOOR["VR2"] = (99.0, 91.5, 0)
-FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
-FLOOR["SW_BTN1"] = (15.0, 92.15, 0)
-FLOOR["SW_BTN2"] = (105.0, 92.15, 0)
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 97.0, 0)
+FLOOR["VR1"] = (21.0, 98.5, 0)
+FLOOR["VR2"] = (99.0, 98.5, 0)
+FLOOR["SL1"] = (60.0, 99.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (91.55), body 9.2 mm tall
+FLOOR["SW_BTN1"] = (15.0, 99.15, 0)
+FLOOR["SW_BTN2"] = (105.0, 99.15, 0)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 38.0), (118.0, 38.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)

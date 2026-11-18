@@ -23,7 +23,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 | Slider between the two keys | **Alps RS6011**, 60 mm travel, 76 x 10 mm body, no LED (4ms library `Pot_Slider_60mm_10k`). The 4ms library has no 100 mm slider; the Top-Up 60RFT2-B dual (88.7 x 20.7 mm) does not fit |
 | MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm above the key centre, window facing the top of the panel, LED centred on the key axis) |
 | 6 C&K buttons with LED on top | **?** placeholder: `SW_Tact_LED_Hroparts_K6-6140A_THT` (2 switch contacts + LED). Give me the C&K part number and I swap the footprint |
-| 4 encoders with switch | `ENC_SPST_12mm` x 4, on the I/O expander |
+| 4 encoders with switch, each with an RGB LED at its top | `ENC_SPST_12mm` x 4 on the I/O expander. Above each one a 5 mm common-anode RGB LED (`LED_D5.0mm-4_RGB_Wide_Pins`, as the Eurorack Dev Kit), centred on the encoder axis, driven by a **second PCA9685** (0x41, 12 of its 16 channels; 330R red, 220R green and blue) |
 | 2 sliders left and right | **Bourns PTL20** (20 mm travel, LED), vertical, 38.5 mm long, left and right of the matrix |
 | 2 pots | Alpha 9 mm D-shaft, 10K linear |
 | OLED HS96L01W4S03 | datasheet fetched from LCSC (C5139758): 0.96", SSD1315, 128 x 64, 4-wire SPI, 7-pin header. New footprint + symbol in KicadLibs (`Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03`, `Display_OLED:OLED_HS96L01W4S03`); the window to cut in the faceplate is on `Dwgs.User` (22.74 x 11.86) |
@@ -34,7 +34,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 ## Floorplan (top to bottom)
 
 1. Jacks, 8 columns of 2 (turned 90 degrees, 10.8 mm pitch). **Left block = inputs**: audio in 1-2, audio in 3-4, CV in 1-2, gate in / MIDI in. **OLED in the middle.** **Right block = outputs**: out main L-R, out send L-R, CV out 1-2, gate out / MIDI out.
-2. The 4 encoders in one row.
+2. The 4 encoders in one row, on the key column axes, with an RGB LED above each.
 3. Matrix 4 x 2 with a PTL20 slider on each side.
 4. The 4 buttons in a row with the 2 pots at its ends.
 5. The Alps slider with a button on each side.
@@ -51,7 +51,7 @@ Seed module: Seed2 DFM has no USB-C on the carrier here: program through the **m
 
 Eurorack 10-pin header (4ms symbol: pins 1-2 -12 V, 3-8 GND, 9-10 +12 V; red stripe on -12 V). Series Schottky + ferrite bead + 100 nF / 10 uF / 100 uF per rail (Dev Kit). Seed VIN through 2 x 3R3 and 2 x 100 uF (Dev Kit). **+5 V** from an LD1117S50 (PCM3060 analog supply, LED anodes, gate-out buffer); **-10 V reference** from an LM4040-10 (CV inputs). Everything 3.3 V comes from the **Seed's `3V3_D`** (codec digital, expanders, LED drivers, OLED, MIDI) and **`3V3_A`** (op-amps, pots, mux), the way the Dev Kit and the Patch do it.
 
-**? Budgets to confirm with Electrosmith:** current available on the DFM's `3V3_D` pads (this design loads it with roughly 40-60 mA: 2 x MCP23017, 1 x PCA9685, PCM3060 VDD, OLED, MIDI) and on `3V3_A`; LD1117 heat with all 16 LEDs lit (+5 V at 330 R is about 9 mA per LED; the 12 V to 5 V drop makes 0.1 W per 15 mA, so cap the LED brightness in firmware).
+**? Budgets to confirm with Electrosmith:** current available on the DFM's `3V3_D` pads (this design loads it with roughly 40-60 mA: 2 x MCP23017, 2 x PCA9685, PCM3060 VDD, OLED, MIDI) and on `3V3_A`; LD1117 heat with all 28 LED channels lit (+5 V at 330 R is about 9 mA per LED; the 12 V to 5 V drop makes 0.1 W per 15 mA, so cap the LED brightness in firmware).
 
 ## Open points and things to verify on real parts
 
