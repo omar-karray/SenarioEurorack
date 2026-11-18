@@ -421,6 +421,10 @@ with blk("Power", "holes"):
     for i in range(1, 5):
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
+# Parts left out of the PCB placement for now (the schematic keeps them). Set to () to bring them back.
+PCB_HIDE_REFS = ("SW_BTN",)          # the six C&K buttons
+PCB_HIDE_NETS = ("LED_BTN",)         # and their LED resistors
+
 # ================================================================== FLOORPLAN (front side, mm, origin = board top-left)
 # 24HP: panel 121.92 nominal (about 121.55 real). Board 120 x 108: height = 128.5 panel - 2 x 10 mm rail clearance - 0.5
 # (community rule: board <= 108..110 mm, parts 10 mm clear of the top and bottom edges of the panel; see docs/design-notes.md)
