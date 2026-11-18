@@ -7,7 +7,7 @@ import design as D
 out = Path(sys.argv[1])
 rows = {}
 for p in D.PARTS:
-    if not p["fp"] or p["sym"].startswith("Mechanical"):
+    if not p["fp"] or p["sym"].startswith("Mechanical") or D.pcb_hidden(p):
         continue
     key = (p["value"], p["fp"], p["props"].get("LCSC", ""), "hand" if p["side"] == "T" else "smd")
     rows.setdefault(key, []).append(p["ref"])

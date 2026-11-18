@@ -154,12 +154,7 @@ def build(out):
         s.SetLayer(pcbnew.Edge_Cuts); s.SetWidth(mm(0.1))
         board.Add(s)
 
-    def hidden(p):
-        if any(p["ref"].startswith(x) for x in D.PCB_HIDE_REFS):
-            return True
-        return p["ref"].startswith("R") and any(str(n).startswith(D.PCB_HIDE_NETS) for n in p["pins"].values() if n)
-
-    parts = [p for p in D.PARTS if p["fp"] and not hidden(p)]
+    parts = [p for p in D.PARTS if p["fp"] and not D.pcb_hidden(p)]
     pos = {}                                  # ref -> (x, y)
     sheet_nets = {}
     # nets per part

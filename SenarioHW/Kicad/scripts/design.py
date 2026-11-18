@@ -427,8 +427,8 @@ with blk("Controls", "panel"):
              {"1": f"MX{i}", "2": "GND"}, side="T", ref_=f"SW_MX{i}")
         part("LED", "Device:LED", FP_LED3, "LED red 3mm", {"K": f"LED_MX{i}_K", "A": f"LED_MX{i}_A"}, side="T", ref_=f"LED_MX{i}")
         R("330R", "+5V", f"LED_MX{i}_A")
-    for i in range(1, 7):                      # push buttons with LED on top (K6-6140A placeholder for the C&K part)
-        part("SW", SYM_PUSH_LED, "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "Tact + LED",
+    for i in range(1, 7):                      # push buttons with LED on top: Hroparts K6-6140A-02 (red). Only 1 and 2 are placed (flanking the slider)
+        part("SW", SYM_PUSH_LED, "Daisy_Seed_Misc:SW_Tact_LED_Hroparts_K6-6140A_THT", "K6-6140A-02 (red LED)",
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
@@ -449,8 +449,16 @@ with blk("Power", "holes"):
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
 # Parts left out of the PCB placement for now (the schematic keeps them). Set to () to bring them back.
-PCB_HIDE_REFS = ("SW_BTN", "VR")      # the six C&K buttons and the two pots
-PCB_HIDE_NETS = ("LED_BTN",)         # and their LED resistors
+PCB_HIDE_REFS = ("SW_BTN3", "SW_BTN4", "SW_BTN5", "SW_BTN6", "VR")      # buttons 3-6 and the two pots; buttons 1, 2 flank the slider
+PCB_HIDE_NETS = ("LED_BTN3", "LED_BTN4", "LED_BTN5", "LED_BTN6")        # and the LED resistors of those buttons
+
+
+def pcb_hidden(p):
+    """True for parts that are in the schematic but not (yet) on the board or in the BOM."""
+    if any(p["ref"].startswith(x) for x in PCB_HIDE_REFS):
+        return True
+    return p["ref"].startswith("R") and any(str(n).startswith(PCB_HIDE_NETS) for n in p["pins"].values() if n)
+
 
 # ================================================================== FLOORPLAN (front side, mm, origin = board top-left)
 # 24HP: panel 121.92 nominal (about 121.55 real). Board 120 x 108: height = 128.5 panel - 2 x 10 mm rail clearance - 0.5
