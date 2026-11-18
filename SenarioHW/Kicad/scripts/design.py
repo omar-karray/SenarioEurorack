@@ -486,11 +486,13 @@ _grid = [  # (row, col): jack. Left block = inputs, OLED in the middle, right bl
 ]
 for r_, c_, n in _grid:
     FLOOR["J_" + n] = (JX[c_], JY[r_], 90)
-DY = 9.5                                              # everything under the button row moves down by this (the row of 4 buttons now sits right under the OLED)
+DY = 9.5                                              # the matrix, sliders and round buttons sit this much lower than in the first layout, to make room for the row of 4 buttons between the encoders and the matrix
 FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
+ENC_Y = 38.0                                          # encoder row (the pots are on the same axis)
+BTN_Y = 52.0                                          # row of 4 control buttons between the encoders and the matrix
 for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
-    FLOOR[f"ENC{i}"] = (x, 39.5 + DY, 0)
+    FLOOR[f"ENC{i}"] = (x, ENC_Y, 0)
 KY = [56.5 + DY, 75.55 + DY]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
@@ -498,11 +500,10 @@ for n in range(8):
 COL_L, COL_R = 14.8, 120.0 - 14.8                      # the pot / PTL slider / round button columns: PTL body edge 3 mm from the keycap edge (keycap 18 mm, PTL about 9.2 mm wide), symmetric about x = 60
 FLOOR["PTL1"] = (COL_L, 66.0 + DY, 90)                       # PTL20 left and right of the matrix
 FLOOR["PTL2"] = (COL_R, 66.0 + DY, 90)
-BTN_PITCH = 10.0                                      # the 4 control buttons: a tight row centred under the OLED (not on the encoder axes)
-for i in range(4):
-    FLOOR[f"SW_BTN{i + 3}"] = (60.0 + (i - 1.5) * BTN_PITCH, 35.0, 0)
-FLOOR["VR1"] = (COL_L, 39.5 + DY, 0)                          # above the PTL sliders, on their axes; shaft on the same horizontal axis as the encoders (y = 39.5 + DY)
-FLOOR["VR2"] = (COL_R, 39.5 + DY, 0)
+for i, x in enumerate(KX):                            # the 4 control buttons: on the axes of the encoders and the MX key columns
+    FLOOR[f"SW_BTN{i + 3}"] = (x, BTN_Y, 0)
+FLOOR["VR1"] = (COL_L, ENC_Y, 0)                          # above the PTL sliders, on their axes; shaft on the same horizontal axis as the encoders (y = 39.5 + DY)
+FLOOR["VR2"] = (COL_R, ENC_Y, 0)
 FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
 FLOOR["SW_BTN1"] = (COL_L, 92.15 + DY, 90)                    # on the axis of the pot and the PTL slider above it; turned 90 so the 8.5 mm pad span runs along y, clear of the hole H1
 FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 90)
