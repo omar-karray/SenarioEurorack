@@ -29,4 +29,28 @@ write("OLED_HS96L01_placeholder.wrl", [
     (7.62, -12.58, 8.5, 27.3, 27.8, 1.2, (0.05, 0.25, 0.1)),
     (7.62, -12.0, 9.7, 24.74, 16.9, 1.4, (0.02, 0.02, 0.03)),
 ])
+
+
+def cyl(r, z0, z1, rgb, n=24):
+    """Cylinder along z from z0 to z1, as an n-sided prism (KiCad's VRML reader ignores Cylinder)."""
+    import math
+    pts = []
+    for z in (z0, z1):
+        for k in range(n):
+            a = 2 * math.pi * k / n
+            pts.append(f"{r * math.cos(a):.3f} {r * math.sin(a):.3f} {z}")
+    idx = []
+    for k in range(n):
+        k2 = (k + 1) % n
+        idx.append(f"{k}, {k2}, {n + k2}, {n + k}, -1")
+    idx.append(", ".join(str(k) for k in reversed(range(n))) + ", -1")
+    idx.append(", ".join(str(n + k) for k in range(n)) + ", -1")
+    return (f"Shape {{ appearance Appearance {{ material Material {{ diffuseColor {rgb[0]} {rgb[1]} {rgb[2]} }} }}\n"
+            f"  geometry IndexedFaceSet {{ solid FALSE coord Coordinate {{ point [ {', '.join(pts)} ] }}\n"
+            f"    coordIndex [ {', '.join(idx)} ] }} }}\n")
+
+
+# Top-Up EC12PL illuminated encoder: body 12.4 x 13.2 x 7.8, M9 bushing 7 long, dia 6 shaft to 25.3 mm (MD-15141)
+(out / "Encoder_RGB_TopUp_placeholder.wrl").write_text("#VRML V2.0 utf8\n" + box(0, 0, 0, 12.4, 13.2, 7.8, (0.55, 0.55, 0.58)) +
+    cyl(4.5, 7.8, 14.8, (0.65, 0.65, 0.68)) + cyl(3.0, 14.8, 25.3, (0.08, 0.08, 0.1)))
 print("wrote placeholders")

@@ -3,7 +3,6 @@
 	(lib (name "4ms_Connector") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/4ms_Connector.kicad_sym") (options "") (descr ""))
 	(lib (name "4ms_Jack") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/4ms_Jack.kicad_sym") (options "") (descr ""))
 	(lib (name "4ms_Potentiometer") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/4ms_Potentiometer.kicad_sym") (options "") (descr ""))
-	(lib (name "4ms_Switch") (type "KiCad") (uri "${KIPRJMOD}/../../KicadLibs/symbols/4ms_Switch.kicad_sym") (options "") (descr ""))
 	(lib (name "74xGxx") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/74xGxx.kicad_sym") (options "") (descr ""))
 	(lib (name "74xx") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/74xx.kicad_sym") (options "") (descr ""))
 	(lib (name "Amplifier_Operational") (type "KiCad") (uri "${KICAD10_SYMBOL_DIR}/Amplifier_Operational.kicad_sym") (options "") (descr ""))

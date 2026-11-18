@@ -23,7 +23,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 | Slider between the two keys | **Alps RS6011**, 60 mm travel, 76 x 10 mm body, no LED (4ms library `Pot_Slider_60mm_10k`). The 4ms library has no 100 mm slider; the Top-Up 60RFT2-B dual (88.7 x 20.7 mm) does not fit |
 | MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm above the key centre, window facing the top of the panel, LED centred on the key axis) |
 | 6 C&K buttons with LED on top | **?** placeholder: `SW_Tact_LED_Hroparts_K6-6140A_THT` (2 switch contacts + LED). Give me the C&K part number and I swap the footprint |
-| 4 encoders with switch, each with an RGB LED at its top | `ENC_SPST_12mm` x 4 on the I/O expander. Above each one a 5 mm common-anode RGB LED (`LED_D5.0mm-4_RGB_Wide_Pins`, as the Eurorack Dev Kit), centred on the encoder axis. (A 3 mm Betlux BL-L375 tower LED was tried and dropped: not in stock; its footprint stays in KicadLibs.) driven by a **second PCA9685** (0x41, 12 of its 16 channels; 330R red, 220R green and blue) |
+| 4 illuminated encoders (RGB LED in the shaft) | **Top-Up EC12PL illuminated 12 mm encoder, SparkFun COM-15141** (`EC12PLRGBSDVBF-D-25K-24-24C-8RU(R)`: 24 pulses, 24 detents, push switch, common-anode RGB LED), replacing the plain encoder and its separate LED. Footprint `ENC_RGB_TopUp_EC12PLRGB` drawn from the maker drawing MD-15141 (in KicadLibs with both datasheets). LED: common anode on +5 V, the **second PCA9685** (0x41, 12 of 16 channels) sinks each colour through 330R (red), 220R (green, blue); Vf is 2.0 V red and 3.3 V green and blue, so the LED needs the 5 V rail. **The push switch connects pin 3 to the common anode (+5 V)**, so each encoder has a 10K / 15K divider (3.0 V at the I/O expander, pulled low): the switch reads **active high** and its expander pin needs the internal pull-up off |
 | 2 sliders left and right | **Bourns PTL20** (20 mm travel, LED), vertical, 38.5 mm long, left and right of the matrix |
 | 2 pots | Alpha 9 mm D-shaft, 10K linear |
 | OLED HS96L01W4S03 | datasheet fetched from LCSC (C5139758): 0.96", SSD1315, 128 x 64, 4-wire SPI, 7-pin header. New footprint + symbol in KicadLibs (`Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03`, `Display_OLED:OLED_HS96L01W4S03`); the window to cut in the faceplate is on `Dwgs.User` (22.74 x 11.86) |
@@ -34,7 +34,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 ## Floorplan (top to bottom)
 
 1. Jacks, 8 columns of 2 (turned 90 degrees, 10.8 mm pitch). **Left block = inputs**: audio in 1-2, audio in 3-4, CV in 1-2, gate in / MIDI in. **OLED in the middle.** **Right block = outputs**: out main L-R, out send L-R, CV out 1-2, gate out / MIDI out.
-2. The 4 encoders in one row, on the key column axes, with an RGB LED above each.
+2. The 4 illuminated encoders in one row, on the key column axes.
 3. Matrix 4 x 2 with a PTL20 slider on each side.
 4. The 4 buttons in a row with the 2 pots at its ends.
 5. The Alps slider with a button on each side.
@@ -56,11 +56,15 @@ The module's **micro-USB, BOOT and RESET** are on its top, facing the back of th
 | Seed2 DFM | Electrosmith STEP (KicadLibs) on its five sockets |
 | Jacks (all 16) | `WQP-PJ398SM.step` (Thonkiconn), KicadLibs |
 | Cherry MX + red LED | `SW_Cherry_MX_PCB.wrl` (keyswitch library), KicadLibs; the LED model is KiCad's |
-| Encoders (Bourns PEC12R) | `pec12r-4220f-s0024.stp`, KicadLibs. The 4ms footprint `ENC_SPST_12mm` has none, so the project attaches it (`MODEL_OVERRIDE` in `design.py`); alignment checked on the render |
+| Illuminated encoders | **placeholder** (body 12.4 x 13.2 x 7.8, M9 bushing to 14.8 mm, dia 6 shaft to 25.3 mm, from the maker drawing). No public STEP found |
 | RGB LEDs, SMD parts, power header, sockets | KiCad stock models |
-| **Bourns PTL20, Alps RS6011, OLED module** | **placeholders** (`models/*.wrl`, written by `gen_placeholder_models.py`): plain bodies of the right size, no levers. PTL body height 6.0 mm (Bourns datasheet), RS6011 7 mm (Alps drawing), OLED module bottom 8.5 mm above the board (as Tanghim: **check your standoff**). No public STEP file found for them; replace the placeholders when you have real models |
+| **Bourns PTL20, Alps RS6011, OLED module, encoders** | **placeholders** (`models/*.wrl`, written by `gen_placeholder_models.py`): plain bodies of the right size, no levers. PTL body height 6.0 mm (Bourns datasheet), RS6011 7 mm (Alps drawing), OLED module bottom 8.5 mm above the board (as Tanghim: **check your standoff**). No public STEP file found for them; replace the placeholders when you have real models |
 
 The 4ms footprints point to their PCM-package folder; the project remaps those paths to `KicadLibs/3dmodels` (`MODEL_PATH_REMAP`), so no PCM install is needed.
+
+## Encoder height and the panel
+
+From the maker drawing: body 7.8 mm above the board, M9 x 0.75 bushing 7 mm long (to 14.8 mm), shaft to **25.3 mm**; nut 11 AF x 2, washer dia 14 x 0.4. With a 2 mm panel, nut and washer on the front, the panel's inner face has to be between about 7.8 and 10.4 mm from the board. **Check this against the jacks (Thonkiconn) and the MX switches** when you design the standoffs and the faceplate; the panel hole for the bushing is dia 9.4 (drawn on the footprint's drawing layer).
 
 ## Power
 

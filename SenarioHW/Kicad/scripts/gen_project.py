@@ -72,6 +72,8 @@ lib = ('(kicad_symbol_lib\n\t(version 20241209)\n\t(generator "senario_gen")\n\t
              [("1", "1"), ("2", "2"), ("3", "3"), ("4", "4")], [("6", "A"), ("5", "K")])
        + sym("Jack_TRS", "J", "3.5 mm TRS jack, pin numbers = pads of the 4ms PJ366ST footprint (1 tip, 2 sleeve, 3 ring: check on the real part)",
              [("1", "T"), ("3", "R"), ("2", "S")], [])
+       + sym("Encoder_RGB_SW", "ENC", "Top-Up EC12PL illuminated encoder (SparkFun COM-15141): A, C, B encoder; 1 R-, 2 G-, 4 B- LED cathodes, 5 common anode (+), 3 push switch (to pin 5); S = frame lugs",
+             [("A", "A"), ("C", "C"), ("B", "B"), ("S", "S")], [("5", "COM+"), ("1", "R-"), ("2", "G-"), ("4", "B-"), ("3", "SW")])
        + ")\n")
 (out / "lib").mkdir(exist_ok=True)
 (out / "lib" / "Senario.kicad_sym").write_text(lib)

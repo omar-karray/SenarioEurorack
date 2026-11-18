@@ -44,7 +44,7 @@ Free: D2, D4 (second gate in / out), D16, D19, D20 (CV in 3 / 4, ADC), D29 / D30
 
 Address | Device | Job
 --- | --- | ---
-0x20 | MCP23017 `U_IO1` | GPA0..7 / GPB0..7 = ENC1_A, ENC1_B, ENC1_SW, ENC2_A ... ENC4_SW (12), BTN1..BTN4 (enable the chip's internal pull-ups, GPPU)
+0x20 | MCP23017 `U_IO1` | GPA0..7 / GPB0..7 = ENC1_A, ENC1_B, ENC1_SW, ENC2_A ... ENC4_SW (12), BTN1..BTN4. Enable the internal pull-ups (GPPU) on A, B and the buttons; **the encoder switches `ENCn_SW` are active high (divider from +5 V): GPPU off on those four pins**
 0x21 | MCP23017 `U_IO2` | BTN5, BTN6, MX1..MX8, six pins spare. Both INT pins are open-drain wired to `I2C_INT` (D5)
 0x40 | PCA9685 `U_LED1` | LED0..7 = MX1..8, LED8..13 = BTN1..6, LED14/15 = PTL1/PTL2 (all 16 channels used)
 0x41 | PCA9685 `U_LED2` | LED0..11 = encoder RGB LEDs: ENC1 R,G,B, ENC2 R,G,B ... ENC4 R,G,B (common anode on +5 V, the chip sinks each colour); 4 channels free

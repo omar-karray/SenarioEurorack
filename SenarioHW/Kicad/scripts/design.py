@@ -411,9 +411,17 @@ with blk("Controls", "oled"):
 # ================================================================== CONTROLS (front side, hand soldered)
 SYM_PUSH_LED = "Senario:SW_Tact_LED_6pin"
 with blk("Controls", "panel"):
-    for i in range(1, 5):                      # encoders with push switch
-        part("ENC", "4ms_Switch:Encoder_Rotary_11mm_SPST_DShaft", "4ms_Encoder:ENC_SPST_12mm", "Encoder 12mm + switch",
-             {"1": f"ENC{i}_A", "2": "GND", "3": f"ENC{i}_B", "SW1": f"ENC{i}_SW", "SW2": "GND"}, side="T", ref_=f"ENC{i}")
+    for i in range(1, 5):                      # illuminated encoders: Top-Up EC12PL RGB (SparkFun COM-15141), common anode on +5 V
+        part("ENC", "Senario:Encoder_RGB_SW", "Daisy_Seed_Misc:ENC_RGB_TopUp_EC12PLRGB", "EC12PLRGBSDVBF RGB encoder",
+             {"A": f"ENC{i}_A", "C": "GND", "B": f"ENC{i}_B", "S": "GND",
+              "1": f"LED_ENC{i}_R_LK", "2": f"LED_ENC{i}_G_LK", "4": f"LED_ENC{i}_B_LK", "5": "+5V", "3": f"ENC{i}_SWP"},
+             side="T", ref_=f"ENC{i}")
+        R("330R", f"LED_ENC{i}_R_K", f"LED_ENC{i}_R_LK")        # PCA9685 sinks each colour
+        R("220R", f"LED_ENC{i}_G_K", f"LED_ENC{i}_G_LK")
+        R("220R", f"LED_ENC{i}_B_K", f"LED_ENC{i}_B_LK")
+        # the push switch connects pin 3 to the common anode (+5 V): divide 5 V to 3.0 V for the 3.3 V expander, 25K pulls it low
+        R("10K", f"ENC{i}_SWP", f"ENC{i}_SW")
+        R("15K", f"ENC{i}_SW", "GND")
     for i in range(1, 9):                      # Cherry MX + red 3 mm LED in the switch window
         part("SW", "Switch:SW_Push", "Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB_1.00u", "Cherry MX Red",
              {"1": f"MX{i}", "2": "GND"}, side="T", ref_=f"SW_MX{i}")
@@ -424,12 +432,6 @@ with blk("Controls", "panel"):
              {"1": f"BTN{i}", "2": f"BTN{i}", "3": "GND", "4": "GND", "5": f"LED_BTN{i}_K", "6": f"LED_BTN{i}_A"},
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
-    for i in range(1, 5):                      # RGB LED above each encoder: 5 mm, common anode on +5 V, PCA9685 sinks each colour
-        part("LED", "Device:LED_RAGB", "LED_THT:LED_D5.0mm-4_RGB_Wide_Pins", "RGB LED 5mm common anode",
-             {"A": "+5V", "RK": f"LED_ENC{i}_R_LK", "GK": f"LED_ENC{i}_G_LK", "BK": f"LED_ENC{i}_B_LK"}, side="T", ref_=f"LED_ENC{i}")
-        R("330R", f"LED_ENC{i}_R_K", f"LED_ENC{i}_R_LK")
-        R("220R", f"LED_ENC{i}_G_K", f"LED_ENC{i}_G_LK")
-        R("220R", f"LED_ENC{i}_B_K", f"LED_ENC{i}_B_LK")
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
         part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
@@ -472,21 +474,20 @@ for r_, c_, n in _grid:
 FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
 for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
-    FLOOR[f"ENC{i}"] = (x, 46.5, 0)
-    FLOOR[f"LED_ENC{i}"] = (x - 3.24, 46.5 - 12.5, 0)   # RGB LED centred above the encoder (footprint origin = pad 1, body centre +3.24)
-KY = [63.5, 82.55]
+    FLOOR[f"ENC{i}"] = (x, 39.5, 0)
+KY = [56.5, 75.55]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
-FLOOR["PTL1"] = (9.0, 73.0, 90)                       # PTL20 left and right of the matrix
-FLOOR["PTL2"] = (111.0, 73.0, 90)
+FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
+FLOOR["PTL2"] = (111.0, 66.0, 90)
 for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 97.0, 0)
-FLOOR["VR1"] = (21.0, 98.5, 0)
-FLOOR["VR2"] = (99.0, 98.5, 0)
-FLOOR["SL1"] = (60.0, 99.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (91.55), body 9.2 mm tall
-FLOOR["SW_BTN1"] = (15.0, 99.15, 0)
-FLOOR["SW_BTN2"] = (105.0, 99.15, 0)
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 90.0, 0)
+FLOOR["VR1"] = (21.0, 91.5, 0)
+FLOOR["VR2"] = (99.0, 91.5, 0)
+FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
+FLOOR["SW_BTN1"] = (15.0, 92.15, 0)
+FLOOR["SW_BTN2"] = (105.0, 92.15, 0)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 38.0), (118.0, 38.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
@@ -509,5 +510,5 @@ MODEL_OVERRIDE = {
     "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel": ("${KIPRJMOD}/models/Alps_RS6011_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03": ("${KIPRJMOD}/models/OLED_HS96L01_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "4ms_Jack:EighthInch_PJ398SM": ("${KICADLIBS}/3dmodels/Jack.3dshapes/WQP-PJ398SM.step", (0, 0, 0), (0, 0, -90), (1, 1, 1)),   # the Thonkiconn model, as the 4ms stereo footprint
-    "4ms_Encoder:ENC_SPST_12mm": ("${KICADLIBS}/3dmodels/Encoders.3dshapes/pec12r-4220f-s0024.stp", (0, 0, 0), (-90, 0, -180), (1, 1, 1)),
+    "Daisy_Seed_Misc:ENC_RGB_TopUp_EC12PLRGB": ("${KIPRJMOD}/models/Encoder_RGB_TopUp_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
 }
