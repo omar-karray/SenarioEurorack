@@ -509,5 +509,5 @@ MODEL_OVERRIDE = {
     "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel": ("${KIPRJMOD}/models/Alps_RS6011_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03": ("${KIPRJMOD}/models/OLED_HS96L01_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "4ms_Jack:EighthInch_PJ398SM": ("${KICADLIBS}/3dmodels/Jack.3dshapes/WQP-PJ398SM.step", (0, 0, 0), (0, 0, -90), (1, 1, 1)),   # the Thonkiconn model, as the 4ms stereo footprint
-    "4ms_Encoder:ENC_SPST_12mm": ("${KICADLIBS}/3dmodels/Encoders.3dshapes/pec12r-4220f-s0024.stp", (0, 0, 5.5), (-90, 0, -180), (1, 1, 1)),
+    "4ms_Encoder:ENC_SPST_12mm": ("${KICADLIBS}/3dmodels/Encoders.3dshapes/pec12r-4220f-s0024.stp", (0, 0, 0), (-90, 0, -180), (1, 1, 1)),
 }
