@@ -486,24 +486,25 @@ _grid = [  # (row, col): jack. Left block = inputs, OLED in the middle, right bl
 ]
 for r_, c_, n in _grid:
     FLOOR["J_" + n] = (JX[c_], JY[r_], 90)
+DY = 9.5                                              # everything under the button row moves down by this (the row of 4 buttons now sits right under the OLED)
 FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
 for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
-    FLOOR[f"ENC{i}"] = (x, 39.5, 0)
-KY = [56.5, 75.55]
+    FLOOR[f"ENC{i}"] = (x, 39.5 + DY, 0)
+KY = [56.5 + DY, 75.55 + DY]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
-FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
-FLOOR["PTL2"] = (111.0, 66.0, 90)
+FLOOR["PTL1"] = (9.0, 66.0 + DY, 90)                       # PTL20 left and right of the matrix
+FLOOR["PTL2"] = (111.0, 66.0 + DY, 90)
 for i, x in enumerate(KX):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 102.5, 0)                # row of 4 under the slider, on the axes of the encoders and the MX keys
-FLOOR["VR1"] = (9.0, 39.0, 0)                          # above the PTL sliders, on their axes
-FLOOR["VR2"] = (111.0, 39.0, 0)
-FLOOR["SL1"] = (60.0, 92.15, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
-FLOOR["SW_BTN1"] = (9.0, 92.15, 90)                    # on the axis of the pot and the PTL slider above it; turned 90 so the 8.5 mm pad span runs along y, clear of the hole H1
-FLOOR["SW_BTN2"] = (111.0, 92.15, 90)
-FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 92.0), (118.0, 92.0), (2.3, 106.2), (117.7, 106.2))]
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 35.0, 0)                 # row of 4 right under the OLED, on the axes of the encoders and the MX keys
+FLOOR["VR1"] = (9.0, 39.0 + DY, 0)                          # above the PTL sliders, on their axes
+FLOOR["VR2"] = (111.0, 39.0 + DY, 0)
+FLOOR["SL1"] = (60.0, 92.15 + DY, 0)                       # Alps RS6011 60 mm: body top 3 mm below the lowest keycap edge (84.55), body 9.2 mm tall
+FLOOR["SW_BTN1"] = (9.0, 92.15 + DY, 90)                    # on the axis of the pot and the PTL slider above it; turned 90 so the 8.5 mm pad span runs along y, clear of the hole H1
+FLOOR["SW_BTN2"] = (111.0, 92.15 + DY, 90)
+FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 36.0), (118.0, 36.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
 ANCHOR = {

@@ -34,10 +34,10 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 ## Floorplan (top to bottom)
 
 1. Jacks, 8 columns of 2 (turned 90 degrees, 10.8 mm pitch). **Left block = inputs**: audio in 1-2, audio in 3-4, CV in 1-2, gate in / MIDI in. **OLED in the middle.** **Right block = outputs**: out main L-R, out send L-R, CV out 1-2, gate out / MIDI out.
-2. The 4 illuminated encoders in one row, on the key column axes.
-3. Matrix 4 x 2 with a PTL20 slider on each side.
-4. The 2 pots above the PTL sliders, on the slider axes.
-5. The Alps slider, and the row of 4 blue HOOYA buttons under it, **on the axes of the encoders and the MX key columns** (x = 31.4, 50.5, 69.5, 88.6 mm). The two K6-6272S 10 mm round buttons sit under the PTL sliders, **on the same axes as the pots and sliders** (x = 9 and 111 mm), turned 90 degrees so their pads clear the corner holes (cap edge 0.65 mm from the H1/H2 hole edge).
+2. **The row of 4 blue HOOYA buttons right under the OLED** (y = 35 mm), **on the axes of the encoders and the MX key columns** (x = 31.4, 50.5, 69.5, 88.6 mm).
+3. The 4 illuminated encoders in one row on the same axes (y = 49 mm), then the matrix 4 x 2 with a PTL20 slider on each side. Everything under the button row sits 9.5 mm lower than before (`DY` in `design.py`).
+4. The 2 pots above the PTL sliders, on the slider axes (x = 9 and 111 mm).
+5. The Alps slider under the matrix. The two K6-6272S 10 mm round buttons sit under the PTL sliders, **on the same axes as the pots and sliders** (x = 9 and 111 mm), turned 90 degrees so their pads clear the corner holes. The side mounting holes H1/H2 are at y = 36 mm under the jacks, H3/H4 in the bottom corners.
 
 I changed the order from your description (OLED and encoders were one band under the jacks) because 108 mm does not leave room for a separate OLED band. If you meant the main encoder below the OLED, something else has to give.
 
