@@ -494,3 +494,20 @@ ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
     "midi": (88, 28), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }
+
+
+# ================================================================== 3D MODELS (project-level fixes, applied when the PCB is generated)
+# The 4ms and keyswitch footprints point to their PCM-package folders (${KICAD10_3RD_PARTY}/...); the same files are in KicadLibs/3dmodels.
+MODEL_PATH_REMAP = {
+    "${KICAD10_3RD_PARTY}/3dmodels/com_github_4ms_4ms-kicad-lib/": "${KICADLIBS}/3dmodels/",
+    "${KICAD6_3RD_PARTY}/3dmodels/com_github_perigoso_keyswitch-kicad-library/3d-library.3dshapes/": "${KICADLIBS}/3dmodels/3d-library.3dshapes/",
+}
+# footprints without a model, or whose model needs another transform: {fpid: (file, offset xyz mm, rotate xyz deg, scale)}
+MODEL_OVERRIDE = {
+    # placeholders (models/*.wrl, written by gen_placeholder_models.py) for parts with no public model
+    "Bourns_PTL:Bourns_PTL20_Slide_LED": ("${KIPRJMOD}/models/PTL20_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel": ("${KIPRJMOD}/models/Alps_RS6011_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03": ("${KIPRJMOD}/models/OLED_HS96L01_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
+    "4ms_Jack:EighthInch_PJ398SM": ("${KICADLIBS}/3dmodels/Jack.3dshapes/WQP-PJ398SM.step", (0, 0, 0), (0, 0, -90), (1, 1, 1)),   # the Thonkiconn model, as the 4ms stereo footprint
+    "4ms_Encoder:ENC_SPST_12mm": ("${KICADLIBS}/3dmodels/Encoders.3dshapes/pec12r-4220f-s0024.stp", (0, 0, 5.5), (-90, 0, -180), (1, 1, 1)),
+}

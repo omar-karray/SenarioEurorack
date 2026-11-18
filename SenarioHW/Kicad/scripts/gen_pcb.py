@@ -66,6 +66,28 @@ def place(fp, x, y, rot, bottom):
     fp.SetPosition(V(x, y))
 
 
+def apply_models(fp, fpid):
+    """Point the footprint's 3D models at KicadLibs/3dmodels (see design.MODEL_*), or give it the model of design.MODEL_OVERRIDE."""
+    if fpid in D.MODEL_OVERRIDE:
+        f, off, rot, sc = D.MODEL_OVERRIDE[fpid]
+        fp.Models().clear()
+        m = pcbnew.FP_3DMODEL()
+        m.m_Filename = f
+        m.m_Offset = pcbnew.VECTOR3D(*off)
+        m.m_Rotation = pcbnew.VECTOR3D(*rot)
+        m.m_Scale = pcbnew.VECTOR3D(*sc)
+        m.m_Show = True
+        fp.Models().append(m)
+        return
+    models = list(fp.Models())
+    fp.Models().clear()
+    for m in models:
+        for a, b in D.MODEL_PATH_REMAP.items():
+            if m.m_Filename.startswith(a):
+                m.m_Filename = b + m.m_Filename[len(a):]
+        fp.Models().append(m)
+
+
 def geometry(fpid, bottom, rot):
     """Bounding box (courtyard + pads) and pad rectangles of a footprint at the origin, as placed."""
     key = (fpid, bottom, rot)
@@ -161,6 +183,7 @@ def build(out):
         fp.SetValue(p["value"])
         for k, v in p["props"].items():
             fp.SetField(k, v)
+        apply_models(fp, p["fp"])
         fp.Reference().SetTextSize(V(0.8, 0.8)); fp.Reference().SetTextThickness(mm(0.12))
         fp.Value().SetVisible(False)
         if bottom:

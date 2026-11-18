@@ -9,6 +9,7 @@ if [ -e "$OUT/Senario.kicad_pcb" ] && [ -z "$FORCE" ]; then
   exit 1
 fi
 KICAD_PY=/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3
+python3 -I "$HERE/gen_placeholder_models.py" "$OUT/models"
 python3 -I "$HERE/gen_project.py" "$OUT"
 python3 -I "$HERE/gen_schematic.py" "$OUT"
 "$KICAD_PY" -I "$HERE/gen_pcb.py" "$OUT/Senario.kicad_pcb" 2>&1 | grep -v 'wxApp'

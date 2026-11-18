@@ -49,6 +49,19 @@ The generator places the Seed first (its pads checked against the front through-
 
 The module's **micro-USB, BOOT and RESET** are on its top, facing the back of the module; the module sits with the USB end toward the right board edge. No USB-C on the carrier: program through the module.
 
+## 3D models
+
+| Part | Model |
+|---|---|
+| Seed2 DFM | Electrosmith STEP (KicadLibs) on its five sockets |
+| Jacks (all 16) | `WQP-PJ398SM.step` (Thonkiconn), KicadLibs |
+| Cherry MX + red LED | `SW_Cherry_MX_PCB.wrl` (keyswitch library), KicadLibs; the LED model is KiCad's |
+| Encoders (Bourns PEC12R) | `pec12r-4220f-s0024.stp`, KicadLibs. The 4ms footprint `ENC_SPST_12mm` has none, so the project attaches it (`MODEL_OVERRIDE` in `design.py`); alignment checked on the render |
+| RGB LEDs, SMD parts, power header, sockets | KiCad stock models |
+| **Bourns PTL20, Alps RS6011, OLED module** | **placeholders** (`models/*.wrl`, written by `gen_placeholder_models.py`): plain bodies of the right size, no levers. PTL body height 6.0 mm (Bourns datasheet), RS6011 7 mm (Alps drawing), OLED module bottom 8.5 mm above the board (as Tanghim: **check your standoff**). No public STEP file found for them; replace the placeholders when you have real models |
+
+The 4ms footprints point to their PCM-package folder; the project remaps those paths to `KicadLibs/3dmodels` (`MODEL_PATH_REMAP`), so no PCM install is needed.
+
 ## Power
 
 Eurorack 10-pin header (4ms symbol: pins 1-2 -12 V, 3-8 GND, 9-10 +12 V; red stripe on -12 V). Series Schottky + ferrite bead + 100 nF / 10 uF / 100 uF per rail (Dev Kit). Seed VIN through 2 x 3R3 and 2 x 100 uF (Dev Kit). **+5 V** from an LD1117S50 (PCM3060 analog supply, LED anodes, gate-out buffer); **-10 V reference** from an LM4040-10 (CV inputs). Everything 3.3 V comes from the **Seed's `3V3_D`** (codec digital, expanders, LED drivers, OLED, MIDI) and **`3V3_A`** (op-amps, pots, mux), the way the Dev Kit and the Patch do it.
