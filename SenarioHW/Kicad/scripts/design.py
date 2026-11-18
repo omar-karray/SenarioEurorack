@@ -193,13 +193,14 @@ with blk("Daisy", "sd"):
     C("10uF", "+3V3", "GND", fp=FP_C0805)
     bypass("+3V3", 1)
 
-# USB-C, wired exactly as the Seed3 Eurorack Dev Kit (U14, J7, R1, R2), but with a vertical through-hole receptacle on the front (Hroparts TYPE-C-31-D-16F, C22464504; same pin numbers as the Dev Kit's GCT USB4110-GF-A symbol), VBUS on its own net (+5V_USB: it does not power the module),
+# USB-C, wired exactly as the Seed3 Eurorack Dev Kit (U14, J7, R1, R2), but with a vertical receptacle on the front (Molex 2047110001, JLCPCB C2909828, SMT; the Hroparts TYPE-C-31-D-16F C22464504 is the through-hole alternative, footprint in KicadLibs), VBUS on its own net (+5V_USB: it does not power the module),
 # CC1 and CC2 5K1 to GND, D+/D- (both rows) through a USBLC6-2SC6 ESD array to the Seed USB HS pins D30 / D29, SBU not connected, shield and GND to GND.
 with blk("Daisy", "usb"):
-    part("J", "USB4110GFA:USB4110GFA", "Daisy_Seed_Misc:USB_C_Vertical_Hroparts_TYPE-C-31-D-16F", "TYPE-C-31-D-16F",
-         {"CC1": "USB_CC1", "DP1": "USB_IN_P", "DN1": "USB_IN_N", "SBU1": None, "VBUS": "+5V_USB", "CC2": "USB_CC2", "DP2": "USB_IN_P", "DN2": "USB_IN_N",
-          "SBU2": None, "GND": "GND", "VBUS__1": "+5V_USB", "GND__1": "GND", "GND__2": "GND", "GND__3": "GND", "GND__4": "GND", "GND__5": "GND"},
-         side="T", ref_="J_USB1", lcsc="C22464504")
+    part("J", "Connector:USB_C_Receptacle", "Daisy_Seed_Misc:USB_C_Vertical_Molex_2047110001", "2047110001",
+         {"A1": "GND", "A12": "GND", "B1": "GND", "B12": "GND", "A4": "+5V_USB", "A9": "+5V_USB", "B4": "+5V_USB", "B9": "+5V_USB",
+          "A5": "USB_CC1", "B5": "USB_CC2", "A6": "USB_IN_P", "B6": "USB_IN_P", "A7": "USB_IN_N", "B7": "USB_IN_N",
+          "A8": None, "B8": None, "A2": None, "A3": None, "A10": None, "A11": None, "B2": None, "B3": None, "B10": None, "B11": None, "SH": "GND"},
+         side="T", ref_="J_USB1", lcsc="C2909828")
     part("U", "Power_Protection:USBLC6-2SC6", FP_SOT23_6, "USBLC6-2SC6",
          {"1": "USB_IN_P", "2": "GND", "3": "USB_IN_N", "4": "USB_OTG_HS_N", "5": "+5V_USB", "6": "USB_OTG_HS_P"}, lcsc=LCSC[("U", "USBLC6")], ref_="U_USB1")
     R("5K1", "USB_CC1", "GND")
