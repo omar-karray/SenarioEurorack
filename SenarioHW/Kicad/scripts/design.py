@@ -441,9 +441,9 @@ _grid = [  # (row, col): jack. Left block = inputs, OLED in the middle, right bl
 for r_, c_, n in _grid:
     FLOOR["J_" + n] = (JX[c_], JY[r_], 90)
 FLOOR["J_OLED1"] = (52.53, 2.82, 0)                   # module x 46.5 .. 73.8, y 1.5 .. 29.3, between the input and output jack blocks
-for i, x in enumerate((24.0, 48.0, 72.0, 96.0), 1):
-    FLOOR[f"ENC{i}"] = (x, 39.5, 0)
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
+for i, x in enumerate(KX, 1):                         # each encoder on the axis of the key column below it
+    FLOOR[f"ENC{i}"] = (x, 39.5, 0)
 KY = [56.5, 75.55]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
