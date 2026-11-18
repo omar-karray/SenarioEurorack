@@ -184,7 +184,7 @@ def build(out):
         if bottom:
             for f in fp.GetFields():
                 f.SetMirrored(True)
-        if p["ref"].startswith(("SW_MX", "J_SEED")):    # MX: the LED sits in the window; sockets: the module outline covers them
+        if p["ref"].startswith(("SW_MX", "J_SEED", "SL1")):    # MX: the LED sits in the window; sockets: the module outline covers them; SL1: the Alps body is on the front, the back below it is free (microSD slot)
             for g in list(fp.GraphicalItems()):
                 if g.GetLayer() in (pcbnew.F_CrtYd, pcbnew.B_CrtYd):
                     fp.Remove(g)
@@ -224,6 +224,8 @@ def build(out):
 
     # ---- back side, automatic
     def anchor_of(p):
+        if p["block"] == "sd" and "J_SD1" in pos:            # the slot's pull-ups and bypass sit next to it
+            return pos["J_SD1"]
         cand = []
         for num, n in p["_nets"].items():
             if not n or n in RAIL_NETS or len(netparts[n]) > 14:
@@ -333,6 +335,18 @@ def build(out):
              [p for p in bottom if p["ref"].startswith("U") and p["ref"] != "U_SEED1"] +
              [p for p in bottom if not p["ref"].startswith("U") and p["ref"] != "J_PWR1"])
     report = []
+    for p in bottom:                                    # back parts with a fixed place (design.BACK_FIXED)
+        if p["ref"] in D.BACK_FIXED:
+            x, y, rot = D.BACK_FIXED[p["ref"]]
+            make(p, x, y, rot, True)
+            pos[p["ref"]] = (x, y)
+            box, pads = geometry(p["fp"], True, rot)
+            bot_obst.add(shift(box, x, y))
+            for q in pads:
+                if q[4]:
+                    tht_obst.add(infl(shift(q[:4], x, y), 0.5))
+            report.append((p["ref"], x, y, rot))
+    order = [p for p in order if p["ref"] not in D.BACK_FIXED]
     for p in order:
         anchor = D.ANCHOR.get(p["block"], (54, 62)) if p["ref"] in ("J_PWR1", "U_SEED1") or p["ref"].startswith("U") else anchor_of(p)
         if p["ref"] == "J_PWR1":

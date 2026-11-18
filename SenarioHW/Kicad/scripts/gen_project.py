@@ -74,6 +74,8 @@ lib = ('(kicad_symbol_lib\n\t(version 20241209)\n\t(generator "senario_gen")\n\t
              [("1", "T"), ("3", "R"), ("2", "S")], [])
        + sym("Encoder_RGB_SW", "ENC", "Top-Up EC12PL illuminated encoder (SparkFun COM-15141): A, C, B encoder; 1 R-, 2 G-, 4 B- LED cathodes, 5 common anode (+), 3 push switch (to pin 5); S = frame lugs",
              [("A", "A"), ("C", "C"), ("B", "B"), ("S", "S")], [("5", "COM+"), ("1", "R-"), ("2", "G-"), ("4", "B-"), ("3", "SW")])
+       + sym("microSD_TF-01A", "J", "microSD slot HRO TF-01A, pin numbers = pads of the footprint: 1 DAT2, 2 DAT3/CD, 3 CMD, 4 VDD, 5 CLK, 6 VSS, 7 DAT0, 8 DAT1, CD1 card detect, MP shield (4 pads)",
+             [("5", "CLK"), ("3", "CMD"), ("7", "DAT0"), ("8", "DAT1"), ("1", "DAT2"), ("2", "DAT3")], [("4", "VDD"), ("6", "VSS"), ("CD1", "CD"), ("MP", "SHIELD")])
        + ")\n")
 (out / "lib").mkdir(exist_ok=True)
 (out / "lib" / "Senario.kicad_sym").write_text(lib)

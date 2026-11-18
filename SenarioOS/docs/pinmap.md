@@ -3,12 +3,12 @@
 Daisy pin | STM32 | Function | Net
 --- | --- | --- | ---
 D0 | PB12 | GPIO | OLED_RES
-D1 | PC11 | GPIO | GATE_IN_1
-D2 | PC10 | GPIO | (free)
-D3 | PC9 | GPIO | GATE_OUT_1
-D4 | PC8 | GPIO | (free)
-D5 | PD2 | GPIO | I2C_INT
-D6 | PC12 | GPIO | LED_OE
+D1 | PC11 | GPIO | SDMMC_D3
+D2 | PC10 | GPIO | SDMMC_D2
+D3 | PC9 | GPIO | SDMMC_D1
+D4 | PC8 | GPIO | SDMMC_D0
+D5 | PD2 | GPIO | SDMMC_CMD
+D6 | PC12 | GPIO | SDMMC_CK
 D7 | PG10 | SPI1_NSS | OLED_CS
 D8 | PG11 | SPI1_SCK | OLED_SCK
 D9 | PB4 | SPI1_MISO (used as a GPIO: OLED D/C) | OLED_DC
@@ -21,8 +21,8 @@ D15 | PC0 | ADC (A0) | POT_MUX
 D16 | PA3 | GPIO | (free)
 D17 | PB1 | ADC (A2) | CV_IN_1_ADC
 D18 | PA7 | ADC (A3) | CV_IN_2_ADC
-D19 | PA6 | ADC (A4) | (free)
-D20 | PC1 | ADC (A5) | (free)
+D19 | PA6 | ADC (A4) | GATE_IN_1
+D20 | PC1 | ADC (A5) | GATE_OUT_1
 D21 | PC4 | GPIO (ADC-capable) | MUX_A
 D22 | PA5 | DAC2 | CV_OUT_2_DAC
 D23 | PA4 | DAC1 | CV_OUT_1_DAC
@@ -31,14 +31,14 @@ D25 | PA0 | SAI2_SD_B | SAI2_SD_B
 D26 | PD11 | SAI2_SD_A | SAI2_SD_A
 D27 | PG9 | SAI2_FS_B | SAI2_FS
 D28 | PA2 | SAI2_SCK_B | SAI2_SCK
-D29 | PB14 | GPIO | (free)
-D30 | PB15 | GPIO | (free)
+D29 | PB14 | GPIO | LED_OE
+D30 | PB15 | GPIO | I2C_INT
 D31 | PC2 | GPIO (ADC-capable) | MUX_B
 D32 | PC3 | GPIO (ADC-capable) | MUX_C
 
 Audio pads: AUDIO_IN_1/2 = `SEED_IN_L/R`, OUT 1 = left (+/-), OUT 2 = right (+/-), VCOM = `VCOM_SEED`.
 
-Free: D2, D4 (second gate in / out), D16, D19, D20 (CV in 3 / 4, ADC), D29 / D30 (USB, left for the module's own micro-USB).
+D1-D6 are the SDMMC1 pins of the microSD slot (as on the Seed3 Eurorack Dev Kit), so GATE_IN_1, GATE_OUT_1, I2C_INT and LED_OE moved to D19, D20, D30 and D29. Free: D16 only (ADC). D29 / D30 are the USB HS pins of the Seed: free to use as GPIO as long as the module has no USB HS of its own (the Seed's own USB-C is on PA11 / PA12).
 
 ## I2C devices (I2C1, 4.7K pull-ups, 400 kHz to 1 MHz)
 

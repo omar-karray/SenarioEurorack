@@ -152,13 +152,13 @@ with blk("Power", "power"):
 
 # ================================================================== DAISY SEED2 DFM
 SEED_PINS = {
-    "D0": "OLED_RES", "D1": "GATE_IN_1", "D2": None, "D3": "GATE_OUT_1", "D4": None,
-    "D5": "I2C_INT", "D6": "LED_OE", "D7": "OLED_CS", "D8": "OLED_SCK", "D9": "OLED_DC", "D10": "OLED_MOSI",
+    "D0": "OLED_RES", "D1": "SDMMC_D3", "D2": "SDMMC_D2", "D3": "SDMMC_D1", "D4": "SDMMC_D0",       # D1-D6 are the SDMMC1 pins (the Dev Kit microSD slot)
+    "D5": "SDMMC_CMD", "D6": "SDMMC_CK", "D7": "OLED_CS", "D8": "OLED_SCK", "D9": "OLED_DC", "D10": "OLED_MOSI",
     "D11": "I2C_SCL", "D12": "I2C_SDA", "D13": "MIDI_TX", "D14": "MIDI_RX",
-    "D15": "POT_MUX", "D16": None, "D17": "CV_IN_1_ADC", "D18": "CV_IN_2_ADC", "D19": None,
-    "D20": None, "D21": "MUX_A", "D22": "CV_OUT_2_DAC", "D23": "CV_OUT_1_DAC",
+    "D15": "POT_MUX", "D16": None, "D17": "CV_IN_1_ADC", "D18": "CV_IN_2_ADC", "D19": "GATE_IN_1",
+    "D20": "GATE_OUT_1", "D21": "MUX_A", "D22": "CV_OUT_2_DAC", "D23": "CV_OUT_1_DAC",
     "D24": "SAI2_MCLK", "D25": "SAI2_SD_B", "D26": "SAI2_SD_A", "D27": "SAI2_FS", "D28": "SAI2_SCK",
-    "D29": None, "D30": None, "D31": "MUX_B", "D32": "MUX_C",
+    "D29": "LED_OE", "D30": "I2C_INT", "D31": "MUX_B", "D32": "MUX_C",
     "VIN": "DSY_VIN", "3V3_D": "+3V3", "3V3_A": "+3V3A", "GND": "GND",
     "AUDIO_IN_1": "SEED_IN_L", "AUDIO_IN_2": "SEED_IN_R", "AUDIO_VCOM": "VCOM_SEED",
     "AUDIO_OUT_1+": "SEED_OUT_L+", "AUDIO_OUT_1-": "SEED_OUT_L-",
@@ -181,6 +181,17 @@ with blk("Daisy", "seed"):
     part("U", "Daisy-Boards:Daisy_Seed2_DFM", "", "Daisy Seed2 DFM", SEED_PINS, side="B", ref_="U_SEED1",
          board_fp="Daisy-Boards:DAISY_SEED2_DFM", desc="Daisy Seed2 DFM module (Electrosmith, bought), plugs into the five sockets J_SEED_A..E, back side")
     C("100nF", "VCOM_SEED", "GND")
+# microSD slot, wired the way the Seed3 Eurorack Dev Kit does it (U7): 47K pull-ups to 3V3 on CMD and DAT0-3, none on CLK, card detect not used,
+# VDD from 3V3 (Seed 3V3_D), shield to GND. Added here: a 10 uF + 100 nF bypass at the slot. The slot sits on the back, card opening toward the bottom edge (BACK_FIXED).
+with blk("Daisy", "sd"):
+    part("J", "Senario:microSD_TF-01A", "Daisy_Seed_Misc:TF-01A", "TF-01A microSD",
+         {"1": "SDMMC_D2", "2": "SDMMC_D3", "3": "SDMMC_CMD", "4": "+3V3", "5": "SDMMC_CK", "6": "GND", "7": "SDMMC_D0", "8": "SDMMC_D1", "CD1": None, "MP": "GND"},
+         side="B", ref_="J_SD1", lcsc="C91145")
+    for n in ("SDMMC_CMD", "SDMMC_D0", "SDMMC_D1", "SDMMC_D2", "SDMMC_D3"):
+        R("47K", "+3V3", n)
+    C("10uF", "+3V3", "GND", fp=FP_C0805)
+    bypass("+3V3", 1)
+
 with blk("Daisy", "seedsock"):
     for _letter in "ABCDE":
         part("J", "Connector_Generic:Conn_02x05_Odd_Even", FP_SEED_SOCKET, "1.27-2*5PLTM",
@@ -510,9 +521,12 @@ FLOOR["SW_BTN2"] = (COL_R, 92.15 + DY, 0)
 FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 36.0), (118.0, 36.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
+# back-side parts at a fixed place (x, y, rotation): the microSD slot at the bottom edge, card opening toward the edge (on the back side the footprint is mirrored in y, so rotation 180 puts the card opening toward +y, the bottom edge)
+BACK_FIXED = {"J_SD1": (46.0, 99.65, 180)}
+
 ANCHOR = {
     "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
-    "midi": (88, 28), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
+    "midi": (88, 28), "sd": (46, 99), "io": (60, 60), "oled": (60, 20), "panel": (60, 80), "holes": (60, 50),
 }
 
 
