@@ -440,8 +440,8 @@ for i, x in enumerate((24.0, 48.0, 72.0, 96.0), 1):
 KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
 KY = [56.5, 75.55]
 for n in range(8):
-    FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 0)
-    FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4], KY[n // 4] + 5.08, 0)
+    FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 180)                 # turned 180: the LED window faces up
+    FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4] - 1.27, KY[n // 4] - 5.08, 0)    # footprint origin is pad 1: -1.27 centres the LED
 FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
 FLOOR["PTL2"] = (111.0, 66.0, 90)
 for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):

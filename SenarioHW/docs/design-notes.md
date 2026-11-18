@@ -21,7 +21,7 @@ Doepfer publishes no PCB height or rail profile (the rail drawing is an image; t
 | 24HP, Daisy Seed2 DFM | board 120 x 108 mm. Seed2 DFM on SMT sockets (`DAISY_SEED2_DFM`), **back side** |
 | Front = controls you solder by hand, back = Seed + all SMD | exactly that: 52 front parts (all through-hole), 195 back parts (Seed, ICs, 0603 passives, LD1117, ...) |
 | Slider between the two keys | **Alps RS6011**, 60 mm travel, 76 x 10 mm body, no LED (4ms library `Pot_Slider_60mm_10k`). The 4ms library has no 100 mm slider; the Top-Up 60RFT2-B dual (88.7 x 20.7 mm) does not fit |
-| MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm below the key centre) |
+| MX matrix 4 x 2, normal red LED | 8 x `SW_Cherry_MX_PCB_1.00u`, 19.05 mm pitch, each with a 3 mm red THT LED in the switch window (`LED_D3.0mm`, 5.08 mm above the key centre, window facing the top of the panel, LED centred on the key axis) |
 | 6 C&K buttons with LED on top | **?** placeholder: `SW_Tact_LED_Hroparts_K6-6140A_THT` (2 switch contacts + LED). Give me the C&K part number and I swap the footprint |
 | 4 encoders with switch | `ENC_SPST_12mm` x 4, on the I/O expander |
 | 2 sliders left and right | **Bourns PTL20** (20 mm travel, LED), vertical, 38.5 mm long, left and right of the matrix |
