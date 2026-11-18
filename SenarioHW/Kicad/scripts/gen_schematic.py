@@ -180,6 +180,8 @@ class Sheet:
             ax, ay = X + px, Y + py
             net = nets.get(p["number"], "__nc__")
             if net in (None, "__nc__"):
+                if p["hidden"] and p["type"] == "no_connect":
+                    continue
                 self.add(f'(no_connect (at {fmt(ax)} {fmt(ay)}) (uuid "{uid(self.name, ref, unit, p["number"], "nc")}"))')
                 continue
             bx, by = ax + dx * 2.54, ay + dy * 2.54

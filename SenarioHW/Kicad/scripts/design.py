@@ -44,6 +44,9 @@ LCSC = {
     ("U", "MMBT3904"): "C20526", ("U", "LM4040-10"): "?",
 }
 
+# jack counts (the 108 mm board height leaves room for 16 jacks: see docs/design-notes.md)
+N_CVIN, N_GIN, N_GOUT = 2, 1, 1
+
 PARTS = []
 _cnt = {}
 _ctx = {"sheet": None, "block": None}
@@ -149,11 +152,11 @@ with blk("Power", "power"):
 
 # ================================================================== DAISY SEED2 DFM
 SEED_PINS = {
-    "D0": "OLED_RES", "D1": "GATE_IN_1", "D2": "GATE_IN_2", "D3": "GATE_OUT_1", "D4": "GATE_OUT_2",
+    "D0": "OLED_RES", "D1": "GATE_IN_1", "D2": None, "D3": "GATE_OUT_1", "D4": None,
     "D5": "I2C_INT", "D6": "LED_OE", "D7": "OLED_CS", "D8": "OLED_SCK", "D9": "OLED_DC", "D10": "OLED_MOSI",
     "D11": "I2C_SCL", "D12": "I2C_SDA", "D13": "MIDI_TX", "D14": "MIDI_RX",
-    "D15": "POT_MUX", "D16": None, "D17": "CV_IN_1_ADC", "D18": "CV_IN_2_ADC", "D19": "CV_IN_3_ADC",
-    "D20": "CV_IN_4_ADC", "D21": "MUX_A", "D22": "CV_OUT_2_DAC", "D23": "CV_OUT_1_DAC",
+    "D15": "POT_MUX", "D16": None, "D17": "CV_IN_1_ADC", "D18": "CV_IN_2_ADC", "D19": None,
+    "D20": None, "D21": "MUX_A", "D22": "CV_OUT_2_DAC", "D23": "CV_OUT_1_DAC",
     "D24": "SAI2_MCLK", "D25": "SAI2_SD_B", "D26": "SAI2_SD_A", "D27": "SAI2_FS", "D28": "SAI2_SCK",
     "D29": None, "D30": None, "D31": "MUX_B", "D32": "MUX_C",
     "VIN": "DSY_VIN", "3V3_D": "+3V3", "3V3_A": "+3V3A", "GND": "GND",
@@ -275,7 +278,7 @@ with blk("Audio", "audio_ext"):
 # ================================================================== CV / GATE
 with blk("CV_Gate", "cvgate"):
     # CV in x4 (Dev Kit): 100K in, 200K from -10V_REF, 33K || 1nF feedback, MCP6004 on +3V3A: +/-5 V -> 3.3 .. 0 V
-    for i in range(1, 5):
+    for i in range(1, N_CVIN + 1):
         jack(f"CVIN{i}", f"CVIN{i}_TIP")
         R("100K", f"CVIN{i}_TIP", f"CVIN{i}_INV")
         R("200K", "-10V_REF", f"CVIN{i}_INV")
@@ -284,8 +287,7 @@ with blk("CV_Gate", "cvgate"):
     part("U", "Amplifier_Operational:MCP6004", FP_SOIC14, "MCP6004", {
         "3": "GND", "2": "CVIN1_INV", "1": "CV_IN_1_ADC",
         "5": "GND", "6": "CVIN2_INV", "7": "CV_IN_2_ADC",
-        "10": "GND", "9": "CVIN3_INV", "8": "CV_IN_3_ADC",
-        "12": "GND", "13": "CVIN4_INV", "14": "CV_IN_4_ADC", "4": "+3V3A", "11": "GND"}, lcsc="?", ref_="U_CVI1")
+        "4": "+3V3A", "11": "GND"}, lcsc="?", ref_="U_CVI1")
     bypass("+3V3A", 1)
     # CV out x2 (Dev Kit): DAC -> TL074 non-inverting, 120K / 62K (x1.52): 0 .. 5 V, 100R
     for i in (1, 2):
@@ -300,7 +302,7 @@ with blk("CV_Gate", "cvgate"):
     bypass("+12V", 1)
     bypass("-12V", 1)
     # gate in x2 (Dev Kit): 100K, MMBT3904, 1M, 10K pull-up, 100R (inverted: a high gate reads 0)
-    for i in (1, 2):
+    for i in range(1, N_GIN + 1):
         jack(f"GATEIN{i}", f"GATEIN{i}_TIP")
         R("100K", f"GATEIN{i}_TIP", f"GI{i}_B")
         R("1M", f"GI{i}_B", "GND")
@@ -309,7 +311,7 @@ with blk("CV_Gate", "cvgate"):
         part("Q", "Transistor_BJT:MMBT3904", FP_SOT23, "MMBT3904", {"B": f"GI{i}_B", "E": "GND", "C": f"GI{i}_C"},
              lcsc=LCSC[("U", "MMBT3904")])
     # gate out x2: 74AHCT1G125 on +5 V, 100K pull-down on the GPIO, 1K to the tip: 0 / 5 V
-    for i in (1, 2):
+    for i in range(1, N_GOUT + 1):
         jack(f"GATEOUT{i}", f"GATEOUT{i}_TIP", sw=None)
         R("100K", f"GATE_OUT_{i}", "GND")
         part("U", "74xGxx:74AHCT1G125", FP_SOT23_5, "74AHCT1G125",
@@ -357,10 +359,10 @@ with blk("Controls", "io"):
     R("10K", "+3V3", "I2C_INT")
     R("4.7K", "+3V3", "I2C_SCL")
     R("4.7K", "+3V3", "I2C_SDA")
-    # LED drivers: PCA9685 open drain, LEDs on +5V through 330R. 0x40 and 0x41
+    # LED driver: PCA9685 open drain, LEDs on +5V through 330R, address 0x40 (16 LEDs = 16 channels)
     LED_CH = {}
-    names = [f"LED_MX{i}" for i in range(1, 9)] + [f"LED_BTN{i}" for i in range(1, 7)] + ["LED_PTL1", "LED_PTL2"] + ["LED_SL"]
-    for u, (ref_, a0) in enumerate((("U_LED1", "GND"), ("U_LED2", "+3V3"))):
+    names = [f"LED_MX{i}" for i in range(1, 9)] + [f"LED_BTN{i}" for i in range(1, 7)] + ["LED_PTL1", "LED_PTL2"]
+    for u, (ref_, a0) in enumerate((("U_LED1", "GND"),)):
         pins = {"A0": a0, "A1": "GND", "A2": "GND", "A3": "GND", "A4": "GND", "A5": "GND", "VSS": "GND",
                 "VDD": "+3V3", "~{OE}": "LED_OE", "EXTCLK": "GND", "SCL": "I2C_SCL", "SDA": "I2C_SDA"}
         for ch in range(16):
@@ -404,13 +406,12 @@ with blk("Controls", "panel"):
              side="T", ref_=f"SW_BTN{i}")
         R("330R", "+5V", f"LED_BTN{i}_A")
     for i in (1, 2):                           # Bourns PTL30 slide pots with LED
-        part("PTL", "Bourns_PTL:PTL30", "Bourns_PTL:Bourns_PTL30_Slide_LED", "PTL30 10K",
+        part("PTL", "Bourns_PTL:PTL20", "Bourns_PTL:Bourns_PTL20_Slide_LED", "PTL20 10K",
              {"1": "GND", "2": f"WIP_PTL{i}", "3": "+3V3A", "E": f"LED_PTL{i}_K", "B": f"LED_PTL{i}_A", "L": None},
              side="T", ref_=f"PTL{i}")
         R("330R", "+5V", f"LED_PTL{i}_A")
-    part("SL", "4ms_Potentiometer:Pot_Slider_LED_30mm_10K", "4ms_Potentiometer:Pot_Slider_LED_30mm_RA3045F", "30mm LED slider 10K",
-         {"P1": "GND", "P2": "WIP_SL", "P3": "+3V3A", "LEDA": "LED_SL_A", "LEDC": "LED_SL_K", "NC": None}, side="T", ref_="SL1")
-    R("330R", "+5V", "LED_SL_A")
+    part("SL", "4ms_Potentiometer:Pot_Slider_60mm_10k", "4ms_Potentiometer:ALPS-RS6011_60mm_standard", "Alps RS6011 60mm 10K",
+         {"1": "GND", "2": "WIP_SL", "3": "+3V3A", "4": None, "5": None, "6": None, "7": None, "8": None}, side="T", ref_="SL1")
     for i in (1, 2):
         part("VR", "4ms_Potentiometer:9mm_NoDet_10k_DShaft", "4ms_Potentiometer:Pot_9mm_DShaft", "10K linear 9mm",
              {"1": "GND", "2": f"WIP_POT{i}", "3": "+3V3A", "4": "GND", "5": "GND"}, side="T", ref_=f"VR{i}")
@@ -421,38 +422,39 @@ with blk("Power", "holes"):
         part("H", "Mechanical:MountingHole", "MountingHole:MountingHole_2.7mm_M2.5", "M2.5", {}, side="T", ref_=f"H{i}")
 
 # ================================================================== FLOORPLAN (front side, mm, origin = board top-left)
-BOARD = dict(w=108.0, h=126.0)
+# 24HP: panel 121.92 nominal (about 121.55 real). Board 120 x 108: height = 128.5 panel - 2 x 10 mm rail clearance - 0.5
+# (community rule: board <= 108..110 mm, parts 10 mm clear of the top and bottom edges of the panel; see docs/design-notes.md)
+BOARD = dict(w=120.0, h=108.0)
 FLOOR = OrderedDict()
-JX = [10.5 + 14.5 * i for i in range(7)]
-JY = [9.0, 20.0, 31.0]
-_grid = [  # (row, col): jack name
-    (0, 0, "AIN1"), (0, 1, "AIN2"), (0, 2, "AIN3"), (0, 3, "AIN4"), (0, 4, "CVOUT1"), (0, 5, "CVOUT2"), (0, 6, "MIDIIN1"),
-    (1, 0, "AOUT1"), (1, 1, "AOUT2"), (1, 2, "AOUT3"), (1, 3, "AOUT4"), (1, 4, "GATEIN1"), (1, 5, "GATEIN2"), (1, 6, "MIDIOUT1"),
-    (2, 0, "CVIN1"), (2, 1, "CVIN2"), (2, 2, "CVIN3"), (2, 3, "CVIN4"), (2, 4, "GATEOUT1"), (2, 5, "GATEOUT2"),
+JX = [7.0 + 11.0 * i for i in range(8)]
+JY = [7.5, 22.5]
+_grid = [  # (row, col): jack. Row 1 = inputs, row 2 = outputs; jacks turned 90 degrees (pad line vertical)
+    (0, 0, "AIN1"), (0, 1, "AIN2"), (0, 2, "AIN3"), (0, 3, "AIN4"), (0, 4, "CVIN1"), (0, 5, "CVIN2"), (0, 6, "GATEIN1"), (0, 7, "MIDIIN1"),
+    (1, 0, "AOUT1"), (1, 1, "AOUT2"), (1, 2, "AOUT3"), (1, 3, "AOUT4"), (1, 4, "CVOUT1"), (1, 5, "CVOUT2"), (1, 6, "GATEOUT1"), (1, 7, "MIDIOUT1"),
 ]
 for r_, c_, n in _grid:
-    FLOOR["J_" + n] = (JX[c_], JY[r_], 0)
-FLOOR["J_OLED1"] = (9.0, 39.3, 0)                      # module x 3 .. 30.3, y 38 .. 65.8
-for i, x in enumerate((43.0, 61.0, 79.0, 97.0), 1):
-    FLOOR[f"ENC{i}"] = (x, 52.0, 0)
-KX = [54.0 - 28.575 + 19.05 * i for i in range(4)]
-KY = [74.0, 93.05]
+    FLOOR["J_" + n] = (JX[c_], JY[r_], 90)
+FLOOR["J_OLED1"] = (97.73, 2.82, 0)                   # module x 91.7 .. 119.0, y 1.5 .. 29.3, beside the jacks
+for i, x in enumerate((24.0, 48.0, 72.0, 96.0), 1):
+    FLOOR[f"ENC{i}"] = (x, 39.5, 0)
+KX = [60.0 - 28.575 + 19.05 * i for i in range(4)]
+KY = [56.5, 75.55]
 for n in range(8):
     FLOOR[f"SW_MX{n + 1}"] = (KX[n % 4], KY[n // 4], 0)
     FLOOR[f"LED_MX{n + 1}"] = (KX[n % 4], KY[n // 4] + 5.08, 0)
-FLOOR["PTL1"] = (7.5, 91.8, 90)
-FLOOR["PTL2"] = (100.5, 91.8, 90)
-FLOOR["SL1"] = (54.0, 105.7, 90)
-FLOOR["SW_BTN1"] = (22.0, 105.5, 0)                   # the two keys flanking the slider
-FLOOR["SW_BTN2"] = (86.0, 105.5, 0)
-for i, x in enumerate((34.5, 47.5, 60.5, 73.5)):
-    FLOOR[f"SW_BTN{i + 3}"] = (x, 119.5, 0)
-FLOOR["VR1"] = (19.5, 118.0, 0)
-FLOOR["VR2"] = (88.5, 118.0, 0)
-FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.3, 1.8), (105.7, 1.8), (2.3, 124.2), (105.7, 124.2))]
+FLOOR["PTL1"] = (9.0, 66.0, 90)                       # PTL20 left and right of the matrix
+FLOOR["PTL2"] = (111.0, 66.0, 90)
+for i, x in enumerate((40.5, 53.5, 66.5, 79.5)):
+    FLOOR[f"SW_BTN{i + 3}"] = (x, 90.0, 0)
+FLOOR["VR1"] = (21.0, 91.5, 0)
+FLOOR["VR2"] = (99.0, 91.5, 0)
+FLOOR["SL1"] = (60.0, 102.5, 0)                       # Alps RS6011 60 mm, 76 mm body, between the two keys
+FLOOR["SW_BTN1"] = (15.0, 102.5, 0)
+FLOOR["SW_BTN2"] = (105.0, 102.5, 0)
+FLOOR["H1"], FLOOR["H2"], FLOOR["H3"], FLOOR["H4"] = [(x, y, 0) for x, y in ((2.0, 38.0), (118.0, 38.0), (2.3, 106.2), (117.7, 106.2))]
 
 # bottom side anchors (where the SMD blocks should sit: behind the controls they serve)
 ANCHOR = {
-    "power": (97, 64), "seed": (58, 98), "audio_seed": (26, 30), "audio_ext": (76, 30), "cvgate": (62, 36),
-    "midi": (100, 28), "io": (54, 80), "oled": (16, 52), "panel": (54, 100), "holes": (54, 62),
+    "power": (18, 66), "seed": (60, 70), "audio_seed": (25, 20), "audio_ext": (60, 20), "cvgate": (80, 20),
+    "midi": (88, 28), "io": (60, 60), "oled": (100, 20), "panel": (60, 80), "holes": (60, 50),
 }

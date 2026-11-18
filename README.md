@@ -1,6 +1,6 @@
 # SenarioEurorack
 
-Senario Looper / MultiFX: a 22HP Eurorack module on a Daisy Seed2 DFM.
+Senario Looper / MultiFX: a 24HP Eurorack module on a Daisy Seed2 DFM.
 
 | Folder | What |
 |---|---|

@@ -9,3 +9,4 @@ fp-info-cache
 # Python
 __pycache__/
 .DS_Store
+.history/

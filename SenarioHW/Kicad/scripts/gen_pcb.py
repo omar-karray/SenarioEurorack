@@ -185,6 +185,7 @@ def build(out):
 
     tht_obst = Grid()                         # through-hole pads (both sides) and holes
     bot_obst = Grid()                         # placed bottom parts
+    top_court = Grid()                        # courtyards of the front parts (for through-hole parts on the back)
     # ---- front side, fixed
     for p in parts:
         if p["side"] != "T":
@@ -196,6 +197,7 @@ def build(out):
         for q in pads:
             if q[4]:
                 tht_obst.add(infl(shift(q[:4], x, y), 0.5))
+        top_court.add(infl(shift(box, x, y), 0.2))
 
     # ---- back side, automatic
     def anchor_of(p):
@@ -239,7 +241,7 @@ def build(out):
                     if pad_only:
                         ok = True
                         for q in pads:
-                            if tht_obst.hit(infl(shift(q[:4], x, y), 0.3)):
+                            if tht_obst.hit(infl(shift(q[:4], x, y), 0.3)) or (p["ref"] == "J_PWR1" and top_court.hit(shift(q[:4], x, y))):
                                 ok = False
                                 break
                         if ok and bot_obst.hit(b):
@@ -268,8 +270,8 @@ def build(out):
     for p in order:
         anchor = D.ANCHOR.get(p["block"], (54, 62)) if p["ref"] in ("J_PWR1", "U_SEED1") or p["ref"].startswith("U") else anchor_of(p)
         if p["ref"] == "J_PWR1":
-            anchor = (98, 62)
-            x, y, rot, b = find(p, anchor, (90, 270))
+            anchor = (18, 66)
+            x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True)
         elif p["ref"] == "U_SEED1":
             x, y, rot, b = find(p, anchor, (0, 90, 180, 270), pad_only=True, step=1.0)
         else:

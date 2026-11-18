@@ -1,6 +1,6 @@
 # SenarioHW
 
-Hardware of the Senario Looper / MultiFX: a 22HP Eurorack module on a Daisy Seed2 DFM.
+Hardware of the Senario Looper / MultiFX: a 24HP Eurorack module on a Daisy Seed2 DFM.
 
 | Path | What |
 |---|---|
