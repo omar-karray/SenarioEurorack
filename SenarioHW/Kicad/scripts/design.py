@@ -447,8 +447,8 @@ with blk("Controls", "panel"):
     part("SL", "4ms_Potentiometer:Pot_Slider_60mm_10k", "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel", "Alps RS6011 60mm 10K",
          {"1": "GND", "2": "WIP_SL", "3": "+3V3A", "4": None, "5": None, "6": None, "7": None, "8": None}, side="T", ref_="SL1")
     for i in (1, 2):
-        part("VR", "4ms_Potentiometer:9mm_NoDet_10k_DShaft", "4ms_Potentiometer:Pot_9mm_Knurl_NoDet", "RK09K1130A70 10K linear",
-             {"1": "GND", "2": f"WIP_POT{i}", "3": "+3V3A", "4": "GND", "5": "GND"}, side="T", ref_=f"VR{i}", lcsc="C351173")   # Alps RK09K1130A70: 9 mm, knurled insulated shaft 30 mm, no detent
+        part("VR", "4ms_Potentiometer:9mm_NoDet_10k_DShaft", "4ms_Potentiometer:Pot_9mm_Knurl_NoDet", "RK09K1130A5R 10K linear",
+             {"1": "GND", "2": f"WIP_POT{i}", "3": "+3V3A", "4": "GND", "5": "GND"}, side="T", ref_=f"VR{i}", lcsc="C209779")   # Alps RK09K1130A5R: 9 mm, knurled insulated shaft 20 mm, no detent
 
 # mounting holes (M2.5, in the corners)
 with blk("Power", "holes"):
@@ -524,7 +524,7 @@ MODEL_OVERRIDE = {
     "Bourns_PTL:Bourns_PTL20_Slide_LED": ("${KIPRJMOD}/models/PTL20_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "Daisy_Seed_Misc:ALPS-RS6011_60mm_Panel": ("${KIPRJMOD}/models/Alps_RS6011_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
     "Daisy_Seed_Misc:OLED_0.96in_SPI_Module_HS96L01W4S03": ("${KIPRJMOD}/models/OLED_HS96L01_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
-    "4ms_Potentiometer:Pot_9mm_Knurl_NoDet": ("${KICADLIBS}/3dmodels/Potentiometer.3dshapes/RK09K1130-30_vrml2.wrl", (0, 0, 6.5), (0, 180, 180), (0.3937, 0.3937, 0.3937)),   # the 4ms RK09K1130-20 model converted to VRML 2.0 in mm with the shaft lengthened to 30 mm (scripts/convert_vrml1_pot.py in KicadLibs): the original VRML 1.0 does not render
+    "4ms_Potentiometer:Pot_9mm_Knurl_NoDet": ("${KICADLIBS}/3dmodels/Potentiometer.3dshapes/RK09K1130-20_vrml2.wrl", (0, 0, 6.5), (0, 180, 180), (0.3937, 0.3937, 0.3937)),   # the 4ms RK09K1130-20 model converted to VRML 2.0 in mm (scripts/convert_vrml1_pot.py in KicadLibs): the original VRML 1.0 does not render
     "4ms_Jack:EighthInch_PJ398SM": ("${KICADLIBS}/3dmodels/Jack.3dshapes/WQP-PJ398SM.step", (0, 0, 0), (0, 0, -90), (1, 1, 1)),   # the Thonkiconn model, as the 4ms stereo footprint
     "Daisy_Seed_Misc:ENC_RGB_TopUp_EC12PLRGB": ("${KIPRJMOD}/models/Encoder_RGB_TopUp_placeholder.wrl", (0, 0, 0), (0, 0, 0), (0.3937, 0.3937, 0.3937)),
 }
