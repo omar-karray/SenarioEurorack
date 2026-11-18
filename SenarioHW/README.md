@@ -7,7 +7,7 @@ Hardware of the Senario Looper / MultiFX: a 24HP Eurorack module on a Daisy Seed
 | `Kicad/` | the KiCad 10 project `Senario.kicad_pro` (schematic: root + 5 sheets, PCB: primary placement, unrouted) |
 | `Kicad/scripts/` | the generators; `design.py` is the design (every part, net and the floorplan) |
 | `Kicad/lib/` | project symbols (`Senario.kicad_sym`, generated) |
-| `docs/` | `design-notes.md` (read this first), `bom.csv`, `previews/` (schematic PDF, front and back placement, 3D renders), `datasheets/` |
+| `docs/` | `design-notes.md` (read this first), `bom.csv`, `previews/` (schematic PDF, front and back placement, 3D renders), datasheets are in `KicadLibs/datasheets/` |
 
 Libraries come from the `KicadLibs` submodule at the repository root (`${KIPRJMOD}/../../KicadLibs`); stock KiCad libraries for the rest.
 
