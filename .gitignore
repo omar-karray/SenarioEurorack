@@ -10,3 +10,4 @@ fp-info-cache
 __pycache__/
 .DS_Store
 .history/
+SenarioHW/Kicad/faceplate/*.kicad_prl
