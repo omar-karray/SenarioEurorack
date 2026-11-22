@@ -24,11 +24,17 @@ NS = uuid.UUID("6f0a4a52-1f1c-4c2b-9d0e-5e4a53454e41")
 POWER_POS = {"+12V", "+5V", "+3V3", "+3V3A"}
 POWER_NEG = {"-12V"}
 POWER_NETS = POWER_POS | POWER_NEG | {"GND"}
-SHEETS = OrderedDict([("Power", "Power supply: Eurorack input, +5 V, -10 V reference, Seed VIN"),
-                      ("Daisy", "Daisy Seed2 DFM"),
-                      ("Audio", "Audio: Seed codec in/out, external PCM3060 in/out, jacks"),
-                      ("CV_Gate", "CV in/out, gate in/out, MIDI"),
-                      ("Controls", "I/O expanders, LED drivers, analog mux, OLED, panel controls")])
+SHEETS = OrderedDict([("Power", "Power: Eurorack input, +5 V analog, +5 V LED step-down, -10 V reference, Seed VIN, mounting holes"),
+                      ("Daisy", "Daisy Seed2 DFM and its five sockets"),
+                      ("USB_SD", "USB-C (D-14D vertical) and the vertical microSD slot"),
+                      ("Audio_Seed", "Audio 1-2: Seed codec in / out, op-amp stages, jacks"),
+                      ("Audio_Ext", "Audio 3-4: PCM3060 codec, op-amp stages, jacks"),
+                      ("CV_In", "CV in 1-4 (Dev Kit stage), gate in 1-2, clock in"),
+                      ("CV_Out", "CV out 1-2 (MCP4728 + Dev Kit stage), gate out 1-2, clock out"),
+                      ("MIDI", "MIDI in / out (TRS type A)"),
+                      ("Digital_IO", "I/O expanders, LED drivers, analog mux"),
+                      ("Display", "OLED"),
+                      ("Panel", "Encoders, RGB buttons, MX keys with SK6812, sliders, pots")])
 _libs = {}
 
 
@@ -237,7 +243,7 @@ def build(out):
     root_uuid = uid("root")
     # power flags on rails that only connect to power-input pins
     with D.blk("Power", "power"):
-        for net in ("GND", "+12V", "-12V", "+3V3", "+3V3A", "DSY_VIN", "+5V"):
+        for net in ("GND", "+12V", "-12V", "+3V3", "+3V3A", "DSY_VIN", "+5V", "+5V_LED"):
             D.part("FLG", "power:PWR_FLAG", "", "PWR_FLAG", {"1": net}, ref_="#FLG%02d" % (len(D.PARTS) % 100))
     bysheet = defaultdict(list)
     for p in D.PARTS:
@@ -258,11 +264,17 @@ def build(out):
             if x > 15.0:
                 x, y = 15.0, y + row_h + 8
                 row_h = 0.0
-            sh.text(f"{bname}", x, y)
+            sh.text(D.BLOCK_TITLES.get(bname, bname), x, y)
             y += 6
             x0, rowtop = 15.0, y
             x, row_h = 15.0, 0.0
+            last_g = None
             for p in plist:
+                g = p.get("group")
+                if g != last_g and x > 15.0 and (g or last_g):          # a new group (one channel, one button with its resistors ...) starts on its own row
+                    x, y = 15.0, y + row_h + 4
+                    row_h = 0.0
+                last_g = g
                 s = sym(p["sym"])
                 nets = resolve_pins(p, s)
                 expand_unused_units(p, s, nets)
@@ -315,7 +327,7 @@ def build(out):
                      f'(uuid "{uid("rt", name)}"))')
     root = (f'(kicad_sch\n\t(version 20250114)\n\t(generator "senario_gen")\n\t(generator_version "1.0")\n\t(uuid "{root_uuid}")\n'
             f'\t(paper "A4")\n\t(title_block (title "Senario Looper / MultiFX") (date "2026-11-18") (rev "A0") (company "Senario") '
-            f'(comment 1 "22HP Eurorack, Daisy Seed2 DFM") (comment 2 "Generated: SenarioHW/Kicad/scripts"))\n'
+            f'(comment 1 "24HP Eurorack, Daisy Seed2 DFM") (comment 2 "Generated: SenarioHW/Kicad/scripts"))\n'
             f'\t(lib_symbols)\n' + "\n".join(items) +
             f'\n\t(sheet_instances (path "/" (page "1")))\n\t(embedded_fonts no)\n)\n')
     (out / "Senario.kicad_sch").write_text(root)

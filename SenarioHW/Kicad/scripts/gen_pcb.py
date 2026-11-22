@@ -176,6 +176,10 @@ def build(out):
         place(fp, x, y, rot, bottom)
         fp.SetReference(p["ref"])
         fp.SetValue(p["value"])
+        if p["ref"] == "J_OLED1" and D.OLED_ON_FACEPLATE:      # the module is screwed to the faceplate: its mounting holes are not on the carrier
+            for q in list(fp.Pads()):
+                if q.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
+                    fp.Remove(q)
         for k, v in p["props"].items():
             fp.SetField(k, v)
         apply_models(fp, p["fp"], p["ref"])
@@ -210,6 +214,7 @@ def build(out):
     bot_obst = Grid()                         # placed bottom parts
     top_court = Grid()                        # courtyards of the front parts (for through-hole parts on the back)
     # ---- front side, fixed
+    front_boxes = {}
     for p in parts:
         if p["side"] != "T":
             continue
@@ -221,6 +226,18 @@ def build(out):
             if q[4]:
                 tht_obst.add(infl(shift(q[:4], x, y), 0.5))
         top_court.add(infl(shift(box, x, y), 0.2))
+        front_boxes[p["ref"]] = shift(box, x, y)
+    # front parts whose courtyards overlap (the starting point of the hand pass: the floorplan is initial, see design.FLOOR)
+    ov = []
+    refs_ = sorted(r for r in front_boxes if D.on_board(r))             # parked parts (design.PLACED) are beside the board
+    for ia, ra in enumerate(refs_):
+        for rb in refs_[ia + 1:]:
+            a, b = front_boxes[ra], front_boxes[rb]
+            w_, h_ = min(a[2], b[2]) - max(a[0], b[0]), min(a[3], b[3]) - max(a[1], b[1])
+            if w_ > 0.3 and h_ > 0.3 and (ra, rb) not in D.COURTYARD_OK and (rb, ra) not in D.COURTYARD_OK:
+                ov.append((w_ * h_, ra, rb))
+    ov.sort(reverse=True)
+    print(f"front courtyard overlaps: {len(ov)}" + ("" if not ov else " (largest: " + ", ".join(f"{a}/{b} {s:.0f} mm2" for s, a, b in ov[:12]) + ")"))
 
     # ---- back side, automatic
     def anchor_of(p):
@@ -266,7 +283,10 @@ def build(out):
                 for rot in rots:
                     box, pads = geometry(p["fp"], True, rot)
                     b = shift(box, x, y)
-                    if b[0] < 0.8 or b[1] < 0.8 or b[2] > W - 0.8 or b[3] > H - 0.8:
+                    if ax > W + 1.0:                                  # the anchor is a parked front part (design.PLACED): its SMD parts stay in the parking zone beside the board
+                        if b[0] < W + 1.0 or b[1] < 0.8:
+                            continue
+                    elif b[0] < 0.8 or b[1] < 0.8 or b[2] > W - 0.8 or b[3] > H - 0.8:
                         continue
                     if pad_only:
                         ok = True

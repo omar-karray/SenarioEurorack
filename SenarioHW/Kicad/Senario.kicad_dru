@@ -1,0 +1,175 @@
+(version 1)
+(rule "courtyards of ENC1 and ENC2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC1' && B.Reference == 'ENC2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC1 and J_CVIN2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC1' && B.Reference == 'J_CVIN2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC1 and J_CVIN4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC1' && B.Reference == 'J_CVIN4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC2 and ENC3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC2' && B.Reference == 'ENC3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC2 and J_OLED1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC2' && B.Reference == 'J_OLED1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC3 and ENC4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC3' && B.Reference == 'ENC4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC3 and J_OLED1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC3' && B.Reference == 'J_OLED1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC4 and J_CVOUT2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC4' && B.Reference == 'J_CVOUT2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC4 and J_GATEOUT2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC4' && B.Reference == 'J_GATEOUT2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CLKIN and PTL1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CLKIN' && B.Reference == 'PTL1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CLKOUT and PTL2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CLKOUT' && B.Reference == 'PTL2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEIN1 and PTL1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEIN1' && B.Reference == 'PTL1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEIN1 and SW_BTN7 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEIN1' && B.Reference == 'SW_BTN7'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEIN1 and SW_BTN9 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEIN1' && B.Reference == 'SW_BTN9'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEIN2 and PTL2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEIN2' && B.Reference == 'PTL2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEIN2 and SW_BTN10 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEIN2' && B.Reference == 'SW_BTN10'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEIN2 and SW_BTN8 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEIN2' && B.Reference == 'SW_BTN8'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_MIDIIN1 and SW_BTN9 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_MIDIIN1' && B.Reference == 'SW_BTN9'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_MIDIOUT1 and SW_BTN10 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_MIDIOUT1' && B.Reference == 'SW_BTN10'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL1 and SW_BTN7 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL1' && B.Reference == 'SW_BTN7'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL2 and SW_BTN8 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL2' && B.Reference == 'SW_BTN8'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR3 and J_AIN4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR3' && B.Reference == 'J_AIN4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR3 and J_CVIN2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR3' && B.Reference == 'J_CVIN2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR3 and PTL1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR3' && B.Reference == 'PTL1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR3 and VR1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR3' && B.Reference == 'VR1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR4 and J_AOUT2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR4' && B.Reference == 'J_AOUT2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR4 and J_CVOUT2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR4' && B.Reference == 'J_CVOUT2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR4 and PTL2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR4' && B.Reference == 'PTL2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR4 and VR2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR4' && B.Reference == 'VR2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC2 and ENC1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC2' && B.Reference == 'ENC1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC3 and ENC2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC3' && B.Reference == 'ENC2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of ENC4 and ENC3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'ENC4' && B.Reference == 'ENC3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_AIN4 and VR3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_AIN4' && B.Reference == 'VR3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_AOUT2 and VR4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_AOUT2' && B.Reference == 'VR4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CVIN2 and ENC1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CVIN2' && B.Reference == 'ENC1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CVIN2 and VR3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CVIN2' && B.Reference == 'VR3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CVIN4 and ENC1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CVIN4' && B.Reference == 'ENC1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CVOUT2 and ENC4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CVOUT2' && B.Reference == 'ENC4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_CVOUT2 and VR4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_CVOUT2' && B.Reference == 'VR4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_GATEOUT2 and ENC4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_GATEOUT2' && B.Reference == 'ENC4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_OLED1 and ENC2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_OLED1' && B.Reference == 'ENC2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of J_OLED1 and ENC3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'J_OLED1' && B.Reference == 'ENC3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL1 and J_CLKIN overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL1' && B.Reference == 'J_CLKIN'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL1 and J_GATEIN1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL1' && B.Reference == 'J_GATEIN1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL1 and VR3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL1' && B.Reference == 'VR3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL2 and J_CLKOUT overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL2' && B.Reference == 'J_CLKOUT'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL2 and J_GATEIN2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL2' && B.Reference == 'J_GATEIN2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of PTL2 and VR4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'PTL2' && B.Reference == 'VR4'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN10 and J_GATEIN2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN10' && B.Reference == 'J_GATEIN2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN10 and J_MIDIOUT1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN10' && B.Reference == 'J_MIDIOUT1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN7 and J_GATEIN1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN7' && B.Reference == 'J_GATEIN1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN7 and PTL1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN7' && B.Reference == 'PTL1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN8 and J_GATEIN2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN8' && B.Reference == 'J_GATEIN2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN8 and PTL2 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN8' && B.Reference == 'PTL2'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN9 and J_GATEIN1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN9' && B.Reference == 'J_GATEIN1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of SW_BTN9 and J_MIDIIN1 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'SW_BTN9' && B.Reference == 'J_MIDIIN1'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR1 and VR3 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR1' && B.Reference == 'VR3'")
+  (constraint courtyard_clearance (min -3mm)))
+(rule "courtyards of VR2 and VR4 overlap on purpose (the bodies are 0.1 mm apart)"
+  (condition "A.Reference == 'VR2' && B.Reference == 'VR4'")
+  (constraint courtyard_clearance (min -3mm)))
