@@ -8,7 +8,7 @@
 		(at 0 0 0)
 		(layer "F.SilkS")
 		(hide yes)
-		(uuid "83258509-7baa-4a8d-bb18-2319bc9a44b9")
+		(uuid "ceb7ae41-c79d-4b4d-b5ec-7441acbf6b7b")
 		(effects
 			(font
 				(size 1 1)
@@ -20,7 +20,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "f67ac04f-9d3b-4d5a-988f-668be544d40b")
+		(uuid "60f09433-c4c7-4dd9-86dc-800eb4742a3e")
 		(effects
 			(font
 				(size 1 1)
@@ -31,10 +31,10 @@
 	(attr exclude_from_pos_files exclude_from_bom)
 	(model "${KIPRJMOD}/models/Faceplate_24HP.step"
 		(offset
-			(xyz 0 0 9.0491)
+			(xyz 0 0 10.0483)
 		)
 		(scale
-			(xyz 1 1 0.981595)
+			(xyz 1 1 0.966767)
 		)
 		(rotate
 			(xyz 0 0 0)

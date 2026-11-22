@@ -38,9 +38,14 @@ for n in sorted(fp_libs):
     lines.append(f'\t(lib (name "{n}") (type "KiCad") (uri "{uri}") (options "") (descr ""))')
 lines.append(")")
 (out / "fp-lib-table").write_text("\n".join(lines) + "\n")
-pro = {"meta": {"filename": "Senario.kicad_pro", "version": 3}, "board": {"design_settings": {"rules": {"min_clearance": 0.2, "min_copper_edge_clearance": 0.3}}},
+pro = {"meta": {"filename": "Senario.kicad_pro", "version": 3}, "board": {"design_settings": {"rules": {"min_clearance": 0.15, "min_copper_edge_clearance": 0.3}}},
+       "net_settings": {"classes": [{"name": "Default", "clearance": 0.15, "track_width": 0.2, "via_diameter": 0.6, "via_drill": 0.3, "priority": 2147483647}], "meta": {"version": 3}},
        "sheets": [], "text_variables": {"KICADLIBS": "${KIPRJMOD}/../../KicadLibs"}}
 (out / "Senario.kicad_pro").write_text(json.dumps(pro, indent=2) + "\n")
+# custom DRC rules (the USB-C is the D-14D since step 13: no locating holes, no waiver; the three rules for the D-15C are gone). The D-15C maker layout put each plated shell slot 0.15 mm from a locating hole (slot end 4.825, hole edge 4.96): a waiver for that one connector, NOT a fab approval: ask JLC
+_cy = "".join(f"""(rule "courtyards of {a} and {b} overlap on purpose (the bodies are 0.1 mm apart)"\n  (condition "A.Reference == '{a}' && B.Reference == '{b}'")\n  (constraint courtyard_clearance (min -3mm)))\n""" for a, b in sorted(D.COURTYARD_OK) + sorted((b, a) for a, b in D.COURTYARD_OK))
+(out / "Senario.kicad_dru").write_text("""(version 1)
+""" + _cy)
 
 def sym(name, ref, desc, left, right, w=5.08):
     h = max(len(left), len(right)) * 2.54 / 2 + 2.54
@@ -68,14 +73,10 @@ def sym(name, ref, desc, left, right, w=5.08):
 
 
 lib = ('(kicad_symbol_lib\n\t(version 20241209)\n\t(generator "senario_gen")\n\t(generator_version "1.0")\n'
-       + sym("SW_Tact_LED_6pin", "SW", "Tact switch with LED on top, one symbol pin per footprint pad: 1-2 and 3-4 are the two switch contacts, 5 = LED cathode, 6 = LED anode",
-             [("1", "1"), ("2", "2"), ("3", "3"), ("4", "4")], [("6", "A"), ("5", "K")])
        + sym("Jack_TRS", "J", "3.5 mm TRS jack, pin numbers = pads of the 4ms PJ366ST footprint (1 tip, 2 sleeve, 3 ring: check on the real part)",
              [("1", "T"), ("3", "R"), ("2", "S")], [])
-       + sym("Encoder_RGB_SW", "ENC", "Top-Up EC12PL illuminated encoder (SparkFun COM-15141): A, C, B encoder; 1 R-, 2 G-, 4 B- LED cathodes, 5 common anode (+), 3 push switch (to pin 5); S = frame lugs",
-             [("A", "A"), ("C", "C"), ("B", "B"), ("S", "S")], [("5", "COM+"), ("1", "R-"), ("2", "G-"), ("4", "B-"), ("3", "SW")])
-       + sym("microSD_TF-01A", "J", "microSD slot HRO TF-01A, pin numbers = pads of the footprint: 1 DAT2, 2 DAT3/CD, 3 CMD, 4 VDD, 5 CLK, 6 VSS, 7 DAT0, 8 DAT1, CD1 card detect, MP shield (4 pads)",
-             [("5", "CLK"), ("3", "CMD"), ("7", "DAT0"), ("8", "DAT1"), ("1", "DAT2"), ("2", "DAT3")], [("4", "VDD"), ("6", "VSS"), ("CD1", "CD"), ("MP", "SHIELD")])
+       + sym("SW_MX_SK6812", "SW", "Cherry MX key with an SK6812-EC20 RGB LED (OK_Switch:SW_Cherry_MX_SK6812-EC20): 1 and 2 = the switch, 3 VSS, 4 DIN, 5 VDD, 6 DOUT",
+             [("1", "1"), ("2", "2")], [("3", "VSS"), ("4", "DIN"), ("5", "VDD"), ("6", "DOUT")])
        + ")\n")
 (out / "lib").mkdir(exist_ok=True)
 (out / "lib" / "Senario.kicad_sym").write_text(lib)

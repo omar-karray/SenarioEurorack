@@ -16,4 +16,4 @@ git clone --recurse-submodules https://github.com/omar-karray/SenarioEurorack.gi
 
 The submodule is private: you need access to `omar-karray/KicadLibs`. KiCad 10 resolves the libraries through the project's own tables (`${KIPRJMOD}/../../KicadLibs`), so no global set-up is needed for this project.
 
-Start with [SenarioHW/docs/design-notes.md](SenarioHW/docs/design-notes.md).
+Start with [SenarioHW/docs/spec-beta.md](SenarioHW/docs/spec-beta.md) (the version-beta platform spec and how it connects to the Seed2 DFM), then [SenarioHW/docs/design-notes.md](SenarioHW/docs/design-notes.md) (first pass, still valid except where the spec replaces it).
